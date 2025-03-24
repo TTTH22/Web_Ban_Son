@@ -1,0 +1,84 @@
+
+
+
+#quangCao{
+    /*background-color: #f8f9f5;*/
+    font-family: 'Segoe UI', sans-serif;
+    margin-top: 30px;
+}
+
+#quangCao .main-title {
+    font-size: 39.06px;
+    line-height: 48.83px;
+    color: #2e524a;;
+    margin-top: 50px;
+}
+#quangCao .description {
+    color: #2e524a;
+    max-width: 700px;
+    margin: 10px 30% 100px 30%;  /* căn giữa ngang */
+    text-align: center;
+}
+#quangCao .info-card {
+    background-color: #f3f6ef;
+    border-radius: 10px;
+    padding: 30px;
+    position: relative;
+    /*overflow: hidden;*/
+    height: 100%;
+}
+#quangCao .columtPhai .info-card-dark {
+    background-color: #FFC1B4;
+    color: #007074;
+}
+#quangCao .columtTrai .info-card img {
+    position: absolute;
+    top: 0%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    opacity: 0.7;
+}
+
+#quangCao .columtPhai .info-card img {
+    position: absolute;
+    bottom: -80%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    opacity: 0.7;
+}
+#quangCao .info-item {
+    margin-bottom: 30px;
+    position: relative;
+}
+#quangCao .columtTrai .circle {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translateY(10px);
+}
+
+#quangCao .columtPhai .circle {
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(10px);
+}
+#quangCao .info-text {
+    padding-left: 70px;
+    text-align: left;
+}
+
+#quangCao .columtPhai .info-text {
+    padding-right: 70px;
+    text-align: right;
+}

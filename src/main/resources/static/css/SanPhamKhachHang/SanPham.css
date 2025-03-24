@@ -1,0 +1,326 @@
+
+
+body {
+    background-color: #f8f9fa;
+}
+
+.filter-sidebar {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+
+}
+
+.product-card {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    position: relative;
+    background: #fff;
+}
+.product-link{
+    display: block;
+    overflow: hidden;
+}
+
+.product-card img {
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.product-link:hover img {
+    transform: scale(1.3);
+}
+
+.product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: orange;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: smaller;
+}
+.hot-badge {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background: crimson;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+}
+.product-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 10px 0;
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
+.product-price {
+    color: #8b5e3c;
+    font-weight: bold;
+}
+.product-old-price {
+    text-decoration: line-through;
+    color: gray;
+    font-size: 0.9rem;
+    margin-right: 5px;
+}
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+}
+
+.sold-count {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+
+/*Nút thêm vào giỏ hàng*/
+.add-to-cart-btn {
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    padding: 8px 15px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.add-to-cart-btn:hover {
+    background-color: white !important;
+    border-color: black !important;
+}
+.add-to-cart-btn span {
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.add-to-cart-btn:hover span {
+    transform: translateY(30px);
+    opacity: 0;
+}
+.add-to-cart-btn .cart-icon {
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    transition: transform 0.3s ease;
+    opacity: 0;
+}
+.add-to-cart-btn:hover .cart-icon {
+    transform: translateY(30px);
+    opacity: 1;
+}
+.add-to-cart-container {
+    text-align: center;
+}
+
+/*Filter sidebar*/
+.filter-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Container chung */
+#price-slider {
+    margin: 20px 0;
+}
+
+
+.custom-select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid #000;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 14px;
+    margin-top: 10px;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='%23000' d='M7 10L0 0h14z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #00b894; /* màu xanh khi focus */
+    box-shadow: 0 0 5px rgba(0, 184, 148, 0.5);
+}
+
+.best-sellers {
+    margin-top: 30px;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+}
+
+/*Sản phẩm mới nhất*/
+.best-sellers h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.best-seller-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.best-seller-item img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.best-seller-info p {
+    margin: 0;
+    font-size: 14px;
+}
+
+.best-seller-info del {
+    color: gray;
+    margin-right: 5px;
+}
+
+.best-seller-info strong {
+    color: #000;
+}
+
+/*Follow us*/
+.follow-us h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.social-icons i {
+    font-size: 24px;
+    color: #7f8c8d;
+    transition: 0.3s;
+}
+
+.social-icons i:hover {
+    color: #000;
+}
+
+/*Menu ngang*/
+.mySwiper {
+    width: 80%;
+    padding: 10px 0;
+    margin-bottom: 30px;
+    margin-bottom: 60px;
+}
+
+.swiper-slide {
+    text-align: center;
+    min-width: 150px;
+}
+
+.mySwiper a {
+    font-family: Monaco; /* Hoặc font bạn muốn */
+    font-size: 18px; /* Đổi size chữ */
+    font-weight: 500; /* Tuỳ chọn in đậm nhẹ */
+    color: #333; /* Màu chữ */
+    white-space: nowrap; /* Không xuống dòng */
+}
+
+
+
+/*Phân trang*/
+.pagination{
+    margin-top: 40px;
+}
+
+.pagination .page-link {
+    color: #000; /* Màu chữ */
+    font-size: 16px;
+}
+
+.pagination .page-link:hover {
+    background-color: #f8f9fa;
+}
+
+#price-value {
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+.dongSPLink {
+    position: relative;
+    font-family: JetBrains Mono;
+    font-size: 22px;
+    font-weight: 500;
+    color: #333;
+    white-space: nowrap;
+    text-decoration: none;
+    padding: 5px 10px;
+    transition: all 0.3s ease;
+}
+
+.dongSPLink::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 76, 96, 0.2);
+    border-radius: 5px;
+    filter: blur(5px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+.dongSPLink:hover {
+    color: #FF4C60;
+    text-shadow: 0 0 5px rgba(255, 76, 96, 0.5);
+}
+
+.dongSPLink:hover::before {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.dongSPLink.active {
+    color: #FF4C60 !important;
+    font-weight: bold;
+    position: relative;
+}
+
+.dongSPLink.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #FF4C60;
+}

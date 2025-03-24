@@ -1,0 +1,72 @@
+
+
+
+
+
+#giamGiaCarousel .product-card {
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    position: relative;
+    background: #fff;
+}
+#giamGiaCarousel .product-card img {
+    border-radius: 10px;
+    width: 100%;
+    height: auto;
+}
+#giamGiaCarousel .product-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: orange;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: smaller;
+}
+#giamGiaCarousel .hot-badge {
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background: crimson;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+}
+#giamGiaCarousel .product-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin: 10px 0;
+}
+#giamGiaCarousel .product-price {
+    color: #8b5e3c;
+    font-weight: bold;
+}
+#giamGiaCarousel .product-old-price {
+    text-decoration: line-through;
+    color: gray;
+    font-size: 0.9rem;
+    margin-right: 5px;
+}
+#giamGiaCarousel .carousel-control-prev, .carousel-control-next {
+    width: 5%;
+}
+
+#giamGiaCarousel .sold-count {
+    font-size: 0.9rem;
+    color: #888;
+}

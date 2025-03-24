@@ -1,0 +1,17 @@
+
+
+#blogNews .badge {
+    background-color: #2e524a;
+    font-weight: 500;
+}
+
+#blogNews .btn {
+    background-color: #f8f9f5;
+    border-color: #2e524a;
+    color: #2e524a;
+}
+
+#blogNews .btn:hover {
+    background-color: #2e524a;
+    color: #fff;
+}

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Featured Products</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/LienHe.css}">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/HeaderKhachHang.css}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"></script>
+
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
+  <link rel="stylesheet" th:href="@{/css/SanPhamKhachHang/SanPham.css}">
+
+</head>
+
+<header>
+  <th:block th:replace="~{fragments/HeaderKhachHang :: header}"></th:block>
+</header>
+
+<body>
+<div class="container my-5">
+  <div class="row g-4">
+    <!-- Filter Sidebar -->
+    <div class="col-lg-3">
+      <div class="filter-sidebar">
+
+        <!-- Search Product -->
+        <div class="mb-4">
+          <div class="input-group">
+        <span class="input-group-text bg-white border-end-0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-search" viewBox="0 0 16 16">
+            <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242 1.106a5 5 0 1 1 0-10 5 5 0 0 1 0 10z" />
+          </svg>
+        </span>
+            <input type="text" id="tenSearch" class="form-control border-start-0"
+                   placeholder="Search product..." th:value="${tenSearch}" />
+          </div>
+        </div>
+
+        <!-- Filter by Price -->
+        <h5 class="filter-title">Price Filter</h5>
+
+        <!-- Truyền data attribute -->
+        <div id="price-slider"
+             th:attr="data-min-price=${minPriceRange},
+                      data-max-price=${maxPriceRange},
+                      data-start-min=${startMin},
+                      data-start-max=${startMax}">
+        </div>
+        <p>Price: <span id="price-value"></span></p>
+
+        <!--CBO Thứ tự tìm kiếm-->
+        <div style="margin-top: 20px;">
+          <label for="category" style="font-weight: bold;">Sắp xếp: </label>
+          <select id="category" name="category" class="custom-select filter-category">
+            <option value="1" th:selected="${selectedCategory == 1}">All Categories</option>
+            <option value="2" th:selected="${selectedCategory == 2}">Lượt bán cao nhất</option>
+            <option value="3" th:selected="${selectedCategory == 3}">Mới ra mắt</option>
+            <option value="4" th:selected="${selectedCategory == 4}">Giá từ thấp đến cao</option>
+            <option value="5" th:selected="${selectedCategory == 5}">Giá từ cao đến thấp</option>
+          </select>
+        </div>
+
+          <a th:href="@{/search}" class="filter-search btn btn-dark w-100 mt-3">Filter</a>
+
+        <hr>
+
+        <!-- Filter by Color -->
+        <div class="filter-section mb-4">
+          <h5 class="filter-title">Màu Son</h5>
+          <div class="scrollable-checkbox-list border p-2" style="max-height: 200px; overflow-y: auto;">
+            <div class="form-check" th:each="ms : ${listMauSac}">
+              <input class="form-check-input filter-color" type="checkbox"
+                     th:id="${ms.id}" th:value="${ms.id}"
+                     th:checked="${selectedColors != null and #lists.contains(selectedColors, ms.id)}">
+              <label class="form-check-label" th:for="'color-' + ${ms.id}" th:text="${ms.ten}"></label>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- Filter by Brand -->
+        <div class="filter-section mb-4">
+          <h5 class="filter-title">Nhà sản xuất</h5>
+          <div class="scrollable-checkbox-list border p-2" style="max-height: 200px; overflow-y: auto;">
+            <div class="form-check" th:each="nsx : ${listNSX}">
+              <input class="form-check-input filter-nsx" type="checkbox"
+                     th:id="${nsx.id}" th:value="${nsx.id}"
+                     th:checked="${selectedNSX != null and #lists.contains(selectedNSX, nsx.id)}">
+              <label class="form-check-label" th:for="'nsx-' + ${nsx.id}" th:text="${nsx.ten}"></label>
+            </div>
+          </div>
+        </div>
+
+
+
+        <!--Sản phẩm mới-->
+        <div class="best-sellers">
+          <h3>Sản phẩm mới</h3>
+          <div class="best-seller-item">
+            <img src="link-to-your-image1.jpg" alt="Set Mix 4 hũ" />
+            <div class="best-seller-info">
+              <p>Set Mix 4 hũ</p>
+              <p><del>430,000₫</del> <strong>385,000₫</strong></p>
+            </div>
+          </div>
+          <div class="best-seller-item">
+            <img src="link-to-your-image2.jpg" alt="Set Mix 6 gói" />
+            <div class="best-seller-info">
+              <p>Set Mix 6 gói</p>
+              <p><del>500,000₫</del> <strong>450,000₫</strong></p>
+            </div>
+          </div>
+
+          <hr>
+
+        <!--Follow us-->
+          <div class="follow-us mt-4">
+            <h3>Follow us</h3>
+            <div class="social-icons d-flex mt-2">
+              <a href="#" class="me-3"><i class="bi bi-facebook"></i></a>
+              <a href="#" class="me-3"><i class="bi bi-twitter"></i></a>
+              <a href="#" class="me-3"><i class="bi bi-instagram"></i></a>
+              <a href="#"><i class="bi bi-youtube"></i></a>
+            </div>
+          </div>
+
+          <hr>
+
+        </div>
+
+
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="col-lg-9">
+<!--      Fillter Category-->
+      <p class="text-uppercase text-center">Collection</p>
+      <h2 class="fw-bold mb-4 text-center">FEATURED PRODUCTS</h2>
+
+      <!-- Category Menu -->
+      <!-- Swiper -->
+      <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide" th:each="dongSP : ${listDongSanPham}">
+                <a th:href="@{|/search?idDongSanPham=${dongSP.id}|}"
+                   th:class="${dongSP.id == idDongSanPham} ? 'dongSPLink mx-3 text-decoration-none text-dark active' : 'dongSPLink mx-3 text-decoration-none text-dark'"
+                   th:text="${dongSP.ten}"></a>
+            </div>
+        </div>
+      </div>
+
+      <div class="row g-4 justify-content-center">
+        <!-- Product Item -->
+        <!--@thymesVar id="sp" type="com.example.webbanson.dto.SanPhamThongTinDTO"-->
+        <div class="col-md-4 text-center d-flex justify-content-center" th:each="dto : ${listSanPham}">
+          <div class="product-card">
+            <!-- Hiển thị ảnh -->
+            <a class="product-link" th:href="@{|/chi-tiet-san-pham?idSanPham=${dto.sanPham.id}|}">
+                <img th:src="${dto.sanPham.anhSanPham}" alt="Product Image" class="product-image">
+            </a>
+
+            <!-- Badge giảm giá nếu có -->
+            <div th:if="${dto.phanTramGiamGia > 0}" class="product-badge"
+                 th:text="'-' + ${dto.phanTramGiamGia} + '%'">
+              ></div>
+
+            <!-- Badge hot -->
+            <div class="hot-badge">HOT</div>
+
+            <!-- Tên sản phẩm -->
+            <a class="product-name" th:href="@{|/chi-tiet-san-pham?idSanPham=${dto.sanPham.id}|}" th:text="${dto.sanPham.ten}"></a>
+
+            <!-- Giá -->
+            <div>
+              <span th:if="${dto.donGia > dto.donGiaGiam}" class="product-old-price" th:text="${dto.donGia} + 'đ'"></span>
+              <span class="product-price" th:text="${dto.donGiaGiam} + 'đ'"></span>
+            </div>
+
+            <!-- Đã bán -->
+            <div class="sold-count mt-1 text-muted">Đã bán [[${dto.tongSoLuongBan}]]+ sản phẩm</div>
+            <div class="add-to-cart-container">
+              <button class="btn add-to-cart-btn">
+                <span>Add to cart</span>
+                <div class="cart-icon">
+                  <i class="bi bi-cart-fill"></i>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!--      Phân trang-->
+      <ul class="pagination justify-content-center" th:if="${maxPage > 1}">
+        <li th:each="pageNum : ${#numbers.sequence(1, maxPage)}"
+            th:class="${pageNum == pageNo} ? 'page-item active' : 'page-item'">
+          <a th:if="${isSearch}" class="page-link"
+             th:href="@{'/search'+'?'+${queryString}+'&pageNo='+${pageNum}}"
+             th:text="${pageNum}"></a>
+          <a th:if="${!isSearch}" class="page-link"
+             th:href="@{'/san-pham?pageNo=' + ${pageNum}}"
+             th:text="${pageNum}"></a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+</body>
+<footer>
+  <section style="background: #f8f9f5; width: 100%;">
+    <th:block th:replace="~{fragments/LienHe :: #LienHe}"></th:block>
+  </section>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+<script src="/js/SanPham.js"></script>
+
+</html>

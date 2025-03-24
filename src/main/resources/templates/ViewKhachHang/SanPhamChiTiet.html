@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trà Hũ Hoa Nhài</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/css/SanPhamKhachHang/ChiTietSanPham.css">
+</head>
+<body>
+<div class="container py-5">
+  <div class="row">
+    <!-- Thumbnails -->
+    <div class="col-md-1 d-none d-md-block">
+      <div class="d-flex flex-column">
+        <img th:each="anh, anhStat : ${listAnhSanPham}"
+             th:src="${anh.tenAnh}"
+             th:alt="'Thumbnail ' + ${anhStat.count}"
+             class="img-fluid product-thumbnail"
+             th:classappend="${anhStat.first} ? 'active' : ''"
+             th:data-bs-slide-to="${anhStat.index}">
+      </div>
+    </div>
+
+    <!-- Main Product Image -->
+    <div class="col-md-5 mb-4 mb-md-0">
+      <div id="productCarousel" class="carousel slide" data-bs-ride="false">
+        <div class="carousel-inner">
+          <div th:each="anh, iterStat : ${listAnhSanPham}"
+               class="carousel-item main-image-container"
+               th:classappend="${iterStat.index == 0} ? 'active'">
+            <img th:src="${anh.tenAnh}" class="d-block w-100 main-image" th:alt="'Anh San Pham ' + ${anh.id}">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Product Information -->
+    <div class="col-md-6">
+        <h1 class="h2 mb-3" th:text="${sanPham.ten}"></h1>
+        <!-- Availability -->
+
+      <!-- Rating -->
+      <div class="mb-3">
+                    <span class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </span>
+        <span class="ms-2 text-muted">(1 customer review)</span>
+      </div>
+
+      <!-- Price -->
+      <div class="price mb-4 d-flex flex-wrap gap-2">
+        <span class="fw-bold don-gia" th:text="${sanPhamChiTiet.donGia} + 'đ'"></span>
+        <span class="fw-bold don-gia-giam" th:text="${sanPhamChiTiet.donGiaGiam} + 'đ'"></span>
+        <span class="fw-bold phan-tram-giam" th:text="${ '-' + sanPhamChiTiet.getPhanTramGiamGia()} + '%'"></span>
+      </div>
+
+      <span class="instock-badge" th:text="${trangThai}"></span>
+
+
+      <div class="color d-flex flex-wrap gap-2">
+        <div class="color-option"
+             th:each="ms : ${listMauSac}"
+             th:style="'background-color:' + ${ms.ma}"
+             th:data-name="${ms.ten}"
+             th:data-code="${ms.ma}"
+             th:classappend="${sanPhamChiTiet.idMauSac.id} == ${ms.id} ? ' active' : ''">
+        </div>
+      </div>
+
+
+      <select id="khoiLuong" name="khoiLuong" class="form-select khoi-luong-select">
+        <option value="" disabled>Chọn khối lượng</option>
+        <option th:each="kl : ${listKhoiLuong}"
+                th:value="${kl.id}"
+                th:text="${kl.ten}"
+                th:selected="${sanPhamChiTiet.idKhoiLuong.id} == ${kl.id}">
+        </option>
+      </select>
+
+
+
+
+
+
+
+
+      <!-- Product Description -->
+      <div class="product-description mb-4">
+        <h5>MÔ TẢ SẢN PHẨM</h5>
+        <p>
+          <i class="fas fa-check feature-check me-2"></i>
+          <strong th:text="${sanPham.ten}"></strong> <i th:text="${sanPham.moTa}"></i>
+        </p>
+      </div>
+
+      <!-- Quantity Selector and Buttons -->
+      <div class="d-flex align-items-center mb-4">
+        <div class="input-group quantity-selector me-3">
+          <button class="btn btn-outline-secondary" type="button">
+            <i class="fas fa-minus"></i>
+          </button>
+          <input type="text" class="form-control text-center" value="1">
+          <button class="btn btn-outline-secondary" type="button">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+
+        <button class="btn btn-outline-secondary me-2">
+          <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/SanPhamChiTiet/SanPhamChiTiet.js">
+</script>
+</body>
+</html>

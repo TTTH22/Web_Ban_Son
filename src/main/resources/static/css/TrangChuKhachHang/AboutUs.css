@@ -1,0 +1,168 @@
+
+
+.tea-section {
+    padding: 60px 0;
+    margin-top: 100px;
+
+}
+.tea-section .carousel-item img {
+    width: 100%;
+    border-radius: 10px;
+}
+.tea-section .carousel-control-prev, .tea-section .carousel-control-next {
+    width: auto;
+    background: #f5f0e1;
+    border-radius: 50%;
+    padding: 10px;
+}
+.tea-section .carousel-caption {
+    background: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    border-radius: 10px;
+}
+.tea-section .btn-custom {
+    background: #a8b179;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Định dạng phần container chính */
+.tea-section {
+    margin-top: 50px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Tiêu đề */
+.tea-section h5 {
+    font-size: 1.2rem;
+}
+
+.tea-section h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Button tùy chỉnh */
+.btn-custom {
+    background-color: #bac9ac; /* Màu trà thảo mộc */
+    color: #2e524a;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background-color: #6a4426;
+}
+
+/* Cấu hình cho carousel */
+#aboutUs {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Điều chỉnh kích thước ảnh trong carousel */
+#aboutUs .carousel-inner .carousel-item img {
+    border-radius: 15px;
+    transition: transform 0.5s ease-in-out;
+}
+
+#aboutUs .carousel-inner{
+    position: relative;
+    z-index: 10;
+}
+
+/* Hiệu ứng zoom nhẹ khi hover */
+#aboutUs .carousel-inner .carousel-item img:hover {
+    transform: scale(1.05);
+}
+
+
+/* Nút điều hướng carousel */
+/* Định dạng nút điều hướng */
+#aboutUs .carousel-control-prev,
+#aboutUs .carousel-control-next {
+    width: 50px; /* Kích thước hình tròn */
+    height: 50px;
+    background-color: white; /* Nền trắng */
+    border-radius: 50%; /* Làm tròn */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.9;
+    transition: all 0.3s ease-in-out;
+    z-index: 1050; /* Đảm bảo nằm trên ảnh */
+}
+
+/* Điều chỉnh vị trí nút */
+#aboutUs .carousel-control-prev {
+    left: -2.5%; /* Đặt sát ảnh */
+}
+
+#aboutUs .carousel-control-next {
+    right: -2.5%; /* Đặt sát ảnh */
+}
+
+/* Hiệu ứng hover */
+#aboutUs .carousel-control-prev:hover,
+#aboutUs .carousel-control-next:hover {
+    opacity: 1;
+}
+
+/* Biểu tượng mũi tên */
+#aboutUs .carousel-control-prev-icon,
+#aboutUs .carousel-control-next-icon {
+    background-color: #8b5e3c; /* Màu trà */
+    border-radius: 50%;
+    padding: 12px; /* Tăng kích thước */
+    width: 5px;
+    height: 5px;
+}
+
+/* Đảm bảo nút không bị che */
+#aboutUs {
+    position: relative;
+    z-index: 100;
+}
+
+#aboutUs .carousel-inner {
+    position: relative;
+    z-index: 10;
+}
+
+/* Đảm bảo nút điều hướng nằm trên ảnh */
+#aboutUs .carousel-control-prev,
+#aboutUs .carousel-control-next {
+    z-index: 1050;
+}
+
+/* Định dạng phần row chứa 3 ảnh */
+#aboutUs .carousel-inner .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Tùy chỉnh hiển thị trên màn hình nhỏ */
+@media (max-width: 768px) {
+    .tea-section h1 {
+        font-size: 1.5rem;
+    }
+
+    .carousel-caption {
+        font-size: 0.9rem;
+    }
+
+    .btn-custom {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}

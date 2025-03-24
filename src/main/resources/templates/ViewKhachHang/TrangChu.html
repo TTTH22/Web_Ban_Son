@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trang chủ</title>
+
+  <!-- Nhúng Bootstrap & CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/HeaderKhachHang.css}">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/AboutUs.css}">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/SanPhamNoiBat.css}">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/ShopNew.css}">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/SanPhamGiamGia.css}">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/QuangCao.css}">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/Blogs.css}">
+  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/LienHe.css}">
+</head>
+<body>
+
+<!-- Nhúng Header -->
+<th:block th:replace="~{fragments/HeaderKhachHang :: header}"></th:block>
+<script>
+  let lastScrollTop = 0;
+  const navbar = document.querySelector('.navbar');
+
+  window.addEventListener('scroll', function() {
+    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    if (scrollTop > lastScrollTop) {
+      // Cuộn xuống -> Ẩn navbar
+      navbar.classList.add('hide');
+    } else {
+      // Cuộn lên -> Hiện navbar
+      navbar.classList.remove('hide');
+
+      // Nếu không phải ở top
+      if (scrollTop > 0) {
+        navbar.classList.add('scrolled'); // Có nền trắng
+      } else {
+        navbar.classList.remove('scrolled'); // Về top -> Trong suốt
+      }
+    }
+
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Fix cho Safari
+  });
+</script>
+
+<!--Nhúng About Us-->
+<th:block th:replace="~{fragments/AboutUs :: aboutUs}"></th:block>
+
+<!--Nhúng Sản phẩm nổi bật-->
+<th:block th:replace="~{fragments/SanPhamNoiBat :: sanPhamNoiBat}"
+          th:with="listTop12SanPhamBanChayTrang1=${listTop12SanPhamBanChayTrang1},
+                   listTop12SanPhamBanChayTrang2=${listTop12SanPhamBanChayTrang2},
+                   listTop12SanPhamBanChayTrang3=${listTop12SanPhamBanChayTrang3}">
+</th:block>
+
+
+<!--Nhúng Video shop new-->
+<th:block th:replace="~{fragments/ShopNew :: shopNew}"></th:block>
+
+<!--Nhúng Sản phẩm giảm giá-->
+<th:block th:replace="~{fragments/SanPhamGiamGia :: sanPhamGiamGia}"
+          th:width="listSanPhamGiamGiaTrang1=${listSanPhamGiamGiaTrang1},
+                   listSanPhamGiamGiaTrang2=${listSanPhamGiamGiaTrang2}">
+</th:block>
+
+<!--Nhúng quảng cáo-->
+<th:block th:replace="~{fragments/QuangCao :: quangCao}"></th:block>
+
+<!--Nhúng quảng cáo-->
+<th:block th:replace="~{fragments/Blogs :: #blogNews}"></th:block>
+
+<!--Nhúng footer-->
+<section style="background: #f8f9f5; width: 100%;">
+  <th:block th:replace="~{fragments/LienHe :: #LienHe}"></th:block>
+</section>
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

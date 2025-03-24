@@ -1,0 +1,86 @@
+<div class="container my-5" th:fragment="sanPhamNoiBat">
+    <div class="row align-items-center justify-content-between">
+        <div class="col-6">
+            <h1 class="mb-4" style="color: #2e524a">Sản phẩm nổi bật</h1>
+        </div>
+        <div class="col-6 d-flex justify-content-end">
+            <!-- Controls ở header -->
+            <button class="btn btn-outline-dark mx-1" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                ←
+            </button>
+            <button class="btn btn-outline-dark mx-1" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                →
+            </button>
+        </div>
+    </div>
+
+    <!-- Carousel -->
+    <div id="productCarousel" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="row">
+                    <!-- @thymesVar id="dto" type="com.example.webbanson.dto.SanPhamThongTinDTO" -->
+                    <div class="col-md-3" th:each="dto : ${listTop12SanPhamBanChayTrang1}">
+                        <!-- Product 1 -->
+                        <div class="product-card">
+                            <!-- Hiển thị ảnh -->
+                            <img th:src="${dto.sanPham.anhSanPham}" alt="Product Image">
+
+                            <!-- Badge giảm giá nếu có -->
+                            <div th:if="${dto.phanTramGiamGia > 0}" class="product-badge"
+                                 th:text="'-' + ${dto.phanTramGiamGia} + '%'">
+                                ></div>
+
+                            <!-- Badge hot -->
+                            <div class="hot-badge">HOT</div>
+
+                            <!-- Tên sản phẩm -->
+                            <div class="product-name" th:text="${dto.sanPham.ten}"></div>
+
+                            <!-- Giá -->
+                            <div>
+                                <span th:if="${dto.donGia > dto.donGiaGiam}" class="product-old-price" th:text="${dto.donGia} + 'đ'"></span>
+                                <span class="product-price" th:text="${dto.donGiaGiam} + 'đ'"></span>
+                            </div>
+
+                            <!-- Đã bán -->
+                            <div class="sold-count mt-1 text-muted">Đã bán [[${dto.tongSoLuongBan}]]+ sản phẩm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="row">
+                    <!-- @thymesVar id="sp" type="com.example.webbanson.dto.SanPhamThongTinDTO" -->
+                    <div class="col-md-3" th:each="dto : ${listTop12SanPhamBanChayTrang2}">
+                        <!-- Product 1 -->
+                        <div class="product-card">
+                            <!-- Hiển thị ảnh -->
+                            <img th:src="${dto.sanPham.anhSanPham}" alt="Product Image">
+
+                            <!-- Badge giảm giá nếu có -->
+                            <div th:if="${dto.phanTramGiamGia > 0}" class="product-badge"
+                                 th:text="'-' + ${dto.phanTramGiamGia} + '%'">
+                                ></div>
+
+                            <!-- Badge hot -->
+                            <div class="hot-badge">HOT</div>
+
+                            <!-- Tên sản phẩm -->
+                            <div class="product-name" th:text="${dto.sanPham.ten}"></div>
+
+                            <!-- Giá -->
+                            <div>
+                                <span th:if="${dto.donGia > dto.donGiaGiam}" class="product-old-price" th:text="${dto.donGia} + 'đ'"></span>
+                                <span class="product-price" th:text="${dto.donGiaGiam} + 'đ'"></span>
+                            </div>
+
+                            <!-- Đã bán -->
+                            <div class="sold-count mt-1 text-muted">Đã bán [[${dto.tongSoLuongBan}]]+ sản phẩm</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

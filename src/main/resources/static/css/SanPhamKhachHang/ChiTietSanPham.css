@@ -1,0 +1,122 @@
+
+.product-thumbnail {
+    cursor: pointer;
+    border: 1px solid #dee2e6;
+    margin-bottom: 10px;
+    transition: all 0.3s;
+}
+.product-thumbnail:hover {
+    opacity: 1.1;
+}
+
+.product-thumbnail.active {
+    border-color: #0d6efd;
+    opacity: 1;
+    transform: scale(1.2);
+    transition: 0.3s ease; /* thêm hiệu ứng mượt */
+}
+
+.main-image-container {
+    position: relative;
+    overflow: hidden;
+}
+.main-image {
+    width: 100%;
+    transition: transform 0.3s ease;
+    transform-origin: center center;
+    cursor: zoom-in;
+}
+/*Price*/
+.price p {
+    margin: 0; /* Loại bỏ margin của các phần tử p */
+    padding: 0 0px; /* Thêm padding bên trái và bên phải */
+    font-size: 1.2em; /* Tăng kích thước chữ */
+}
+
+.don-gia {
+    color: gray; /* Màu xám cho giá gốc */
+    text-decoration: line-through; /* Gạch giữa chữ */
+}
+
+.don-gia-giam {
+    color: #FF5733; /* Màu cho giá giảm */
+    font-weight: bold; /* Đậm hơn */
+}
+
+.phan-tram-giam {
+    color: #FF0000; /* Màu đỏ nổi bật */
+    background-color: #FFEAEA; /* Nền hồng nhạt */
+    padding: 4px 8px; /* Padding cho đẹp */
+    border-radius: 4px; /* Bo góc nhẹ */
+    font-weight: bold;
+    font-size: 14px;
+    margin-left: 30px; /* Khoảng cách với giá */
+    display: inline-block;
+}
+
+
+
+.rating {
+    color: #ffc107;
+}
+
+/*Màu sắc*/
+.color-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    cursor: pointer;
+    transition: transform 0.3s, border-color 0.3s;
+    margin-bottom: 20px;
+}
+
+.color-option:hover {
+    transform: scale(1.1);
+    border-color: #000;
+}
+
+.color-option.active {
+    border-color: #0d6efd;
+    transform: scale(1.2);
+}
+
+/*Khối lượng*/
+.khoi-luong-select {
+    width: 250px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+.khoi-luong-select:focus {
+    outline: none;
+    border-color: #e61a27;
+    box-shadow: 0 0 5px rgba(230, 26, 39, 0.5);
+}
+
+.instock-badge {
+    background-color: #5cb85c;
+    color: white;
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-top: 0px;
+    margin-bottom: 20px;
+}
+.feature-check {
+    color: #5c85d6;
+}
+.product-description {
+    margin-top: 30px;
+}
+.quantity-selector {
+    max-width: 150px;
+}
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+    background-color: rgba(0,0,0,0.3);
+    height: 100%;
+}

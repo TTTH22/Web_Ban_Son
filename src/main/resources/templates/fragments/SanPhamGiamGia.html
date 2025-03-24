@@ -1,0 +1,54 @@
+<div class="container my-5" th:fragment="sanPhamGiamGia">
+  <div class="row align-items-center justify-content-between">
+    <div class="col-6">
+      <h1 class="mb-4" style="color: #2e524a">Sản phẩm giảm giá</h1>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+      <!-- Controls ở header -->
+      <button class="btn btn-outline-dark mx-1" type="button" data-bs-target="#giamGiaCarousel" data-bs-slide="prev">
+        ←
+      </button>
+      <button class="btn btn-outline-dark mx-1" type="button" data-bs-target="#giamGiaCarousel" data-bs-slide="next">
+        →
+      </button>
+    </div>
+  </div>
+
+  <!-- Carousel -->
+  <div id="giamGiaCarousel" class="carousel slide">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="row">
+
+          <!-- @thymesVar id="dto" type="com.example.webbanson.dto.SanPhamThongTinDTO" -->
+          <div class="col-md-3" th:each="dto : ${listSanPhamGiamGiaTrang1}">
+            <div class="product-card">
+              <img th:src="${dto.sanPham.anhSanPham}" alt="Product 1">
+
+              <!-- Badge giảm giá nếu có -->
+              <div th:if="${dto.phanTramGiamGia > 0}"
+                   class="product-badge"
+                   th:text="'-' + ${T(java.lang.Math).round(dto.phanTramGiamGia)} + '%'">
+              </div>
+
+              <!-- Badge hot -->
+              <div class="hot-badge">HOT</div>
+
+              <!-- Tên sản phẩm -->
+              <div class="product-name" th:text="${dto.sanPham.ten}"></div>
+
+              <!-- Giá -->
+              <div>
+                <span th:if="${dto.donGia > dto.donGiaGiam}" class="product-old-price" th:text="${dto.donGia} + 'đ'"></span>
+                <span class="product-price" th:text="${dto.donGiaGiam} + 'đ'"></span>
+              </div>
+
+              <!-- Đã bán -->
+              <div class="sold-count mt-1 text-muted">Đã bán [[${dto.tongSoLuongBan}]]+ sản phẩm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
