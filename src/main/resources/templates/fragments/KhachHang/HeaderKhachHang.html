@@ -1,0 +1,64 @@
+<header th:fragment="header">
+  <!-- Navbar cố định -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand" href="/static">
+        <img src="/img/logo/Logo.png" width="170px" height="170px" alt="Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="/trang-chu">TH!</a></li>
+          <li class="nav-item"><a class="nav-link" href="/san-pham">Sản phẩm</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Về chúng tôi</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Banner Carousel -->
+  <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="10000">
+        <img src="/img/banner/banner1.png" class="d-block w-100" alt="Banner 1">
+        <div class="carousel-caption">
+          <h1>Herbal Tea Gift</h1>
+          <p>Quà Tặng Tinh Tế</p>
+          <button class="shop-now">Đặt Hàng</button>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="10000">
+        <img src="/img/banner/banner4.jpg" class="d-block w-100" alt="Banner 2">
+        <div class="carousel-caption">
+          <h1>Natural Beauty</h1>
+          <p>Trải nghiệm thiên nhiên</p>
+          <button class="shop-now">Khám Phá</button>
+        </div>
+      </div>
+      <div class="carousel-item" data-bs-interval="10000">
+        <img src="/img/banner/banner3.png" class="d-block w-100" alt="Banner 3">
+        <div class="carousel-caption">
+          <h1>Healthy Lifestyle</h1>
+          <p>Sống khỏe mạnh hơn</p>
+          <button class="shop-now">Mua Ngay</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nút điều hướng -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>

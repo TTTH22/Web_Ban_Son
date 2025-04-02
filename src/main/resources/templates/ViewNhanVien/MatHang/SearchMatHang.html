@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Sidebar</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #222E3C;
+            color: white;
+            position: fixed;
+            padding: 20px;
+        }
+        .sidebar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            background: #1B2531;
+            border-radius: 5px;
+        }
+        .sidebar .nav-link {
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #0D6EFD;
+        }
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        .color-circle {
+            width: 30px;  /* Kích thước hình tròn */
+            height: 30px;
+            border-radius: 50%;  /* Biến thành hình tròn */
+            border: 1px solid #ccc;  /* Viền nhẹ để phân biệt */
+        }
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+        }
+
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .btn-primary {
+            background-color: #28a745;
+            color: white;
+            padding: 6px 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
+
+    </div>
+
+    <!-- Nội dung -->
+    <div class="content flex-grow-1">
+        <div class="container d-flex align-items-center justify-content-between py-3">
+            <h2 class="text-primary fw-bold"><i class="bi bi-cart"></i> Mặt hàng</h2>
+            <a class="btn btn-success btn-lg d-flex align-items-center" href="/nhan-vien/mat-hang/view-add">
+                <i class="bi bi-plus-circle me-2"></i> Thêm mặt hàng
+            </a>
+        </div>
+
+        <form action="/nhan-vien/mat-hang/search" method="post" class="bg-white p-3 rounded shadow-sm border">
+            <label class="fw-bold text-primary mb-0">🔍 Tìm kiếm:</label>
+            <div class="row g-3 align-items-end" style="margin-top: 20px">
+                <div class="col-md-4">
+                    <label class="fw-bold">Sản phẩm</label>
+                    <select name="idSanPham" class="form-select border-primary">
+                        <option th:value="null" selected>Lựa chọn sản phẩm</option>
+                        <option th:each="sp : ${listSanPham}" th:value="${sp.id}" th:text="${sp.ten}"
+                                th:selected="${idSanPham != null and sp.id == idSanPham}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="fw-bold">Màu sắc</label>
+                    <select name="idMauSac" class="form-select border-primary">
+                        <option th:value="null" selected>Lựa chọn màu sắc</option>
+                        <option th:each="ms : ${listMauSac}" th:value="${ms.id}" th:text="${ms.ten}"
+                                th:selected="${idMauSac != null and ms.id == idMauSac}">
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="fw-bold">Khối lượng</label>
+                    <select name="idKhoiLuong" class="form-select border-primary">
+                        <option th:value="null" selected>Lựa chọn khối lươợng</option>
+                        <option th:each="kl : ${listKhoiLuong}" th:value="${kl.id}" th:text="${kl.ten}"
+                                th:selected="${idKhoiLuong != null and kl.id == idKhoiLuong}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-1 d-flex justify-content-end">
+                    <button class="btn btn-primary fw-bold px-4">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <p class="mt-2 text-secondary fst-italic">
+            <i class="bi bi-cart"></i> Có tất cả <b class="text-dark" th:text="${size}"></b> nhà mặt hàng
+        </p>
+
+        <div class="" style="margin-top: 100px">
+            <table class="table">
+                <tr>
+                    <th>Mã mặt hàng</th>
+                    <th>Ngày mở bán</th>
+                    <th>Tên sản phẩm</th>
+                    <th>màu sắc</th>
+                    <th>Khối lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Đơn giá giảm</th>
+                    <th>Trạng thái</th>
+                    <th>Hành động</th>
+                </tr>
+                <tr th:each="x : ${listMatHang}">
+                    <td th:text="${x.ma}"></td>
+                    <td th:text="${x.ngayMoBan}"></td>
+                    <td th:text="${x.idSanPham.ten}"></td>
+                    <td th:text="${x.idMauSac.ten}"></td>
+                    <td th:text="${x.idKhoiLuong.ten} + 'g'"></td>
+                    <td th:text="${x.donGia}"></td>
+                    <td th:text="${x.donGiaGiam}"></td>
+                    <td>
+                        <span th:text="${x.trangThai ? 'Còn sử dụng' : 'Hết sử dụng'}"
+                              th:style="${x.trangThai ? 'background-color: green; color: white; padding: 4px 8px; border-radius: 9px;'
+                                                      : 'background-color: red; color: white; padding: 4px 8px; border-radius: 9px;'}">
+                        </span>
+                    </td>
+                    <td>
+                        <a th:href="@{|/nhan-vien/mat-hang/detail/${x.id}|}" class="btn btn-primary"><i class="bi bi-eye"></i> Xem thông tin</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-center mt-3">
+            <nav>
+                <!-- Số trang -->
+                <ul class="pagination justify-content-center" th:if="${max > 1}">
+                    <li th:each="pageNum : ${#numbers.sequence(1, max)}"
+                        th:class="${pageNum == pageNo} ? 'page-item active' : 'page-item'">
+                        <a class="page-link"
+                           th:href="@{/nhan-vien/mat-hang/search(
+                                pageNo=${pageNum},
+                                idSanPham=${idSanPham != null ? idSanPham : null},
+                                idMauSac=${idMauSac != null ? idMauSac : null},
+                                idKhoiLuong=${idKhoiLuong != null ? idKhoiLuong : null}
+                            )}"
+                           th:text="${pageNum}"></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

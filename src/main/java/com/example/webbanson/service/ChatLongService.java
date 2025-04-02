@@ -13,7 +13,7 @@ import java.util.List;
 public class ChatLongService {
     private final ChatLongRepo repo;
 
-    public List<ChatLong> getChatLongByIdSanPhamChiTiet(Integer id) {
-        return repo.getChatLongByIdSanPhamChiTiet(id); //;
-    }
+//    public List<ChatLong> getChatLongByIdSanPhamChiTiet(Integer id) {
+//        return repo.getChatLongByIdSanPhamChiTiet(id); //;
+//    }
 }

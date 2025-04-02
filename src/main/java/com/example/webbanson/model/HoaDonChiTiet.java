@@ -3,6 +3,7 @@ package com.example.webbanson.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 
 @Getter
 @Setter
@@ -25,5 +26,16 @@ public class HoaDonChiTiet {
 
     @Column(name = "donGia")
     private Double donGia;
+
+    public Double getTongTien() {
+        if (soLuong != null && donGia != null) {
+            return soLuong * donGia;
+        }
+        return 0.0;
+    }
+
+    @Column(name = "tenSanPham")
+    @Nationalized
+    private String tenSanPham;
 
 }

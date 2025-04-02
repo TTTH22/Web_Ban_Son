@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<style>
+    body { font-family: Arial, sans-serif; }
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background: #222E3C;
+        color: white;
+        position: fixed;
+        padding: 20px;
+    }
+    .sidebar .logo {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+        background: #1B2531;
+        border-radius: 5px;
+    }
+    .sidebar .nav-link {
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+        background: #0D6EFD;
+    }
+    .sidebar .nav-link i {
+        margin-right: 10px;
+    }
+    .content {
+        margin-left: 270px;
+        padding: 20px;
+    }
+    .btn-group .btn {
+        width: 50%; /* Chia đều 2 nút */
+        height: 50px; /* Đặt chiều cao cố định */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+    }
+
+</style>
+<!-- Sidebar -->
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
+    </div>
+
+</div>
+
+<div class="content d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f8f9fa;">
+    <form id="productForm" action="/nhan-vien/voucher/add" th:object="${voucher}" method="post" class="p-4 bg-white shadow rounded" style="width: 600px;" onsubmit="return validateForm()">
+
+        <h3 class="text-center mb-4 text-primary">Thêm voucher</h3>
+
+        <div class="mb-3" style="margin: 5px 0">
+            <label class="form-label fw-bold">Tên voucher</label>
+            <input type="text" class="form-control border-primary"
+                   th:field="*{ten}"
+                   placeholder="Nhập tên voucher" />
+            <small th:errors="*{ten}" class="text-danger"></small>
+            <small th:text="${tenError}" class="text-danger"></small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">Mô tả</label>
+            <textarea type="text" class="form-control border-primary" th:field="*{moTa}" placeholder="Nhập mô tả voucher" rows="4"></textarea>
+            <small th:errors="*{moTa}" class="text-danger"></small>
+        </div>
+        <div class="mb-3">
+            <label class="form-label fw-bold">Điều kiện</label>
+            <input type="number" class="form-control border-primary"
+                   th:field="*{dieuKien}"
+                   placeholder="Nhập số tiền tối thiểu" />
+            <small th:errors="*{dieuKien}" class="text-danger"></small>
+        </div>
+
+        <!-- Chọn hình thức giảm giá -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Hình thức giảm giá</label>
+            <div class="btn-group w-100">
+                <input type="radio" class="btn-check" th:field="*{hinhThucGiam}" id="giamGiaSanPham" value="1" checked>
+                <label class="btn btn-outline-primary" for="giamGiaSanPham">Giảm giá sản phẩm</label>
+
+                <input type="radio" class="btn-check" th:field="*{hinhThucGiam}" id="giamPhiVanChuyen" value="0">
+                <label class="btn btn-outline-secondary" for="giamPhiVanChuyen">Giảm phí vận chuyển</label>
+            </div>
+        </div>
+
+        <!-- Chọn hình thức giảm giá -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Loại giảm giá</label>
+            <div class="btn-group w-100">
+                <input type="radio" class="btn-check" th:field="*{loaiGiam}" id="giamTrucTiep" value="1" checked>
+                <label class="btn btn-outline-primary" for="giamTrucTiep">Giảm trực tiếp</label>
+
+                <input type="radio" class="btn-check" th:field="*{loaiGiam}" id="giamPhanTram" value="0">
+                <label class="btn btn-outline-secondary" for="giamPhanTram">Giảm theo phần trăm</label>
+            </div>
+        </div>
+
+        <!-- Giá trị giảm trực tiếp -->
+        <div class="mb-3 gia-tri-giam">
+            <label class="form-label fw-bold">Giá trị giảm</label>
+            <input th:field="*{giaTriGiamToiDa}" type="number" class="form-control border-primary"
+                   placeholder="Nhập giá trị giảm trực tiếp" />
+            <small th:errors="*{giaTriGiamToiDa}" class="text-danger"></small>
+            <small th:text="${giaTriGiamToiDaError}" class="text-danger"></small>
+        </div>
+
+        <!-- Phần trăm giảm giá -->
+        <div class="mb-3 phan-tram-giam" style="display: none;">
+            <label class="form-label fw-bold">Phần trăm giảm giá</label>
+            <input th:field="*{giaTriGiam}" type="number" class="form-control border-primary"
+                   placeholder="Nhập phần trăm giảm giá" />
+            <small th:errors="*{giaTriGiam}" class="text-danger"></small>
+        </div>
+
+        <div class="mb-3 gia-tri-giam-toi-da" style="display: none;">
+            <label class="form-label fw-bold">Giá trị giảm tối đa</label>
+            <input th:field="*{giaTriGiamToiDa}" type="number" class="form-control border-primary"
+                   placeholder="Nhập giá trị giảm tối đa" />
+            <small th:errors="*{giaTriGiamToiDa}" class="text-danger"></small>
+            <small th:text="${giaTriGiamToiDaError}" class="text-danger"></small>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const radioButtons = document.querySelectorAll('input[name="loaiGiam"]');
+
+                function updateVisibility() {
+                    const isGiamTrucTiep = document.getElementById("giamTrucTiep").checked;
+
+                    document.querySelector(".gia-tri-giam").style.display = isGiamTrucTiep ? "block" : "none";
+                    document.querySelector(".phan-tram-giam").style.display = isGiamTrucTiep ? "none" : "block";
+                    document.querySelector(".gia-tri-giam-toi-da").style.display = isGiamTrucTiep ? "none" : "block";
+                }
+
+                radioButtons.forEach(button => {
+                    button.addEventListener("change", updateVisibility);
+                });
+
+                updateVisibility(); // Cập nhật khi tải trang
+            });
+        </script>
+
+        <div class="mb-3 position-relative">
+            <label class="form-label fw-bold">Ngày kết thúc</label>
+            <div class="input-group">
+                <input type="date" class="form-control custom-date" th:field="*{ngayKetThuc}"/>
+                <span class="input-group-text">
+                    <i class="bi bi-calendar-date"></i>
+                </span>
+            </div>
+            <small th:errors="*{ngayKetThuc}" class="text-danger"></small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Trạng thái</label>
+            <div class="d-flex gap-3 mt-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:field="*{trangThai}" value="true" checked>
+                    <span class="badge bg-success">Còn sử dụng</span>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:field="*{trangThai}" value="false">
+                    <span class="badge bg-danger">Hết sử dụng</span>
+                </div>
+            </div>
+            <small th:errors="*{trangThai}" class="text-danger"></small>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold">Thêm voucher</button>
+    </form>
+</div>
+<!-- jQuery (Cần thiết cho Bootstrap Toggle) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Toggle JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</html>

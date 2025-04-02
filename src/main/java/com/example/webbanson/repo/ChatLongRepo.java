@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface ChatLongRepo extends JpaRepository<ChatLong, Integer> {
 
-    @Query("select spct.idChatLong from SanPhamChiTiet spct where spct.idSanPham.id = :id")
-    List<ChatLong> getChatLongByIdSanPhamChiTiet(@Param("id") Integer id);
+//    @Query("select idChatLong from SanPhamChiTiet spct where spct.idSanPham.id = :id")
+//    List<ChatLong> getChatLongByIdSanPhamChiTiet(@Param("id") Integer id);
 }

@@ -1,0 +1,75 @@
+<div class="sidebar" th:fragment="headerNhanVien">
+    <div class="logo">Sapo Pro</div>
+    <nav class="nav flex-column">
+        <a href="/home" class="nav-link">
+            <i class="bi bi-house-door"></i> Tổng quan
+        </a>
+        <a class="nav-link" data-bs-toggle="collapse" href="#BanHang" role="button">
+            <i class="bi bi-credit-card"></i> Bán hàng
+            <i class="bi bi-chevron-down float-end"  style="margin-left: 5px"></i>
+        </a>
+        <div class="collapse" id="BanHang"  style="margin-left: 15px">
+            <a href="/nhan-vien/ban-hang" class="nav-link">
+                <i class="bi bi-shop"></i> Bán hàng tại quầy
+            </a>
+            <a href="/nhan-vien/ban-hang-online" class="nav-link">
+                <i class="bi bi-cart"></i> Bán hàng online
+            </a>
+        </div>
+        <!-- Menu Sản phẩm với submenu -->
+        <a class="nav-link" data-bs-toggle="collapse" href="#sanPhamMenu" role="button">
+            <i class="bi bi-box"></i> Sản phẩm
+            <i class="bi bi-chevron-down float-end" style="margin-left: 5px"></i>
+        </a>
+        <div class="collapse" id="sanPhamMenu" >
+            <a href="/nhan-vien/san-pham" class="nav-link ms-3">
+                <i class="bi bi-list-task"></i> Danh sách sản phẩm
+            </a>
+            <a href="/nhan-vien/mau-sac" class="nav-link ms-3">
+                <i class="bi bi-palette"></i> Màu sắc
+            </a>
+            <a href="/nhan-vien/khoi-luong" class="nav-link ms-3">
+                <i class="bi bi-arrows-angle-expand"></i> Khối lượng
+            </a>
+            <a href="/nhan-vien/dong-san-pham" class="nav-link ms-3">
+                <i class="bi bi-box"></i> Dòng sản phẩm
+            </a>
+            <a href="/nhan-vien/nsx" class="nav-link ms-3">
+                <i class="bi bi-buildings"></i> Nhà sản xuất
+            </a>
+        </div>
+        <a class="nav-link" data-bs-toggle="collapse" href="#CTSPMenu" role="button">
+            <i class="bi bi-bag"></i> Mặt hàng
+            <i class="bi bi-chevron-down float-end"  style="margin-left: 5px"></i>
+        </a>
+        <div class="collapse" id="CTSPMenu" style="margin-left: 15px">
+            <a href="/nhan-vien/mat-hang" class="nav-link">
+                <i class="bi bi-cart"></i> Danh sách mặt hàng
+            </a>
+            <a href="/mat-hang" class="nav-link">
+                <i class="bi bi-image"></i> Ảnh mặt hàng
+            </a>
+        </div>
+        <a href="/hoa-don" class="nav-link">
+            <i class="bi bi-receipt"></i> Hóa đơn
+        </a>
+        <a href="/nhan-vien" class="nav-link">
+            <i class="bi bi-person"></i> Nhân viên
+        </a>
+        <a href="/nhan-vien/khach-hang" class="nav-link">
+            <i class="bi bi-people"></i> Khách hàng
+        </a>
+        <a class="nav-link" data-bs-toggle="collapse" href="#VoucherMenu" role="button">
+            <i class="bi bi-gift"></i> Voucher
+            <i class="bi bi-chevron-down float-end"  style="margin-left: 5px"></i>
+        </a>
+        <div class="collapse" id="VoucherMenu" style="margin-left: 15px">
+            <a href="/nhan-vien/voucher" class="nav-link">
+                <i class="bi bi-ticket"></i> Voucher
+            </a>
+            <a href="/nhan-vien/voucher/ap-dung" class="nav-link">
+                <i class="bi bi-tags"></i> Áp dụng voucher
+            </a>
+        </div>
+    </nav>
+</div>

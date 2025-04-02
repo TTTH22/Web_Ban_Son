@@ -14,6 +14,11 @@ import java.util.List;
 
 @Repository
 public interface SanPhamRepo extends JpaRepository<SanPham, Integer> {
+
+    @Query("SELECT sp FROM SanPham sp ORDER BY sp.id DESC")
+    List<SanPham> findSanPhamByIdDesc();
+
+
     //Sản phẩm bán chạy nhất
     @Query("SELECT DISTINCT sp, MIN(spct.donGiaGiam), SUM(spct.soLuongBan) " +
             "FROM SanPham sp " +
@@ -38,6 +43,9 @@ public interface SanPhamRepo extends JpaRepository<SanPham, Integer> {
     List<Object[]> listSanPhamGiamGia(Pageable pageable);
 
     Page<SanPham> findAll(Pageable pageable);
+
+    @Query("SELECT sp FROM SanPham sp ORDER BY sp.id DESC")
+    Page<SanPham> findAllByIdDesc(Pageable pageable);
 
     //Đếm số lượng sản phẩm
     @Query("SELECT count(sp) FROM SanPham sp")
@@ -176,5 +184,20 @@ public interface SanPhamRepo extends JpaRepository<SanPham, Integer> {
                                           Pageable pageable);
 
 
+    @Query(value="select sp from SanPham sp where" +
+            " sp.ten like %:tenSearch% " +
+            "and (sp.idNSX.id = :idNSX or :idNSX is null) " +
+            "and (sp.idDongSanPham.id = :idDongSanPham or :idDongSanPham is null) " ,
+             countQuery = "select count(sp) from SanPham sp where" +
+                    " sp.ten like %:tenSearch% " +
+                    "and (sp.idNSX = :idNSX or :idNSX is null) " +
+                    "and (sp.idDongSanPham = :idDongSanPham or :idDongSanPham is null) ")
+    Page<SanPham> searchSanPham(@Param("tenSearch") String tenSearch,
+                                @Param("idNSX") Integer idNSX,
+                                @Param("idDongSanPham") Integer idDongSanPham,
+                                Pageable pageable);
 
+
+    @Query("SELECT sp FROM SanPham sp WHERE sp.trangThai = true")
+    List<SanPham> getAllConSuDung();
 }

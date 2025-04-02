@@ -1,6 +1,9 @@
 package com.example.webbanson.repo;
 
+import com.example.webbanson.model.Nsx;
+import com.example.webbanson.model.SanPham;
 import com.example.webbanson.model.SanPhamChiTiet;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +24,20 @@ public interface SanPhamChiTietRepo extends JpaRepository<SanPhamChiTiet, Intege
 
     @Query("select spct from SanPhamChiTiet spct where spct.idSanPham.id = :id")
     List<SanPhamChiTiet> findBySanPhamId(@Param("id") Integer id);
+
+    @Query("select spct from SanPhamChiTiet spct order by spct.id desc")
+    Page<SanPhamChiTiet> getAllSanPhamChiTietByIdDesc(Pageable pageable);
+
+    @Query(value="select spct from SanPhamChiTiet spct where" +
+            " (spct.idSanPham.id = :idSanPham or :idSanPham is null) " +
+            "and (spct.idMauSac.id = :idMauSac or :idMauSac is null) " +
+            "and (spct.idKhoiLuong.id = :idKhoiLuong or :idKhoiLuong is null) " ,
+            countQuery = "select COUNT(spct) from SanPhamChiTiet spct where" +
+                    "(spct.idSanPham.id = :idSanPham or :idSanPham is null) " +
+                    "and (spct.idMauSac.id = :idMauSac or :idMauSac is null) " +
+                    "and (spct.idKhoiLuong.id = :idKhoiLuong or :idKhoiLuong is null) ")
+    Page<SanPhamChiTiet> searchSPCT(@Param("idSanPham") Integer idSanPham,
+                                @Param("idMauSac") Integer idMauSac,
+                                @Param("idKhoiLuong") Integer idKhoiLuong,
+                                Pageable pageable);
 }

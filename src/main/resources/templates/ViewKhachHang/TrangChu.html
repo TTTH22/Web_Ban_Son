@@ -20,7 +20,7 @@
 <body>
 
 <!-- Nhúng Header -->
-<th:block th:replace="~{fragments/HeaderKhachHang :: header}"></th:block>
+<th:block th:replace="~{fragments/KhachHang/HeaderKhachHang :: header}"></th:block>
 <script>
   let lastScrollTop = 0;
   const navbar = document.querySelector('.navbar');
@@ -48,10 +48,10 @@
 </script>
 
 <!--Nhúng About Us-->
-<th:block th:replace="~{fragments/AboutUs :: aboutUs}"></th:block>
+<th:block th:replace="~{fragments/KhachHang/AboutUs :: aboutUs}"></th:block>
 
 <!--Nhúng Sản phẩm nổi bật-->
-<th:block th:replace="~{fragments/SanPhamNoiBat :: sanPhamNoiBat}"
+<th:block th:replace="~{fragments/KhachHang/SanPhamNoiBat :: sanPhamNoiBat}"
           th:with="listTop12SanPhamBanChayTrang1=${listTop12SanPhamBanChayTrang1},
                    listTop12SanPhamBanChayTrang2=${listTop12SanPhamBanChayTrang2},
                    listTop12SanPhamBanChayTrang3=${listTop12SanPhamBanChayTrang3}">
@@ -59,23 +59,23 @@
 
 
 <!--Nhúng Video shop new-->
-<th:block th:replace="~{fragments/ShopNew :: shopNew}"></th:block>
+<th:block th:replace="~{fragments/KhachHang/ShopNew :: shopNew}"></th:block>
 
 <!--Nhúng Sản phẩm giảm giá-->
-<th:block th:replace="~{fragments/SanPhamGiamGia :: sanPhamGiamGia}"
+<th:block th:replace="~{fragments/KhachHang/SanPhamGiamGia :: sanPhamGiamGia}"
           th:width="listSanPhamGiamGiaTrang1=${listSanPhamGiamGiaTrang1},
                    listSanPhamGiamGiaTrang2=${listSanPhamGiamGiaTrang2}">
 </th:block>
 
 <!--Nhúng quảng cáo-->
-<th:block th:replace="~{fragments/QuangCao :: quangCao}"></th:block>
+<th:block th:replace="~{fragments/KhachHang/QuangCao :: quangCao}"></th:block>
 
 <!--Nhúng quảng cáo-->
-<th:block th:replace="~{fragments/Blogs :: #blogNews}"></th:block>
+<th:block th:replace="~{fragments/KhachHang/Blogs :: #blogNews}"></th:block>
 
 <!--Nhúng footer-->
 <section style="background: #f8f9f5; width: 100%;">
-  <th:block th:replace="~{fragments/LienHe :: #LienHe}"></th:block>
+  <th:block th:replace="~{fragments/KhachHang/LienHe :: #LienHe}"></th:block>
 </section>
 
 

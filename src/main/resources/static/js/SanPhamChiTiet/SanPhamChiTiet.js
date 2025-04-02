@@ -75,28 +75,6 @@ carousel.addEventListener('mouseleave', function () {
 });
 
 
-// Chọn màu sắc
-// const colorOptions = document.querySelectorAll('.color-option');
-// const selectedInfo = document.getElementById('selected-color-info');
-// const selectedCircle = document.getElementById('selected-color-circle');
-// const selectedName = document.getElementById('selected-color-name');
-// const selectedCode = document.getElementById('selected-color-code');
-//
-// colorOptions.forEach(option => {
-//     option.addEventListener('click', () => {
-//         colorOptions.forEach(opt => opt.classList.remove('active'));
-//         option.classList.add('active');
-//
-//         const colorName = option.getAttribute('data-name');
-//         const colorCode = option.getAttribute('data-code');
-//         const bgColor = option.style.backgroundColor;
-//
-//         selectedInfo.style.display = 'flex';
-//         selectedCircle.style.backgroundColor = bgColor;
-//         selectedName.textContent = colorName;
-//         selectedCode.textContent = `Mã màu: ${colorCode}`;
-//     });
-// });
 
 
 

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<style>
+    body { font-family: Arial, sans-serif; }
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background: #222E3C;
+        color: white;
+        position: fixed;
+        padding: 20px;
+    }
+    .sidebar .logo {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+        background: #1B2531;
+        border-radius: 5px;
+    }
+    .sidebar .nav-link {
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+        background: #0D6EFD;
+    }
+    .sidebar .nav-link i {
+        margin-right: 10px;
+    }
+    .content {
+        margin-left: 270px;
+        padding: 20px;
+    }
+    .color-box {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: middle;
+        border: 1px solid #ccc;
+    }
+</style>
+<!-- Sidebar -->
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
+    </div>
+
+</div>
+
+<div class="content d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f8f9fa;">
+    <form id="productForm" action="/nhan-vien/mau-sac/update" th:object="${mauSac}" method="post" class="p-4 bg-white shadow rounded" style="width: 400px;" onsubmit="return validateForm()">
+
+        <input type="hidden" th:field="*{id}">
+
+        <h3 class="text-center mb-4 text-primary">Sửa màu sắc</h3>
+
+        <div class="mb-3" style="margin: 5px 0">
+            <label class="form-label fw-bold">Tên màu sắc</label>
+            <input type="text" class="form-control border-primary"
+                   th:field="*{ten}"
+                   placeholder="Nhập tên màu sắc" />
+            <small th:errors="*{ten}" class="text-danger"></small>
+            <small th:text="${tenError}" class="text-danger"></small>
+        </div>
+        <div class="mb-3" style="margin: 5px 0">
+            <!-- Input chọn màu -->
+            <input type="color" id="colorPicker" value="#ff0000">
+
+            <!-- Input nhập mã màu (Duy nhất, có name để gửi về Controller) -->
+            <input style="padding: 5px; margin: 5px" type="text" id="colorInput" name="ma" th:value="*{ma}" maxlength="7">
+
+            <!-- Hiển thị màu dạng hình tròn -->
+            <div class="color-box" id="colorDisplay" style="background-color: #ff0000;"></div>
+        </div>
+        <!-- Hiển thị lỗi nếu có -->
+        <small th:text="${maError}" class="text-danger"></small>
+        <script>
+            let colorPicker = document.getElementById("colorPicker");
+            let colorInput = document.getElementById("colorInput");
+            let colorDisplay = document.getElementById("colorDisplay");
+
+            // Cập nhật màu ngay khi trang load
+            window.addEventListener("DOMContentLoaded", function () {
+                let initialColor = colorInput.value || "#ff0000"; // Nếu không có giá trị, dùng mặc định
+                colorPicker.value = initialColor;
+                colorDisplay.style.backgroundColor = initialColor;
+            });
+
+            // Khi chọn màu từ bảng màu
+            colorPicker.addEventListener("input", function () {
+                let selectedColor = this.value;
+                colorInput.value = selectedColor; // Cập nhật ô nhập mã màu
+                colorDisplay.style.backgroundColor = selectedColor; // Cập nhật màu nền
+            });
+
+            // Khi nhập mã màu
+            colorInput.addEventListener("input", function () {
+                let enteredColor = this.value;
+                if (/^#([0-9A-F]{3}){1,2}$/i.test(enteredColor)) { // Kiểm tra mã hợp lệ
+                    colorPicker.value = enteredColor; // Cập nhật bảng màu
+                    colorDisplay.style.backgroundColor = enteredColor; // Cập nhật màu nền
+                }
+            });
+        </script>
+
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Mô tả màu sắc</label>
+            <textarea type="text" class="form-control border-primary" th:field="*{moTa}" placeholder="Nhập mô tả màu sắc" rows="4"></textarea>
+            <small th:errors="*{moTa}" class="text-danger"></small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Trạng thái màu sắc</label>
+            <div class="d-flex gap-3 mt-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:field="*{trangThai}" value="true" checked>
+                    <span class="badge bg-success">Còn sử dụng</span>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:field="*{trangThai}" value="false">
+                    <span class="badge bg-danger">Hết sử dụng</span>
+                </div>
+            </div>
+            <small th:errors="*{trangThai}" class="text-danger"></small>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold">Sửa kích thước</button>
+    </form>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</html>

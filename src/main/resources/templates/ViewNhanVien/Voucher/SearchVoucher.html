@@ -1,0 +1,215 @@
+
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Sidebar</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background: #222E3C;
+      color: white;
+      position: fixed;
+      padding: 20px;
+    }
+    .sidebar .logo {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 10px;
+      text-align: center;
+      background: #1B2531;
+      border-radius: 5px;
+    }
+    .sidebar .nav-link {
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+      background: #0D6EFD;
+    }
+    .sidebar .nav-link i {
+      margin-right: 10px;
+    }
+    .content {
+      margin-left: 270px;
+      padding: 20px;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .table th {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+    }
+
+
+    .table tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .btn-primary {
+      background-color: #28a745;
+      color: white;
+      padding: 6px 12px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #218838;
+    }
+
+    #moTa{
+      max-width:20% !important
+    }
+
+
+  </style>
+</head>
+<body>
+
+<div class="d-flex">
+  <!-- Sidebar -->
+  <div class="d-flex">
+    <!-- Sidebar -->
+    <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
+
+  </div>
+
+  <!-- Nội dung -->
+  <div class="content flex-grow-1">
+    <div class="container d-flex align-items-center justify-content-between py-3">
+      <h2 class="text-primary fw-bold"><i class="bi bi-ticket"></i> Voucher</h2>
+      <a class="btn btn-success btn-lg d-flex align-items-center" href="/nhan-vien/voucher/view-add">
+        <i class="bi bi-plus-circle me-2"></i> Thêm nsx
+      </a>
+    </div>
+
+    <form action="/nhan-vien/voucher/search" method="post" class="bg-white p-3 rounded shadow-sm border">
+      <label class="fw-bold text-primary mb-0">🔍 Tìm kiếm:</label>
+
+      <div class="row g-3 align-items-end" style="margin-top: 20px">
+        <div class="col-md-3">
+          <label class="fw-bold">Tên voucher</label>
+          <input type="text" name="tenSearch" th:value="${tenSearch}" class="form-control w-40 border-primary" placeholder="Nhập tên voucher...">
+        </div>
+
+        <div class="col-md-3">
+          <label class="fw-bold">Hình thức</label>
+          <select name="hinhThucSearch" class="form-select border-primary">
+            <option th:selected="${hinhThucSearch == 1}" value="1" selected >Tất cả</option>
+            <option th:selected="${hinhThucSearch == 2}" value="2">Giảm giá sản phẩm</option>
+            <option th:selected="${hinhThucSearch == 3}" value="3">Giảm phí vận chuyển</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label class="fw-bold">Loại giảm giá</label>
+          <select name="loaiGiamSearch" class="form-select border-primary">
+            <option th:selected="${loaiGiamSearch == 1}" value="1" selected >Tất cả</option>
+            <option th:selected="${loaiGiamSearch == 2}" value="2">Giảm trực tiếp</option>
+            <option th:selected="${loaiGiamSearch == 3}" value="3">Giảm theo % giá trị mua</option>
+          </select>
+        </div>
+
+        <div class="col-md-2">
+          <label class="fw-bold">Trạng thái</label>
+          <select name="trangThaiSearch" class="form-select border-primary">
+            <option th:selected="${trangThaiSearch == 1}" value="1" selected >Tất cả</option>
+            <option th:selected="${trangThaiSearch == 2}" value="2">Còn sử dụng</option>
+            <option th:selected="${trangThaiSearch == 3}" value="3">Hết sử dụng</option>
+          </select>
+        </div>
+
+        <!-- Nút tìm kiếm -->
+        <div class="col-md-1 d-flex justify-content-end">
+          <button class="btn btn-primary fw-bold px-4">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <p class="mt-2 text-secondary fst-italic">
+      <i class="bi bi-ticket"></i> Có tất cả <b class="text-dark" th:text="${size}"></b> voucher
+    </p>
+
+    <div class="" style="margin-top: 100px">
+      <table class="table">
+        <tr>
+          <th>Mã</th>
+          <th>Tên</th>
+          <th>Hình thức</th>
+          <th>Điều kiện</th>
+          <th>Loại giảm</th>
+          <th>Giá trị giảm</th>
+          <th>Giảm tôi đa</th>
+          <th>Ngày bắt đầu</th>
+          <th>Ngày kết thúc</th>
+          <th>Trạng thái</th>
+          <th>Hành động</th>
+        </tr>
+        <tr th:each="x : ${listVoucher}">
+          <td th:text="${x.ma}"></td>
+          <td th:text="${x.ten}"></td>
+          <td th:text="${x.hinhThucGiam ? 'Giảm giá sản phẩm' : 'Giảm phí vận chuyển'}"></td>
+          <td th:text="${x.dieuKien}"></td>
+          <td th:text="${x.loaiGiam ? 'Giảm trực tiếp' : 'Giảm theo %'}"></td>
+          <td th:text="${x.giaTriGiam != null ? x.giaTriGiam + '%' : '0%'}"></td>
+          <td th:text="${x.giaTriGiamToiDa}"></td>
+          <td th:text="${x.ngayBatDau}"></td>
+          <td th:text="${x.ngayKetThuc}"></td>
+          <td>
+              <span th:text="${x.trangThai ? 'Còn sử dụng' : 'Hết sử dụng'}"
+                    th:style="${x.trangThai ? 'background-color: green; color: white; padding: 4px 8px; border-radius: 9px;'
+                                            : 'background-color: red; color: white; padding: 4px 8px; border-radius: 9px;'}">
+              </span>
+          </td>
+          <td>
+            <a th:href="@{|/nhan-vien/voucher/detail/${x.id}|}" class="btn btn-primary"><i class="bi bi-eye"></i> Xem thông tin</a>
+            <a th:href="@{|/nhan-vien/voucher/vo-hieu/${x.id}|}" class="btn btn-danger"><i class="bi bi-lock"></i> Vô hiệu</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="d-flex justify-content-center mt-3">
+      <nav>
+        <!-- Số trang -->
+        <ul class="pagination justify-content-center" th:if="${max > 1}">
+          <li th:each="pageNum : ${#numbers.sequence(1, max)}"
+              th:class="${pageNum == pageNo} ? 'page-item active' : 'page-item'">
+            <a class="page-link"
+               th:href="@{'/nhan-vien/voucher/search?pageNo=' + ${pageNum} + '&tenSearch=' + ${tenSearch} + '&trangThaiSearch=' + ${trangThaiSearch}
+                + '&hinhThucSearch=' + ${hinhThucSearch} + '&loaiGiamSearch=' + ${loaiGiamSearch}}"
+               th:text="${pageNum}"></a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+  </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

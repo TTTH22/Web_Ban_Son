@@ -8,6 +8,7 @@ import org.hibernate.annotations.Nationalized;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -33,6 +34,10 @@ public class HoaDon {
     @JoinColumn(name = "idVoucher")
     private Voucher idVoucher;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idVoucherPhiVanChuyen")
+    private Voucher idVoucherPhiVanChuyen;
+
     @Column(name = "ngayTao")
     private LocalDate ngayTao;
 
@@ -49,10 +54,8 @@ public class HoaDon {
     @Column(name = "loaiThanhToan", length = 50)
     private String loaiThanhToan;
 
-    @Size(max = 50)
-    @Nationalized
-    @Column(name = "loaiVanChuyen", length = 50)
-    private String loaiVanChuyen;
+    @Column(name = "hinhThuc")
+    private Boolean hinhThuc;
 
     @Size(max = 50)
     @Nationalized
@@ -62,4 +65,9 @@ public class HoaDon {
     @Column(name = "trangThai")
     private Boolean trangThai;
 
+    @Column(name = "xacNhan")
+    private Boolean xacNhan;
+
+    @OneToMany(mappedBy = "idHoaDon")
+    private List<HoaDonChiTiet> listHoaDonChiTiet;
 }

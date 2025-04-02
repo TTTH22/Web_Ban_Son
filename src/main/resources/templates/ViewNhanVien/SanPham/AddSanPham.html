@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+</head>
+<body>
+<style>
+    body { font-family: Arial, sans-serif; }
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        background: #222E3C;
+        color: white;
+        position: fixed;
+        padding: 20px;
+    }
+    .sidebar .logo {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 10px;
+        text-align: center;
+        background: #1B2531;
+        border-radius: 5px;
+    }
+    .sidebar .nav-link {
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+        background: #0D6EFD;
+    }
+    .sidebar .nav-link i {
+        margin-right: 10px;
+    }
+    .content {
+        margin-left: 270px;
+        padding: 20px;
+    }
+
+    #productForm {
+        width: 700px !important; /* Đảm bảo chiều rộng form */
+        max-width: 100%;
+    }
+
+</style>
+<!-- Sidebar -->
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="d-flex">
+        <!-- Sidebar -->
+        <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
+
+    </div>
+
+</div>
+
+<div class="content d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #f8f9fa;">
+    <form id="productForm" action="/nhan-vien/san-pham/add" method="post" enctype="multipart/form-data" th:object="${sanPham}" class="p-4 bg-white shadow rounded" style="width: 400px;" onsubmit="return validateForm()">
+
+        <h3 class="text-center mb-4 text-primary">Thêm Sản Phẩm</h3>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Tên sản phẩm</label>
+            <input type="text" class="form-control border-primary" th:field="*{ten}" placeholder="Nhập tên sản phẩm"  />
+            <small th:errors="*{ten}" class="text-danger"></small>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Mô tả</label>
+            <textarea class="form-control border-primary" th:field="*{moTa}"
+                      placeholder="Nhập mô tả sản phẩm" rows="4"></textarea>
+            <small th:errors="*{moTa}" class="text-danger"></small>
+        </div>
+        <!-- Phần cập nhật ảnh -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">Ảnh sản phẩm</label>
+            <input type="file" class="form-control border-primary" name="file" accept="image/*" onchange="previewImage(event)" />
+            <small class="text-danger" th:text="${errorAnh}"></small>
+
+            <!-- Hiển thị ảnh xem trước -->
+            <div class="mt-2">
+                <img id="imagePreview" src="" alt="Ảnh sản phẩm" class="img-thumbnail" style="max-width: 200px; display: none;" />
+                <button type="button" class="btn btn-danger btn-sm mt-2" onclick="removeImage()" id="removeImageBtn" style="display: none;">Bỏ ảnh</button>
+            </div>
+        </div>
+        <script>
+            function previewImage(event) {
+                const file = event.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const preview = document.getElementById("imagePreview");
+                    preview.src = reader.result;
+                    preview.style.display = "block";
+
+                    const removeBtn = document.getElementById("removeImageBtn");
+                    removeBtn.style.display = "inline-block";
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function removeImage() {
+                document.querySelector('input[name="file"]').value = ""; // Xóa file đã chọn
+                document.getElementById("imagePreview").style.display = "none"; // Ẩn ảnh xem trước
+                document.getElementById("removeImageBtn").style.display = "none"; // Ẩn nút bỏ ảnh
+            }
+        </script>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Nhà sản xuất</label>
+            <select th:field="*{idNSX}" class="form-select border-primary">
+                <option th:each="nsx : ${listNSX}"
+                        th:value="${nsx.id}"
+                        th:text="${nsx.ten}">
+                ></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Dòng sản phẩm</label>
+            <select th:field="*{idDongSanPham}" class="form-select border-primary">
+                <option th:each="dsp : ${listDongSanPham}"
+                        th:value="${dsp.id}"
+                        th:text="${dsp.ten}">
+                ></option>
+            </select>
+        </div>
+
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">Trạng thái sản phẩm</label>
+            <div class="d-flex gap-3 mt-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:field="*{trangThai}" value="true" checked>
+                    <span class="badge bg-success">Còn hàng</span>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" th:field="*{trangThai}" value="false">
+                    <span class="badge bg-danger">Hết hàng</span>
+                </div>
+            </div>
+            <small th:errors="*{trangThai}" class="text-danger"></small>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 fw-bold">Thêm sản phẩm</button>
+    </form>
+</div>
+
+<!--<script>-->
+<!--    function validateForm() {-->
+<!--        let maSP = document.getElementById("maSP").value.trim();-->
+<!--        let tenSP = document.getElementById("tenSP").value.trim();-->
+<!--        let maError = document.getElementById("maError");-->
+<!--        let tenError = document.getElementById("tenError");-->
+
+<!--        // Reset lỗi-->
+<!--        maError.innerText = "";-->
+<!--        tenError.innerText = "";-->
+
+<!--        let isValid = true;-->
+
+<!--        // Kiểm tra rỗng-->
+<!--        if (maSP === "") {-->
+<!--            maError.innerText = "Mã sản phẩm không được để trống!";-->
+<!--            isValid = false;-->
+<!--        }-->
+<!--        if (tenSP === "") {-->
+<!--            tenError.innerText = "Tên sản phẩm không được để trống!";-->
+<!--            isValid = false;-->
+<!--        }-->
+
+<!--        // Kiểm tra mã sản phẩm đã tồn tại-->
+<!--        let isDuplicate = listSanPham.some(sp => sp.ma === maSP);-->
+<!--        if (isDuplicate) {-->
+<!--            maError.innerText = "Mã sản phẩm đã tồn tại!";-->
+<!--            isValid = false;-->
+<!--        }-->
+
+<!--        return isValid;-->
+<!--    }-->
+<!--</script>-->
+
+
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</html>

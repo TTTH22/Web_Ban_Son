@@ -24,6 +24,18 @@ public class SanPhamService {
         return repo.findAll();
     }
 
+    public List<SanPham> getAllConSuDung() {
+        return repo.getAllConSuDung();
+    }
+
+    public List<SanPham> getAllDesc() {
+        return repo.findSanPhamByIdDesc();
+    }
+
+    public Page<SanPham> getAllPageSanPham(Pageable pageable) {
+        return repo.findAllByIdDesc(pageable);
+    }
+
     public Page<SanPhamThongTinDTO> getAllPage(Pageable pageable) {
         List<Object[]> result = repo.listSanPham(pageable);
         List<SanPhamThongTinDTO> dtoList = new ArrayList<>();
@@ -195,4 +207,24 @@ public class SanPhamService {
         return repo.findById(id).get();
     }
 
+    public Page<SanPham> searchSanPham( String tenSearch ,Integer idNSX, Integer idDongSanPham, Pageable pageable) {
+        return repo.searchSanPham(tenSearch ,idNSX, idDongSanPham, pageable);
+    }
+
+    public Long conntSearchSanPham( String tenSearch ,Integer idNSX, Integer idDongSanPham, Pageable pageable) {
+        Page<SanPham> pageResult = repo.searchSanPham(tenSearch ,idNSX, idDongSanPham, pageable);
+        return pageResult.getTotalElements();
+    }
+
+    public void add(SanPham sanPham) {
+        repo.save(sanPham);
+    }
+    
+    public SanPham getOneSanPhamById(Integer id) {
+        return repo.findById(id).get();
+    }
+
+    public void update(SanPham sanPham) {
+        repo.save(sanPham);
+    }
 }
