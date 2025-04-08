@@ -1,64 +1,166 @@
-<header th:fragment="header">
-  <!-- Navbar cố định -->
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container">
-      <a class="navbar-brand" href="/static">
-        <img src="/img/logo/Logo.png" width="170px" height="170px" alt="Logo">
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="/trang-chu">TH!</a></li>
-          <li class="nav-item"><a class="nav-link" href="/san-pham">Sản phẩm</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Về chúng tôi</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<header th:fragment="header(checkLogin, listGioHang, sizeGioHang, khachHang)">
+    <!-- Navbar cố định -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/static">
+                <img src="/img/logo/Logo.png" width="170px" height="170px" alt="Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/trang-chu">TH!</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/san-pham">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Về chúng tôi</a></li>
 
-  <!-- Banner Carousel -->
-  <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-      <div class="carousel-item active" data-bs-interval="10000">
-        <img src="/img/banner/banner1.png" class="d-block w-100" alt="Banner 1">
-        <div class="carousel-caption">
-          <h1>Herbal Tea Gift</h1>
-          <p>Quà Tặng Tinh Tế</p>
-          <button class="shop-now">Đặt Hàng</button>
-        </div>
-      </div>
-      <div class="carousel-item" data-bs-interval="10000">
-        <img src="/img/banner/banner4.jpg" class="d-block w-100" alt="Banner 2">
-        <div class="carousel-caption">
-          <h1>Natural Beauty</h1>
-          <p>Trải nghiệm thiên nhiên</p>
-          <button class="shop-now">Khám Phá</button>
-        </div>
-      </div>
-      <div class="carousel-item" data-bs-interval="10000">
-        <img src="/img/banner/banner3.png" class="d-block w-100" alt="Banner 3">
-        <div class="carousel-caption">
-          <h1>Healthy Lifestyle</h1>
-          <p>Sống khỏe mạnh hơn</p>
-          <button class="shop-now">Mua Ngay</button>
-        </div>
-      </div>
-    </div>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" id="ShoppingCart" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge bg-danger" id="cart-count" th:text="${sizeGioHang}"></span>
+                        </a>
+                        <ul th:if="${checkLogin == true}" class="dropdown-menu dropdown-menu-end cart-dropdown p-3"
+                            aria-labelledby="ShoppingCart" id="cartDropdown" style="width: 500px;">
+                            <li th:if="${sizeGioHang == 0}" class="dropdown-item text-center">Giỏ hàng trống</li>
 
-    <!-- Nút điều hướng -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    </button>
-  </div>
+                            <li th:each="gioHang : ${listGioHang}"
+                                th:attrappend=" data-max=${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}"
+                                th:id="'cart-item-' + ${gioHang.id}"
+                                class="dropdown-item">
+                                <input type="hidden" id="sanPham" th:value="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.id}">
+                                <input type="hidden" id="idGioHang" th:value="${gioHang.gioHangChiTiet.idGioHang.id}">
+                                <div class="cart-item-info d-flex">
+                                    <img th:src="@{${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.anhSanPham}}"
+                                         width="100" height="100" class="rounded me-2">
+                                    <div class="flex-grow-1">
+                                        <input type="hidden" id="idChiTietGioHang" th:value="${gioHang.gioHangChiTiet.id}">
+                                        <h4 class="fw-bold" th:text="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.ten}"></h4>
+
+                                        <!-- Dropdown chọn màu sắc -->
+                                        <div class="form-group mt-1">
+                                            <select class="form-select form-select-sm" id="mauSac"
+                                                    onchange="updateMauSac()">
+                                                <option th:each="mau : ${gioHang.listMauSac}" th:value="${mau.id}"
+                                                        th:text="${mau.ten}"
+                                                        th:selected="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idMauSac.id == mau.id}"></option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Dropdown chọn khối lượng -->
+                                        <div class="form-group mt-1">
+                                            <select class="form-select form-select-sm" id="khoiLuong"
+                                                    onchange="updateKhoiLuong()">
+                                                <option th:each="khoiLuong : ${gioHang.listKhoiLuong}"
+                                                        th:value="${khoiLuong.id}" th:text="${khoiLuong.ten} + 'g'"
+                                                        th:selected="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idKhoiLuong.id == khoiLuong.id}"></option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Giá và nút chỉnh số lượng -->
+                                        <div class="d-flex align-items-center justify-content-between mt-2">
+                                            <small style="color: red" id="donGia" th:text="${gioHang.gioHangChiTiet.donGia} + 'đ'"></small>
+
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                        th:onclick="'updateQuantity(' + ${gioHang.id} + ', -1)'">-</button>
+                                                <input type="hidden" id="soLuongSanPham"
+                                                       th:value="${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}"
+                                                       th:attr="data-max=${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}">
+                                                <span class="mx-2 quantity" th:text="${gioHang.gioHangChiTiet.soLuong}"></span>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                        th:onclick="'updateQuantity(' + ${gioHang.id} + ', 1)'">+</button>
+                                            </div>
+                                            <div class="text-end mt-2">
+                                                <button class="btn btn-sm btn-danger"
+                                                        th:onclick="'removeFromCart(' + ${gioHang.id} + ')'">Xóa</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Tổng tiền và nút thanh toán -->
+                            <li class="dropdown-item d-flex flex-column align-items-center">
+                                <div class="fw-bold mb-2">
+                                    Tổng tiền:
+                                    <span id="tongTien"></span>
+                                </div>
+                                <a href="/checkout" class="btn btn-primary btn-sm w-100">Thanh toán</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Thông tin người dùng -->
+                    <li th:if="${checkLogin}" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/tai-khoan">Thông tin tài khoản</a></li>
+                            <li><a class="dropdown-item" th:href="@{|/don-hang/${khachHang.id}|}">Đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="/dang-xuat">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                    <li th:if="${checkLogin == false}" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdownFalse" role="button"
+                           data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdownFalse">
+                            <li><a class="dropdown-item" href="/login">Đăng nhập</a></li>
+                            <li><a class="dropdown-item" href="/login">Đăng ký</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Banner Carousel -->
+    <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                    aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                    aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
+                    aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+                <img src="/img/banner/banner1.png" class="d-block w-100" alt="Banner 1">
+                <div class="carousel-caption">
+                    <h1>Herbal Tea Gift</h1>
+                    <p>Quà Tặng Tinh Tế</p>
+                    <button class="shop-now">Đặt Hàng</button>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="10000">
+                <img src="/img/banner/banner4.jpg" class="d-block w-100" alt="Banner 2">
+                <div class="carousel-caption">
+                    <h1>Natural Beauty</h1>
+                    <p>Trải nghiệm thiên nhiên</p>
+                    <button class="shop-now">Khám Phá</button>
+                </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="10000">
+                <img src="/img/banner/banner3.png" class="d-block w-100" alt="Banner 3">
+                <div class="carousel-caption">
+                    <h1>Healthy Lifestyle</h1>
+                    <p>Sống khỏe mạnh hơn</p>
+                    <button class="shop-now">Mua Ngay</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút điều hướng -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+    </div>
 </header>

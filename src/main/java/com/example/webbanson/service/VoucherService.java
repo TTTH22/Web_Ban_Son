@@ -20,6 +20,14 @@ public class VoucherService {
         return repo.findAll();
     }
 
+    public List<Voucher> listVocherSanPham(Integer idKhachHang){
+        return repo.listVocherSanPham( idKhachHang);
+    }
+
+    public List<Voucher> listVocherVanChuyen(Integer idKhachHang){
+        return repo.listVocherVanChuyen( idKhachHang);
+    }
+
     public Page<Voucher> findAllIdDesc(Pageable pageable){
         return repo.findAllIdDesc(pageable);
     }

@@ -1,232 +1,593 @@
-
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Menu Sidebar</title>
-  <style>
-    body { font-family: Arial, sans-serif; }
-    .sidebar {
-      width: 250px;
-      height: 100vh;
-      background: #222E3C;
-      color: white;
-      position: fixed;
-      padding: 20px;
-    }
-    .sidebar .logo {
-      font-size: 20px;
-      font-weight: bold;
-      padding: 10px;
-      text-align: center;
-      background: #1B2531;
-      border-radius: 5px;
-    }
-    .sidebar .nav-link {
-      color: white;
-      padding: 10px;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      text-decoration: none;
-    }
-    .sidebar .nav-link:hover, .sidebar .nav-link.active {
-      background: #0D6EFD;
-    }
-    .sidebar .nav-link i {
-      margin-right: 10px;
-    }
-    .content {
-      margin-left: 270px;
-      padding: 20px;
-    }
-    .color-circle {
-      width: 30px;  /* Kích thước hình tròn */
-      height: 30px;
-      border-radius: 50%;  /* Biến thành hình tròn */
-      border: 1px solid #ccc;  /* Viền nhẹ để phân biệt */
-    }
-    .table tr:hover {
-      background-color: #f1f1f1;
-    }
-    .table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Đơn Hàng</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .status-step {
+            position: relative;
+            padding-bottom: 20px;
+            flex: 1;
+        }
 
-    .table th, .table td {
-      padding: 12px 15px;
-      text-align: left;
+        .status-step.active .status-icon {
+            background-color: #0d6efd;
+            color: white;
+        }
 
-      border-bottom: 1px solid #ddd;
-      vertical-align: middle; /* Căn giữa theo chiều dọc */
-    }
+        .status-step.completed .status-icon {
+            background-color: #198754;
+            color: white;
+        }
 
-    #diaChi {
-      width: 30%; /* Mỗi ô chiếm 12.5% chiều rộng bảng */
-      padding: 12px 15px;
-      text-align: left;
+        .status-step:not(:last-child):after {
+            content: '';
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            height: 3px;
+            width: 100%;
+            background-color: #dee2e6;
+            z-index: 1;
+        }
 
-      border-bottom: 1px solid #ddd;
-      vertical-align: middle; /* Căn giữa theo chiều dọc */
-    }
+        .status-step.completed:after {
+            background-color: #198754;
+        }
 
-    .table th {
-      background-color: #007bff;
-      color: white;
-      font-weight: bold;
-    }
+        .status-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            border: 2px solid #dee2e6;
+            position: relative;
+            z-index: 2;
+        }
 
+        .status-text {
+            font-size: 0.75rem;
+            text-align: center;
+        }
 
-    .table tr:hover {
-      background-color: #f1f1f1;
-    }
+        .order-tabs {
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
 
-    .btn-primary {
-      background-color: #28a745;
-      color: white;
-      padding: 6px 12px;
-      text-decoration: none;
-      border-radius: 5px;
-      transition: background 0.3s ease;
-    }
+        .order-tabs .nav-link {
+            border: none;
+            color: #6c757d;
+            padding: 0.75rem;
+            font-size: 0.9rem;
+        }
 
-    .btn-primary:hover {
-      background-color: #218838;
-    }
+        .order-tabs .nav-link.active {
+            background-color: #0d6efd;
+            color: white;
+        }
 
-  </style>
+        .order-card {
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+
+        .overflow-scroll {
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .status-text {
+                font-size: 0.7rem;
+            }
+
+            .status-icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<div class="d-flex">
-  <!-- Sidebar -->
-  <div class="d-flex">
-    <!-- Sidebar -->
-    <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
-
-  </div>
-
-  <!-- Nội dung -->
-  <div class="content flex-grow-1">
-    <div class="container d-flex align-items-center justify-content-between py-3">
-      <h2 class="text-primary fw-bold"><i class="bi bi-cart"></i> Bán hàng online</h2>
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Quản Lý Đơn Hàng</h2>
     </div>
 
-    <form action="/nhan-vien/dong-san-pham/search" method="post" class="d-flex align-items-center gap-3 bg-white p-3 rounded shadow-sm border">
-      <label class="fw-bold text-primary mb-0">🔍 Tìm kiếm:</label>
-
-      <input type="text" name="tenSearch" class="form-control w-25 border-primary" placeholder="Nhập tên dòng sản phẩm...">
-
-      <select name="trangThaiSearch" class="form-select w-25 border-primary">
-        <option value="1">Tất cả</option>
-        <option value="2">Còn sử dụng</option>
-        <option value="3">Hết sử dụng</option>
-      </select>
-
-      <button class="btn btn-primary fw-bold px-3">
-        <i class="bi bi-search"></i> Tìm kiếm
-      </button>
-    </form>
-
-    <p class="mt-2 text-secondary fst-italic">
-      <i class="bi bi-cart"></i> Có tất cả <b class="text-dark" th:text="${size}"></b> hóa đơn
-    </p>
-
-    <div class="" style="margin-top: 100px">
-      <table class="table">
-        <tr>
-          <th>Mã</th>
-          <th>Tên khách hàng</th>
-          <th>Ngày tạo</th>
-          <th>Loại thanh toán</th>
-          <th>Xác nhận</th>
-          <th>Trạng thái</th>
-          <th>Hành động</th>
-        </tr>
-        <tr th:each="x : ${listHoaDon}">
-          <td th:text="${x.ma}"></td>
-          <td id="diaChi">
-            <span th:if="${x.idKhachHang != null}">
-                <b>Tên Khách Hàng:</b> <span th:each="dc : ${listDiaChi}" th:if="${dc.idKhachHang.id == x.idKhachHang.id && dc.trangThai == true}">
-                <span th:text="${dc.tenNguoiNhan}"></span>
-            </span><br>
-                <b>SĐT:</b> <span th:text="${x.idKhachHang.sdt}"></span> <br>
-                <b>Địa chỉ:</b> <span th:each="dc : ${listDiaChi}" th:if="${dc.idKhachHang.id == x.idKhachHang.id && dc.trangThai == true}">
-                    <span th:text="${dc.diaChiCuThe + ', ' + dc.xa + ', ' + dc.huyen + ', ' + dc.thanhPho}"></span>
-                </span>
-            </span>
-            <span th:if="${x.idKhachHang == null}">Khách Lẻ</span>
-          </td>
-
-          <td th:text="${x.ngayTao}"></td>
-          <td th:text="${x.loaiThanhToan}"></td>
-          <td>
-              <span th:text="${x.xacNhan ? 'Đã xác nhận' : 'Chưa xác nhận'}"
-                    th:style="${x.xacNhan ? 'background-color: green; color: white; padding: 4px 8px; border-radius: 9px;'
-                                            : 'background-color: red; color: white; padding: 4px 8px; border-radius: 9px;'}">
-              </span>
-          </td>
-          <td>
-              <span th:text="${x.trangThai ? 'Đã hoàn thành' : 'Chưa hoàn thành'}"
-                    th:style="${x.trangThai ? 'background-color: green; color: white; padding: 4px 8px; border-radius: 9px;'
-                                            : 'background-color: red; color: white; padding: 4px 8px; border-radius: 9px;'}">
-              </span>
-          </td>
-          <td>
-            <a th:href="@{|/nhan-vien/ban-hang-online/xac-nhan/${x.id}|}" class="btn btn-primary">
-              <i class="bi bi-check-circle"></i> Xác nhận
+    <!-- Tab Navigation -->
+    <ul class="nav nav-pills mb-4">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="pill" href="#waiting">
+                <i class="bi bi-hourglass-split me-1"></i>Chờ xác nhận
+                <span class="badge bg-primary rounded-pill ms-1" th:text="${listChoXacNhan.size()}"></span>
             </a>
-            <a th:href="@{|/nhan-vien/ban-hang-online/detail/${x.id}|}" class="btn btn-primary"><i class="bi bi-eye"></i> Xem thông tin</a>
-          </td>
-        </tr>
-      </table>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#shipping">
+                <i class="bi bi-truck me-1"></i>Đang giao
+                <span class="badge bg-primary rounded-pill ms-1" th:text="${listDangGiao.size()}"></span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#delivered">
+                <i class="bi bi-check-circle me-1"></i>Đã giao
+                <span class="badge bg-primary rounded-pill ms-1" th:text="${listDaGiao.size()}"></span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#waiting-cancel">
+                <i class="bi bi-clock-history me-1"></i>Chờ xác nhận hoàn hàng
+                <span class="badge bg-primary rounded-pill ms-1" th:text="${listChoHoan.size()}"></span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#cancel">
+                <i class="bi bi-clock-history me-1"></i>Đã hoàn hàng
+                <span class="badge bg-primary rounded-pill ms-1" th:text="${listDaHoan.size()}"></span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#canceled">
+                <i class="bi bi-x-circle me-1"></i>Đã hủy
+                <span class="badge bg-primary rounded-pill ms-1" th:text="${listDaHuy.size()}"></span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <!-- Chờ xác nhận Tab -->
+        <div class="tab-pane fade show active" id="waiting">
+            <!-- Order Card 1 -->
+            <div class="card order-card" th:each="hd : ${listChoXacNhan}">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0" th:text="'Đơn hàng ' + ${hd.ma}"></h5>
+                        <small class="text-muted" th:text="'Ngày đặt: ' + ${hd.ngayTao}"></small>
+                    </div>
+                    <div>
+                        <span class="badge bg-danger">Chờ xác nhận</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Khách hàng:</strong>
+                            <p th:text="${hd.idDiaChi.tenNguoiNhan}"></p></p>
+                            <p class="mb-1"><strong>Số điện thoại:</strong>
+                            <p th:text="${hd.idDiaChi.sdt}"></p></p>
+                            <p class="mb-0"><strong>Địa chỉ:</strong>
+                            <p th:text="${hd.idDiaChi.diaChiCuThe + ', '
+                            + hd.idDiaChi.xa + ', ' + hd.idDiaChi.huyen + ', ' + hd.idDiaChi.thanhPho}"></p></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Phương thức thanh toán:</strong>
+                                <i th:text="${hd.loaiThanhToan}"></i></p>
+                            <p class="mb-1"><strong>Tổng tiền:</strong>
+                                <i th:text="${#numbers.formatCurrency(hd.tongTien)}"></i></p>
+                            <p class="mb-0"><strong>Ghi chú:</strong>
+                                <i th:text="${hd.ghiChu}"></i></p>
+                        </div>
+                    </div>
+
+                    <h6>Sản phẩm:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="hdct : ${hd.listHoaDonChiTiet}" class="align-middle">
+                                <td class="align-middle">
+                                    <h6 class="mb-1" th:text="${hdct.idSanPhamChiTiet.idSanPham.ten}"></h6>
+                                    <p class="text-muted mb-1" th:text="'Phân loại: ' + ${hdct.idSanPhamChiTiet.idMauSac.ten}
+                     + ', ' + ${hdct.idSanPhamChiTiet.idKhoiLuong.ten} +'g'"></p>
+                                </td>
+                                <td class="align-middle" th:text="${hdct.soLuong}"></td>
+                                <td class="align-middle" th:text="${#numbers.formatCurrency(hdct.donGia)}"></td>
+                                <td class="align-middle"
+                                    th:text="${#numbers.formatCurrency(hdct.donGia * hdct.soLuong)}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="d-flex overflow-scroll">
+                                <div class="status-step active">
+                                    <div class="status-icon">
+                                        <i class="fas fa-file-invoice"></i>
+                                    </div>
+                                    <div class="status-text">Chờ xác nhận</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <div class="status-text">Đang giao</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                    <div class="status-text">Đã giao</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    <div class="status-text">Chờ xác nhận hoàn hàng</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-undo"></i>
+                                    </div>
+                                    <div class="status-text">Đã hoàn hàng</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                    <div class="status-text">Đã hủy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-end">
+                    <button class="btn btn-success me-2" th:onclick="'XanNhanDonHang(' + ${hd.id} +')'">Xác nhận
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Đang giao Tab -->
+        <div class="tab-pane fade" id="shipping">
+            <!-- Order Card 3 - Đang giao -->
+            <div class="card order-card" th:each="hd : ${listDangGiao}">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0" th:text="'Đơn hàng ' + ${hd.ma}"></h5>
+                        <small class="text-muted" th:text="'Ngày đặt: ' + ${hd.ngayTao}"></small>
+                    </div>
+                    <div>
+                        <span class="badge bg-danger">Đang giao</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Khách hàng:</strong>
+                            <p th:text="${hd.idDiaChi.tenNguoiNhan}"></p></p>
+                            <p class="mb-1"><strong>Số điện thoại:</strong>
+                            <p th:text="${hd.idDiaChi.sdt}"></p></p>
+                            <p class="mb-0"><strong>Địa chỉ:</strong>
+                            <p th:text="${hd.idDiaChi.diaChiCuThe + ', '
+                            + hd.idDiaChi.xa + ', ' + hd.idDiaChi.huyen + ', ' + hd.idDiaChi.thanhPho}"></p></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Phương thức thanh toán:</strong>
+                                <i th:text="${hd.loaiThanhToan}"></i></p>
+                            <p class="mb-1"><strong>Tổng tiền:</strong>
+                                <i th:text="${#numbers.formatCurrency(hd.tongTien)}"></i></p>
+                            <p class="mb-0"><strong>Ghi chú:</strong>
+                                <i th:text="${hd.ghiChu}"></i></p>
+                        </div>
+                    </div>
+
+                    <h6>Sản phẩm:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="hdct : ${hd.listHoaDonChiTiet}" class="align-middle">
+                                <td class="align-middle">
+                                    <h6 class="mb-1" th:text="${hdct.idSanPhamChiTiet.idSanPham.ten}"></h6>
+                                    <p class="text-muted mb-1" th:text="'Phân loại: ' + ${hdct.idSanPhamChiTiet.idMauSac.ten}
+                     + ', ' + ${hdct.idSanPhamChiTiet.idKhoiLuong.ten} +'g'"></p>
+                                </td>
+                                <td class="align-middle" th:text="${hdct.soLuong}"></td>
+                                <td class="align-middle" th:text="${#numbers.formatCurrency(hdct.donGia)}"></td>
+                                <td class="align-middle"
+                                    th:text="${#numbers.formatCurrency(hdct.donGia * hdct.soLuong)}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="d-flex overflow-scroll">
+                                <div class="status-step completed">
+                                    <div class="status-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="status-text">Chờ xác nhận</div>
+                                </div>
+                                <div class="status-step active">
+                                    <div class="status-icon">
+                                        <i class="fas fa-box"></i>
+                                    </div>
+                                    <div class="status-text">Đang giao</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                    <div class="status-text">Đã giao</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    <div class="status-text">Chờ xác nhận hoàn hàng</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-undo"></i>
+                                    </div>
+                                    <div class="status-text">Đã hoàn hàng</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                    <div class="status-text">Đã hủy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-end">
+                    <button class="btn btn-success me-2">Cập nhật tiến độ giao hàng</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Đã giao Tab -->
+        <div class="tab-pane fade" id="delivered">
+            <!-- Order Card 5 - Đã giao -->
+            <div class="card order-card" th:each="hd : ${listDaGiao}">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0" th:text="'Đơn hàng ' + ${hd.ma}"></h5>
+                        <small class="text-muted" th:text="'Ngày đặt: ' + ${hd.ngayTao}"></small>
+                    </div>
+                    <div>
+                        <span class="badge bg-success">Đã giao</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Khách hàng:</strong>
+                            <p th:text="${hd.idDiaChi.tenNguoiNhan}"></p></p>
+                            <p class="mb-1"><strong>Số điện thoại:</strong>
+                            <p th:text="${hd.idDiaChi.sdt}"></p></p>
+                            <p class="mb-0"><strong>Địa chỉ:</strong>
+                            <p th:text="${hd.idDiaChi.diaChiCuThe + ', '
+                            + hd.idDiaChi.xa + ', ' + hd.idDiaChi.huyen + ', ' + hd.idDiaChi.thanhPho}"></p></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Phương thức thanh toán:</strong>
+                                <i th:text="${hd.loaiThanhToan}"></i></p>
+                            <p class="mb-1"><strong>Tổng tiền:</strong>
+                                <i th:text="${#numbers.formatCurrency(hd.tongTien)}"></i></p>
+                            <p class="mb-0"><strong>Ghi chú:</strong>
+                                <i th:text="${hd.ghiChu}"></i></p>
+                        </div>
+                    </div>
+
+                    <h6>Sản phẩm:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="hdct : ${hd.listHoaDonChiTiet}" class="align-middle">
+                                <td class="align-middle">
+                                    <h6 class="mb-1" th:text="${hdct.idSanPhamChiTiet.idSanPham.ten}"></h6>
+                                    <p class="text-muted mb-1" th:text="'Phân loại: ' + ${hdct.idSanPhamChiTiet.idMauSac.ten}
+                     + ', ' + ${hdct.idSanPhamChiTiet.idKhoiLuong.ten} +'g'"></p>
+                                </td>
+                                <td class="align-middle" th:text="${hdct.soLuong}"></td>
+                                <td class="align-middle" th:text="${#numbers.formatCurrency(hdct.donGia)}"></td>
+                                <td class="align-middle"
+                                    th:text="${#numbers.formatCurrency(hdct.donGia * hdct.soLuong)}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="d-flex overflow-scroll">
+                                <div class="status-step completed">
+                                    <div class="status-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="status-text">Chờ xác nhận</div>
+                                </div>
+                                <div class="status-step completed">
+                                    <div class="status-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="status-text">Đang giao</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="status-text">Đã giao</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    <div class="status-text">Chờ xác nhận hoàn hàng</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-undo"></i>
+                                    </div>
+                                    <div class="status-text">Đã hoàn hàng</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                    <div class="status-text">Đã hủy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-end">
+                    <button class="btn btn-outline-primary">Xem chi tiết</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chờ xác nhận hoàn hàng Tab -->
+        <div class="tab-pane fade" id="waiting-cancel">
+            <div class="card order-card" th:each="hd : ${listChoHoan}">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-0" th:text="'Đơn hàng ' + ${hd.ma}"></h5>
+                        <small class="text-muted" th:text="'Ngày đặt: ' + ${hd.ngayTao}"></small>
+                    </div>
+                    <div>
+                        <span class="badge bg-danger">Chờ xác nhận hoàn hàng</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Khách hàng:</strong>
+                            <p th:text="${hd.idDiaChi.tenNguoiNhan}"></p></p>
+                            <p class="mb-1"><strong>Số điện thoại:</strong>
+                            <p th:text="${hd.idDiaChi.sdt}"></p></p>
+                            <p class="mb-0"><strong>Địa chỉ:</strong>
+                            <p th:text="${hd.idDiaChi.diaChiCuThe + ', '
+                            + hd.idDiaChi.xa + ', ' + hd.idDiaChi.huyen + ', ' + hd.idDiaChi.thanhPho}"></p></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Phương thức thanh toán:</strong>
+                                <i th:text="${hd.loaiThanhToan}"></i></p>
+                            <p class="mb-1"><strong>Tổng tiền:</strong>
+                                <i th:text="${#numbers.formatCurrency(hd.tongTien)}"></i></p>
+                            <p class="mb-0"><strong>Ghi chú:</strong>
+                                <i th:text="${hd.ghiChu}"></i></p>
+                        </div>
+                    </div>
+
+                    <h6>Sản phẩm:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                            <tr>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="hdct : ${hd.listHoaDonChiTiet}" class="align-middle">
+                                <td class="align-middle">
+                                    <h6 class="mb-1" th:text="${hdct.idSanPhamChiTiet.idSanPham.ten}"></h6>
+                                    <p class="text-muted mb-1" th:text="'Phân loại: ' + ${hdct.idSanPhamChiTiet.idMauSac.ten}
+                     + ', ' + ${hdct.idSanPhamChiTiet.idKhoiLuong.ten} +'g'"></p>
+                                </td>
+                                <td class="align-middle" th:text="${hdct.soLuong}"></td>
+                                <td class="align-middle" th:text="${#numbers.formatCurrency(hdct.donGia)}"></td>
+                                <td class="align-middle"
+                                    th:text="${#numbers.formatCurrency(hdct.donGia * hdct.soLuong)}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <div class="d-flex overflow-scroll">
+                                <div class="status-step completed">
+                                    <div class="status-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="status-text">Chờ xác nhận</div>
+                                </div>
+                                <div class="status-step completed">
+                                    <div class="status-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="status-text">Đang giao</div>
+                                </div>
+                                <div class="status-step completed">
+                                    <div class="status-icon">
+                                        <i class="fas fa-check"></i>
+                                    </div>
+                                    <div class="status-text">Đã giao</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    <div class="status-text">Chờ xác nhận hoàn hàng</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-undo"></i>
+                                    </div>
+                                    <div class="status-text">Đã hoàn hàng</div>
+                                </div>
+                                <div class="status-step">
+                                    <div class="status-icon">
+                                        <i class="fas fa-ban"></i>
+                                    </div>
+                                    <div class="status-text">Đã hủy</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-white d-flex justify-content-end">
+                    <button class="btn btn-outline-primary"
+                            th:onclick="'confirmHoanHang(' + ${hd.id} + ')'">
+                        Xác nhận hoàn hàng
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="d-flex justify-content-center mt-3">
-      <nav>
-        <!-- Số trang -->
-        <ul class="pagination justify-content-center" th:if="${max > 1}">
-          <li th:each="pageNum : ${#numbers.sequence(1, max)}"
-              th:class="${pageNum == pageNo} ? 'page-item active' : 'page-item'">
-            <a class="page-link"
-               th:href="@{'/nhan-vien/ban-hang-online?pageNo=' + ${pageNum}}"
-               th:text="${pageNum}"></a>
-          </li>
-        </ul>
-      </nav>
-    </div>
-
-  </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/DonHangNhanVien/DonHangNhanVien.js"></script>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script th:if="${successAdd}">
-  Swal.fire({
-    title: "Thành công!",
-    text: "Khối lượng đã được thêm!",
-    icon: "success",
-    confirmButtonColor: "#3085d6",
-    confirmButtonText: "OK"
-  });
-</script>
-<script th:if="${successUpdate}">
-  Swal.fire({
-    title: "Thành công!",
-    text: "Khối lượng đã được update!",
-    icon: "success",
-    confirmButtonColor: "#3085d6",
-    confirmButtonText: "OK"
-  });
-</script>
-</body>
-</html>
+

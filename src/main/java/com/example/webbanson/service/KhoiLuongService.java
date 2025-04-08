@@ -19,8 +19,8 @@ public class KhoiLuongService {
         return repo.findAll();
     }
     
-    public List<KhoiLuong> getKhoiLuongByIdSanPhamChiTiet(Integer id) {
-        return repo.getKhoiLuongByIdSanPhamChiTiet(id);
+    public List<KhoiLuong> getKhoiLuongByIdSanPhamAndIDMauSac(Integer id, Integer idMauSac) {
+        return repo.getKhoiLuongByIdSanPhamAndIDMauSac(id, idMauSac);
     }
     
     public List<KhoiLuong> getAllKhoiLuongConSuDung(){
@@ -36,8 +36,7 @@ public class KhoiLuongService {
     }
 
     public Long countSearchKhoiLuong(Integer tenSearch, Integer trangThaiSearch, Pageable pageable) {
-        Page<KhoiLuong> result = repo.searchKhoiLuong(tenSearch, trangThaiSearch, pageable);
-        return result.getTotalElements();
+        return repo.searchKhoiLuong(tenSearch, trangThaiSearch, pageable).getTotalElements();
     }
     
     public boolean existsByTen(Integer ten) {
@@ -54,5 +53,9 @@ public class KhoiLuongService {
 
     public KhoiLuong getOneSanPhamById(Integer id) {
         return repo.findById(id).get();
+    }
+
+    public List<KhoiLuong> getKhoiLuongByMauSacAndSanPham(Integer idMauSac, Integer idSanPham) {
+        return repo.getKhoiLuongByMauSacAndSanPham(idMauSac, idSanPham);
     }
 }

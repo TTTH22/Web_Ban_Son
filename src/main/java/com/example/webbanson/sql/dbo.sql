@@ -654,14 +654,14 @@ while @i <= 50
                     else 1000000                             -- Với các bản ghi lẻ, dieuKien là 1,000,000
                     end,
                 case
-                    when @i % 2 = 0 then 'Giảm trực tiếp'  -- Với các bản ghi chẵn, loaiGiam là 'Giảm trực tiếp'
-                    else 'Giảm theo % giá trị mua'          -- Với các bản ghi lẻ, loaiGiam là 'Giảm theo % giá trị mua'
+                    when @i % 2 = 0 then 1  -- Với các bản ghi chẵn, loaiGiam là 'Giảm trực tiếp'
+                    else 0          -- Với các bản ghi lẻ, loaiGiam là 'Giảm theo % giá trị mua'
                     end,
                 case
                     when @i % 2 = 0 then null               -- Nếu là 'Giảm trực tiếp', giaTriGiam là null
                     else rand() * 50                        -- Nếu là 'Giảm theo % giá trị mua', giaTriGiam là tỷ lệ giảm ngẫu nhiên (0-50%)
                     end,
-                1000000,                                      -- Gia tri giam toi da mặc định là 1,000,000
+                100000,                                      -- Gia tri giam toi da mặc định là 1,000,000
                 dateadd(day, -(@i % 30), getdate()),          -- Ngày bắt đầu ngẫu nhiên trong vòng 30 ngày qua
                 dateadd(day, 30, getdate()),                  -- Ngày kết thúc là 30 ngày sau ngày bắt đầu
                 case
@@ -673,3 +673,6 @@ while @i <= 50
         set @i = @i + 1;
     end
 go
+
+update Voucher
+set giaTriGiamToiDa = 100000 where id between 1 and 100

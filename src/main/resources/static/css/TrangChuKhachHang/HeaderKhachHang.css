@@ -130,3 +130,97 @@ body {
         font-size: 0.9rem;
     }
 }
+
+.swal-toast-custom {
+    margin-top: 100px !important; /* Dịch xuống 50px */
+}
+
+
+#dropdown{
+    position: relative;
+}
+
+/*Giỏ hàng*/
+#cartDropdown {
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    width: 1000px; /* Độ rộng cố định */
+    max-height: 400px; /* Độ cao tối đa */
+    overflow-y: auto; /* Hiển thị thanh cuộn dọc khi cần */
+    overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Cải thiện hiển thị từng item trong giỏ hàng */
+.cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid #ddd; /* Thêm đường phân cách */
+}
+
+.cart-item-info img {
+    flex-shrink: 0;
+    border-radius: 5px;
+}
+
+/* Ẩn thanh cuộn mặc định trên Chrome, Edge */
+#cartDropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+#cartDropdown::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+#cartDropdown::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Căn chỉnh giá tiền */
+#donGia {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Căn giữa số lượng và nút tăng/giảm */
+.d-flex.align-items-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Nút tăng giảm số lượng */
+.btn-outline-secondary {
+    border: 1px solid #ccc;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+/* Số lượng */
+.quantity {
+    font-size: 16px;
+    font-weight: bold;
+    min-width: 32px;
+    text-align: center;
+}
+
+/* Bo góc và thêm padding */
+.btn, .quantity {
+    border-radius: 6px;
+    padding: 4px;
+}
+
+

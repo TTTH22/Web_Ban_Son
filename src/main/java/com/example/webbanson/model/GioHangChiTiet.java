@@ -1,22 +1,24 @@
 package com.example.webbanson.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class GioHangChiTiet {
-    @EmbeddedId
-    private GioHangChiTietId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @MapsId("idGioHang")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "idGioHang", nullable = false)
-    private GioHang idGioHang;
-
-    @MapsId("idSanPhamChiTiet")
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "idSanPhamChiTiet", nullable = false)
     private SanPhamChiTiet idSanPhamChiTiet;
@@ -27,4 +29,19 @@ public class GioHangChiTiet {
     @Column(name = "donGia")
     private Double donGia;
 
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "idGioHang", nullable = false)
+    private GioHang idGioHang;
+
+    @Override
+    public String toString() {
+        return "GioHangChiTiet{" +
+                "id=" + id +
+                ", idSanPhamChiTiet=" + idSanPhamChiTiet +
+                ", soLuong=" + soLuong +
+                ", donGia=" + donGia +
+                ", idGioHang=" + idGioHang +
+                '}';
+    }
 }

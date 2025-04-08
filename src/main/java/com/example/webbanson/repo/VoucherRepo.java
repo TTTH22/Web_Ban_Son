@@ -7,8 +7,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface VoucherRepo extends JpaRepository<Voucher, Integer> {
+
+    @Query("select v.idVoucher from KhachhangVoucher v where v.idVoucher.hinhThucGiam = true " +
+            "and v.idVoucher.trangThai = true and v.idKhachHang.id = ?1")
+    List<Voucher> listVocherSanPham(Integer idKhachHang);
+
+    @Query("select v.idVoucher from KhachhangVoucher v where v.idVoucher.hinhThucGiam = false " +
+            "and v.idVoucher.trangThai = true and v.idKhachHang.id = ?1")
+    List<Voucher> listVocherVanChuyen(Integer idKhachHang);
 
     Page<Voucher> findAll(Pageable pageable);
 

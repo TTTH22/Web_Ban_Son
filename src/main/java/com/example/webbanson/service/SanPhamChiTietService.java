@@ -31,8 +31,8 @@ public class SanPhamChiTietService {
         return repo.findMaxDonGiaGiam();
     }
 
-    public List<SanPhamChiTiet> getChiTietSabPhamByIdSanPham(Integer id){
-        return repo.findBySanPhamId(id);
+    public List<SanPhamChiTiet> getChiTietSabPhamByIdSanPhamIdMauSacIdKhoiLuong(Integer id, Integer idMauSac, Integer idKhoiLuong){
+        return repo.getChiTietSabPhamByIdSanPhamIdMauSacIdKhoiLuong(id, idMauSac, idKhoiLuong);
     }
 
     public Page<SanPhamChiTiet> getAllSanPhamChiTietByIdDesc(Pageable pageable) {
@@ -53,5 +53,9 @@ public class SanPhamChiTietService {
 
     public SanPhamChiTiet getOneSanPhamChiTietById(Integer id) {
         return repo.findById(id).get();
+    }
+
+    public SanPhamChiTiet getOneByMauSacAndKhoiLuong(Integer idMauSac, Integer idKhoiLuong, Integer idSanPham) {
+        return repo.getOneByMauSacAndKhoiLuong(idMauSac, idKhoiLuong, idSanPham);
     }
 }

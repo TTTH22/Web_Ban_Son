@@ -2,7 +2,9 @@ package com.example.webbanson.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
@@ -13,9 +15,12 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class HoaDon {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Size(max = 10)
@@ -31,6 +36,10 @@ public class HoaDon {
     private KhachHang idKhachHang;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idDiaChi")
+    private DiaChi idDiaChi;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idVoucher")
     private Voucher idVoucher;
 
@@ -41,8 +50,11 @@ public class HoaDon {
     @Column(name = "ngayTao")
     private LocalDate ngayTao;
 
-    @Column(name = "tongTien", precision = 18, scale = 2)
-    private BigDecimal tongTien;
+    @Column(name = "ngayNhan")
+    private LocalDate ngayNhan;
+
+    @Column(name = "tongTien")
+    private Double tongTien;
 
     @Size(max = 250)
     @Nationalized
@@ -57,16 +69,29 @@ public class HoaDon {
     @Column(name = "hinhThuc")
     private Boolean hinhThuc;
 
-    @Size(max = 50)
-    @Nationalized
-    @Column(name = "phiVanChuyen", length = 50)
-    private String phiVanChuyen;
+    @Column(name = "phiVanChuyen")
+    private Double phiVanChuyen;
 
     @Column(name = "trangThai")
-    private Boolean trangThai;
+    private Integer trangThai;
 
-    @Column(name = "xacNhan")
-    private Boolean xacNhan;
+    @Size(max = 50)
+    @Nationalized
+    @Column(name = "lyDoHuy", length = 50)
+    private String lyDoHuy;
+
+    @Size(max = 50)
+    @Nationalized
+    @Column(name = "lyDoHoanHang", length = 50)
+    private String lyDoHoanHang;
+
+    @Size(max = 255)
+    @Nationalized
+    @Column(name = "ghiChuHoanHang", length = 255)
+    private String ghiChuHoanHang;
+
+    @Column(name = "danhGia")
+    private Boolean danhGia;
 
     @OneToMany(mappedBy = "idHoaDon")
     private List<HoaDonChiTiet> listHoaDonChiTiet;

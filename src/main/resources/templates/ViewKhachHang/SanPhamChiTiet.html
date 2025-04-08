@@ -1,58 +1,287 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Trà Hũ Hoa Nhài</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="stylesheet" href="/css/SanPhamKhachHang/ChiTietSanPham.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trà Hũ Hoa Nhài</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/LienHe.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/SanPhamKhachHang/ChiTietSanPham.css">
+    <style>
+        .navbar {
+            background-color: #cfbaba;
+        }
+
+        /* Tùy chỉnh menu */
+        .navbar .nav-link {
+            margin-left: 50px;
+            font-size: 20px;
+            font-weight: bolder;
+            color: black; /* Đổi màu chữ để dễ nhìn */
+        }
+
+        /* Hover đổi màu */
+        .navbar .nav-link:hover {
+            color: #f8d210 !important;
+        }
+
+
+        .dropdown{
+            position: relative;
+        }
+
+        /*Giỏ hàng*/
+        #cartDropdown {
+            position: absolute;
+            top: 100%;
+            right: 0%;
+            width: 1000px; /* Độ rộng cố định */
+            max-height: 400px; /* Độ cao tối đa */
+            overflow-y: auto; /* Hiển thị thanh cuộn dọc khi cần */
+            overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Cải thiện hiển thị từng item trong giỏ hàng */
+        #cartDropdown .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd; /* Thêm đường phân cách */
+        }
+
+        #cartDropdown .cart-item-info img {
+            flex-shrink: 0;
+            border-radius: 5px;
+        }
+
+        /* Ẩn thanh cuộn mặc định trên Chrome, Edge */
+        #cartDropdown::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #cartDropdown::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 3px;
+        }
+
+        #cartDropdown::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Căn chỉnh giá tiền */
+        #cartDropdown #donGia {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Căn giữa số lượng và nút tăng/giảm */
+        #cartDropdown .d-flex.align-items-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Nút tăng giảm số lượng */
+        #cartDropdown .btn-outline-secondary {
+            border: 1px solid #ccc;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        /* Số lượng */
+        #cartDropdown .quantity {
+            font-size: 16px;
+            font-weight: bold;
+            min-width: 32px;
+            text-align: center;
+        }
+
+        /* Bo góc và thêm padding */
+        #cartDropdown .btn, .quantity {
+            border-radius: 6px;
+            padding: 4px;
+        }
+    </style>
 </head>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/static">
+                <img src="/img/logo/Logo.png" width="170px" height="170px" alt="Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="/trang-chu">TH!</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/san-pham">Sản phẩm</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Về chúng tôi</a></li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" id="ShoppingCart" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="badge bg-danger" id="cart-count" th:text="${sizeGioHang}"></span>
+                        </a>
+                        <ul th:if="${checkLogin == true}" class="dropdown-menu dropdown-menu-end cart-dropdown p-3"
+                            aria-labelledby="ShoppingCart" id="cartDropdown" style="width: 500px;">
+                            <li th:if="${sizeGioHang == 0}" class="dropdown-item text-center">Giỏ hàng trống</li>
+
+                            <li th:each="gioHang : ${listGioHang}"
+                                th:attrappend=" data-max=${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}"
+                                th:id="'cart-item-' + ${gioHang.id}"
+                                class="dropdown-item">
+                                <input type="hidden" id="sanPham" th:value="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.id}">
+                                <input type="hidden" id="idGioHang" th:value="${gioHang.gioHangChiTiet.idGioHang.id}">
+                                <div class="cart-item-info d-flex">
+                                    <img th:src="@{${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.anhSanPham}}"
+                                         width="100" height="100" class="rounded me-2">
+                                    <div class="flex-grow-1">
+                                        <input type="hidden" id="idChiTietGioHang" th:value="${gioHang.gioHangChiTiet.id}">
+                                        <h4 class="fw-bold" th:text="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.ten}"></h4>
+
+                                        <!-- Dropdown chọn màu sắc -->
+                                        <div class="form-group mt-1">
+                                            <select class="form-select form-select-sm" id="mauSac"
+                                                    onchange="updateMauSac()">
+                                                <option th:each="mau : ${gioHang.listMauSac}" th:value="${mau.id}"
+                                                        th:text="${mau.ten}"
+                                                        th:selected="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idMauSac.id == mau.id}"></option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Dropdown chọn khối lượng -->
+                                        <div class="form-group mt-1">
+                                            <select class="form-select form-select-sm" id="khoiLuong"
+                                                    onchange="updateKhoiLuong()">
+                                                <option th:each="khoiLuong : ${gioHang.listKhoiLuong}"
+                                                        th:value="${khoiLuong.id}" th:text="${khoiLuong.ten} + 'g'"
+                                                        th:selected="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idKhoiLuong.id == khoiLuong.id}"></option>
+                                            </select>
+                                        </div>
+
+                                        <!-- Giá và nút chỉnh số lượng -->
+                                        <div class="d-flex align-items-center justify-content-between mt-2">
+                                            <small class="text-danger fw-bold" id="donGia" th:text="${gioHang.gioHangChiTiet.donGia} + 'đ'"></small>
+
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                        th:onclick="'updateQuantity(' + ${gioHang.id} + ', -1)'">-</button>
+                                                <input type="hidden" id="soLuongSanPham"
+                                                       th:value="${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}"
+                                                       th:attr="data-max=${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}">
+                                                <span class="mx-2 quantity" th:text="${gioHang.gioHangChiTiet.soLuong}"></span>
+                                                <button class="btn btn-sm btn-outline-secondary"
+                                                        th:onclick="'updateQuantity(' + ${gioHang.id} + ', 1)'">+</button>
+                                            </div>
+                                            <div class="text-end mt-2">
+                                                <button class="btn btn-sm btn-danger"
+                                                        th:onclick="'removeFromCart(' + ${gioHang.id} + ')'">Xóa</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <!-- Tổng tiền và nút thanh toán -->
+                            <li class="dropdown-item d-flex flex-column align-items-center">
+                                <div class="fw-bold mb-2">
+                                    Tổng tiền:
+                                    <span id="tongTien"></span>
+                                </div>
+                                <a href="/checkout" class="btn btn-primary btn-sm w-100">Thanh toán</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Thông tin người dùng -->
+                    <li th:if="${checkLogin}" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/tai-khoan">Thông tin tài khoản</a></li>
+                            <li><a class="dropdown-item" href="/don-hang">Đơn hàng</a></li>
+                            <li><a class="dropdown-item" href="/dang-xuat">Đăng xuất</a></li>
+                        </ul>
+                    </li>
+                    <li th:if="${checkLogin == false}" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdownFalse" role="button"
+                           data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdownFalse">
+                            <li><a class="dropdown-item" href="/login">Đăng nhập</a></li>
+                            <li><a class="dropdown-item" href="/login">Đăng ký</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav></header>
 <body>
 <div class="container py-5">
-  <div class="row">
-    <!-- Thumbnails -->
-    <div class="col-md-1 d-none d-md-block">
-      <div class="d-flex flex-column">
-        <img th:each="anh, anhStat : ${listAnhSanPham}"
-             th:src="${anh.tenAnh}"
-             th:alt="'Thumbnail ' + ${anhStat.count}"
-             class="img-fluid product-thumbnail"
-             th:classappend="${anhStat.first} ? 'active' : ''"
-             th:data-bs-slide-to="${anhStat.index}">
-      </div>
-    </div>
-
-    <!-- Main Product Image -->
-    <div class="col-md-5 mb-4 mb-md-0">
-      <div id="productCarousel" class="carousel slide" data-bs-ride="false">
-        <div class="carousel-inner">
-          <div th:each="anh, iterStat : ${listAnhSanPham}"
-               class="carousel-item main-image-container"
-               th:classappend="${iterStat.index == 0} ? 'active'">
-            <img th:src="${anh.tenAnh}" class="d-block w-100 main-image" th:alt="'Anh San Pham ' + ${anh.id}">
-          </div>
+    <div class="row">
+        <!-- Thumbnails -->
+        <div class="col-md-1 d-none d-md-block">
+            <div class="d-flex flex-column">
+                <img th:each="anh, anhStat : ${listAnhSanPham}"
+                     th:src="${anh.tenAnh}"
+                     th:alt="'Thumbnail ' + ${anhStat.count}"
+                     class="img-fluid product-thumbnail"
+                     th:classappend="${anhStat.first} ? 'active' : ''"
+                     th:data-bs-slide-to="${anhStat.index}">
+            </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </div>
 
-    <!-- Product Information -->
-    <div class="col-md-6">
-        <h1 class="h2 mb-3" th:text="${sanPham.ten}"></h1>
-        <!-- Availability -->
+        <!-- Main Product Image -->
+        <div class="col-md-5 mb-4 mb-md-0">
+            <div id="productCarousel" class="carousel slide" data-bs-ride="false">
+                <div class="carousel-inner">
+                    <div th:each="anh, iterStat : ${listAnhSanPham}"
+                         class="carousel-item main-image-container"
+                         th:classappend="${iterStat.index == 0} ? 'active'">
+                        <img th:src="${anh.tenAnh}" class="d-block w-100 main-image"
+                             th:alt="'Anh San Pham ' + ${anh.id}">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#productCarousel"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
 
-      <!-- Rating -->
-      <div th:if="${checkSoSao != null}" class="mb-3">
+        <!-- Product Information -->
+        <div class="col-md-6">
+            <h1 class="h2 mb-3" th:text="${sanPham.ten}"></h1>
+            <!-- Availability -->
+
+            <!-- Rating -->
+            <div th:if="${checkSoSao != null}" class="mb-3">
           <span class="rating">
               <!-- Hiển thị sao đầy -->
               <th:block th:each="i : ${#numbers.sequence(1, soSaoNguyen)}">
@@ -64,118 +293,112 @@
               </th:block>
 
           </span>
-          <span class="ms-2 text-muted" th:text="@{'(' + ${soNguoiDanhGia} + ' customer review)'}"></span>
-      </div>
+                <span class="ms-2 text-muted" th:text="@{'(' + ${soNguoiDanhGia} + ' customer review)'}"></span>
+            </div>
 
-      <div th:if="${checkSoSao == null}" class="mb-3">
-          <p>Chưa có đánh giá</p>
-      </div>
+            <div th:if="${checkSoSao == null}" class="mb-3">
+                <p>Chưa có đánh giá</p>
+            </div>
 
-      <!-- Price -->
-      <div class="price mb-4 d-flex flex-wrap gap-2">
-        <h2 class="fw-bold don-gia" th:text="${sanPhamChiTiet.donGia} + 'đ'"></h2>
-        <h2 class="fw-bold don-gia-giam" th:text="${sanPhamChiTiet.donGiaGiam} + 'đ'"></h2>
-        <h2 class="fw-bold phan-tram-giam" th:text="${ '-' + sanPhamChiTiet.getPhanTramGiamGia()} + '%'"></h2>
-      </div>
+            <!-- Price -->
+            <div class="price mb-4 d-flex flex-wrap gap-2 align-items-center">
+                <h5 class="fw-bold don-gia" th:text="${sanPhamChiTiet.donGia} + 'đ'"></h5>
+                <h2 class="fw-bold don-gia-giam" th:text="${sanPhamChiTiet.donGiaGiam} + 'đ'"></h2>
+                <h2 class="fw-bold phan-tram-giam" th:text="${ '-' + sanPhamChiTiet.getPhanTramGiamGia()} + '%'"></h2>
+            </div>
 
-      <span class="instock-badge" th:text="${trangThai}"></span>
+            <span class="instock-badge" th:text="${trangThai ? 'Còn hàng' : 'Hết hàng'}"></span>
 
 
-      <div class="color d-flex flex-wrap gap-2">
-        <div class="color-option"
-             th:each="ms : ${listMauSac}"
-             th:style="'background-color:' + ${ms.ma}"
-             th:data-name="${ms.ten}"
-             th:data-code="${ms.ma}"
-             th:classappend="${sanPhamChiTiet.idMauSac.id} == ${ms.id} ? ' active' : ''">
+            <div class="color d-flex flex-wrap gap-2">
+                <a class="color-option"
+                   th:each="ms : ${listMauSac}"
+                   th:href="@{|/chi-tiet-san-pham?idSanPham=${sanPham.id}&idMauSac=${ms.id}|}"
+                   th:style="'background-color:' + ${ms.ma}"
+                   th:data-name="${ms.id}"
+                   th:data-code="${ms.ma}"
+                   th:classappend="${sanPhamChiTiet.idMauSac.id} == ${ms.id} ? ' active' : ''">
+                </a>
+            </div>
+
+            <select id="khoiLuongId" name="khoiLuong" class="form-select khoi-luong-select"
+                    onchange="redirectToSelectedKhoiLuong()">
+                <option th:each="kl : ${listKhoiLuong}"
+                        th:value="${kl.id}"
+                        th:text="${kl.ten} + 'g'"
+                        th:selected="${sanPhamChiTiet.idKhoiLuong.id} == ${kl.id}">
+                </option>
+            </select>
+            <script>
+                function redirectToSelectedKhoiLuong() {
+                    let idSanPham = document.getElementById("sanPhamId").value;
+                    let idMauSac = document.querySelector(".color-option.active")?.getAttribute("data-name") || 'default';
+                    let selectBox = document.getElementById("khoiLuongId");
+                    let selectedValue = selectBox.value;
+                    if (selectedValue) {
+                        window.location.href = `/chi-tiet-san-pham?idSanPham=${idSanPham}&idMauSac=${idMauSac}&idKhoiLuong=` + selectedValue;
+                    }
+                }
+            </script>
+
+            <!-- Product Description -->
+            <div class="product-description mb-4">
+                <h5>MÔ TẢ SẢN PHẨM</h5>
+                <p>
+                    <i class="fas fa-check feature-check me-2"></i>
+                    <strong th:text="${sanPham.ten}"></strong> <i th:text="${sanPham.moTa}"></i>
+                </p>
+                <p>
+                    <i class="fas fa-check feature-check me-2"></i>
+                    <strong>Màu sắc: </strong><i th:text="${mauSac.ten}"></i> <i th:text="${mauSac.moTa}"></i>
+                </p>
+                <p>
+                    <i class="fas fa-check feature-check me-2"></i>
+                    <strong>Khối lượng: </strong><i th:text="${khoiLuong.ten} + 'g'"></i> <i
+                        th:text="${khoiLuong.moTa}"></i>
+                </p>
+            </div>
+
+            <!-- Quantity Selector and Buttons -->
+            <div class=" align-items-center mb-4">
+                <div class="input-group quantity-selector me-3">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="text" class="form-control text-center" name="soLuong" th:value="${soLuong}">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div th:if="${trangThai}" class="d-flex gap-2" style="margin-top: 20px">
+                    <a id="muaNgayButton" class="btn btn-outline-secondary me-2">
+                        Mua ngay
+                    </a>
+                    <input type="hidden" id="checkLoginValue" th:value="${checkLogin}">
+                    <input type="hidden" id="khachHangId" th:value="${khachHang.id}">
+                    <input type="hidden" id="sanPhamId" th:value="${sanPham.id}">
+                    <a class="btn btn-outline-secondary me-2" id="addToCartButton">
+                        <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
+                    </a>
+                </div>
+            </div>
+            <p><strong>Tag:</strong> <a th:href="@{|/search?idNsx=${sanPham.idNSX.id}&category=1|}"
+                                        class="badge bg-success" th:text="${sanPham.idNSX.ten}"></a>
+                <a th:href="@{|/search?idDongSanPham=${sanPham.idDongSanPham.id}&category=1|}" class="badge bg-success"
+                   th:text="${sanPham.idDongSanPham.ten}"></a>
+            </p>
         </div>
-      </div>
-
-
-      <select id="khoiLuong" name="khoiLuong" class="form-select khoi-luong-select">
-        <option value="" disabled>Chọn khối lượng</option>
-        <option th:each="kl : ${listKhoiLuong}"
-                th:value="${kl.id}"
-                th:text="${kl.ten}"
-                th:selected="${sanPhamChiTiet.idKhoiLuong.id} == ${kl.id}">
-        </option>
-      </select>
-
-      <!-- Product Description -->
-      <div class="product-description mb-4">
-        <h5>MÔ TẢ SẢN PHẨM</h5>
-        <p>
-          <i class="fas fa-check feature-check me-2"></i>
-          <strong th:text="${sanPham.ten}"></strong> <i th:text="${sanPham.moTa}"></i>
-        </p>
-        <p>
-          <i class="fas fa-check feature-check me-2"></i>
-          <strong>Màu sắc: </strong><i th:text="${mauSac.ten}"></i> <i th:text="${mauSac.moTa}"></i>
-        </p>
-        <p>
-          <i class="fas fa-check feature-check me-2"></i>
-          <strong>Khối lượng: </strong><i th:text="${khoiLuong.ten} + 'g'"></i> <i th:text="${khoiLuong.moTa}"></i>
-        </p>
-      </div>
-
-      <!-- Quantity Selector and Buttons -->
-      <div class=" align-items-center mb-4">
-        <div class="input-group quantity-selector me-3">
-          <button class="btn btn-outline-secondary" type="button">
-            <i class="fas fa-minus"></i>
-          </button>
-          <input type="text" class="form-control text-center" value="1">
-          <button class="btn btn-outline-secondary" type="button">
-            <i class="fas fa-plus"></i>
-          </button>
-        </div>
-        <div class="d-flex gap-2" style="margin-top: 20px">
-          <a class="btn btn-outline-secondary me-2">
-            Mua ngay
-          </a>
-          <a class="btn btn-outline-secondary me-2" id="addToCartButton">
-            <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
-          </a>
-        </div>
-      </div>
-      <p><strong>Tag:</strong> <a th:href="@{|/search?idNsx=${sanPham.idNSX.id}&category=1|}" class="badge bg-success" th:text="${sanPham.idNSX.ten}"></a>
-                                <a th:href="@{|/search?idDongSanPham=${sanPham.idDongSanPham.id}&category=1|}" class="badge bg-success" th:text="${sanPham.idDongSanPham.ten}"></a>
-      </p>
-  </div>
+    </div>
 </div>
-</div>
-
 <!-- Bootstrap JS and Popper.js -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/SanPhamChiTiet/SanPhamChiTiet.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-  // Kiểm tra xem người dùng đã đăng nhập chưa
-  var checkLogin = /*[[${checkLogin}]]*/ false;  // Dữ liệu được truyền từ Controller
 
-  document.getElementById("addToCartButton").onclick = function(event) {
-    if (!checkLogin) {
-      event.preventDefault();  // Ngừng hành động mặc định của nút
-      Swal.fire({
-        title: 'Bạn chưa đăng nhập!',
-        text: 'Hãy đăng nhập để tiếp tục hoặc quay lại.',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Đăng nhập',
-        cancelButtonText: 'Quay lại',
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = '/login'; // Chuyển đến trang đăng nhập
-        } else {
-          // Chỉ tắt thông báo khi chọn Quay lại
-          Swal.close(); // Đóng SweetAlert mà không làm gì thêm
-        }
-      });
-    } else {
-      // Tiến hành thêm vào giỏ hàng nếu người dùng đã đăng nhập
-      window.location.href = '/addToCart'; // Thực hiện thêm vào giỏ hàng
-    }
-  };
-</script>
 </body>
+<footer>
+    <section style="background: #f8f9f5; width: 100%;">
+        <th:block th:replace="~{fragments/KhachHang/LienHe :: #LienHe}"></th:block>
+    </section>
+</footer>
 </html>

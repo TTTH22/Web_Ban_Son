@@ -22,8 +22,13 @@ public interface SanPhamChiTietRepo extends JpaRepository<SanPhamChiTiet, Intege
     @Query("select max(donGiaGiam) from SanPhamChiTiet")
     Float findMaxDonGiaGiam();
 
-    @Query("select spct from SanPhamChiTiet spct where spct.idSanPham.id = :id")
-    List<SanPhamChiTiet> findBySanPhamId(@Param("id") Integer id);
+    @Query("select spct from SanPhamChiTiet spct where spct.idSanPham.id = :id and " +
+            "(:idMauSac is null or spct.idMauSac.id = :idMauSac) and " +
+            "(:idKhoiLuong is null or spct.idKhoiLuong.id = :idKhoiLuong)")
+    List<SanPhamChiTiet> getChiTietSabPhamByIdSanPhamIdMauSacIdKhoiLuong(@Param("id") Integer id,
+                                                                        @Param("idMauSac") Integer mauSac,
+                                                                        @Param("idKhoiLuong") Integer khoiLuong);
+
 
     @Query("select spct from SanPhamChiTiet spct order by spct.id desc")
     Page<SanPhamChiTiet> getAllSanPhamChiTietByIdDesc(Pageable pageable);
@@ -40,4 +45,10 @@ public interface SanPhamChiTietRepo extends JpaRepository<SanPhamChiTiet, Intege
                                 @Param("idMauSac") Integer idMauSac,
                                 @Param("idKhoiLuong") Integer idKhoiLuong,
                                 Pageable pageable);
+
+    @Query("select spct from SanPhamChiTiet spct where spct.idMauSac.id = :idMauSac " +
+            "and spct.idKhoiLuong.id = :idKhoiLuong and spct.idSanPham.id = :idSanPham")
+    SanPhamChiTiet getOneByMauSacAndKhoiLuong(@Param("idMauSac") Integer idMauSac,
+                                              @Param("idKhoiLuong") Integer idKhoiLuong,
+                                              @Param("idSanPham") Integer idSanPham);
 }

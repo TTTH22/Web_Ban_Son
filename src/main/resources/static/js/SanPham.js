@@ -1,33 +1,5 @@
 
 
-
-// ------------Header.js----------------
-let lastScrollTop = 0;
-const navbar = document.querySelector('.navbar');
-
-window.addEventListener('scroll', function() {
-    let scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-    if (scrollTop > lastScrollTop) {
-        // Cuộn xuống -> Ẩn navbar
-        navbar.classList.add('hide');
-    } else {
-        // Cuộn lên -> Hiện navbar
-        navbar.classList.remove('hide');
-
-        // Nếu không phải ở top
-        if (scrollTop > 0) {
-            navbar.classList.add('scrolled'); // Có nền trắng
-        } else {
-            navbar.classList.remove('scrolled'); // Về top -> Trong suốt
-        }
-    }
-
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Fix cho Safari
-});
-
-
-
 // ------------RangePrice.js----------------
 var priceSlider = document.getElementById('price-slider');
 

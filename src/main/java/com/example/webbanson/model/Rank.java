@@ -33,9 +33,6 @@ public class Rank {
     @Column(name = "tongChiTieuDieuKien")
     private Double tongChiTieuDieuKien;
 
-    @Column(name = "tongDonHangDieuKien")
-    private Integer tongDonHangDieuKien;
-
     @Column(name = "mucGiam")
     private Double mucGiam;
 

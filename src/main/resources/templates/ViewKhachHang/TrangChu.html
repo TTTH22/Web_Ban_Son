@@ -1,50 +1,53 @@
 <!DOCTYPE html>
 <html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trang chủ</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trang chủ</title>
 
-  <!-- Nhúng Bootstrap & CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/HeaderKhachHang.css}">
-  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/AboutUs.css}">
-  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/SanPhamNoiBat.css}">
-  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/ShopNew.css}">
-  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/SanPhamGiamGia.css}">
-  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/QuangCao.css}">
-  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/Blogs.css}">
-  <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/LienHe.css}">
+    <!-- Nhúng Bootstrap & CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/HeaderKhachHang.css}">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/AboutUs.css}">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/SanPhamNoiBat.css}">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/ShopNew.css}">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/SanPhamGiamGia.css}">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/QuangCao.css}">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/Blogs.css}">
+    <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/LienHe.css}">
 </head>
 <body>
 
 <!-- Nhúng Header -->
-<th:block th:replace="~{fragments/KhachHang/HeaderKhachHang :: header}"></th:block>
-<script>
-  let lastScrollTop = 0;
-  const navbar = document.querySelector('.navbar');
+<th:block th:replace="~{fragments/KhachHang/HeaderKhachHang :: header(checkLogin=${checkLogin},
+ listGioHang=${listGioHang}, sizeGioHang=${sizeGioHang}, khachHang=${khachHang})}"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/js/HeaderKhachHang/HeaderKhachHang.js"></script>
+<script th:inline="javascript">
 
-  window.addEventListener('scroll', function() {
-    let scrollTop = window.scrollY || document.documentElement.scrollTop;
+    var checkLogin = /*[[${checkLogin}]]*/ false;
 
-    if (scrollTop > lastScrollTop) {
-      // Cuộn xuống -> Ẩn navbar
-      navbar.classList.add('hide');
-    } else {
-      // Cuộn lên -> Hiện navbar
-      navbar.classList.remove('hide');
-
-      // Nếu không phải ở top
-      if (scrollTop > 0) {
-        navbar.classList.add('scrolled'); // Có nền trắng
-      } else {
-        navbar.classList.remove('scrolled'); // Về top -> Trong suốt
-      }
-    }
-
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // Fix cho Safari
-  });
+    document.getElementById("ShoppingCart").onclick = function (event) {
+        if (!checkLogin) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Bạn chưa đăng nhập!',
+                text: 'Hãy đăng nhập để tiếp tục hoặc quay lại.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Đăng nhập',
+                cancelButtonText: 'Quay lại',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "/login";
+                } else {
+                    Swal.close();
+                }
+            });
+        }
+    };
 </script>
 
 <!--Nhúng About Us-->
@@ -75,11 +78,8 @@
 
 <!--Nhúng footer-->
 <section style="background: #f8f9f5; width: 100%;">
-  <th:block th:replace="~{fragments/KhachHang/LienHe :: #LienHe}"></th:block>
+    <th:block th:replace="~{fragments/KhachHang/LienHe :: #LienHe}"></th:block>
 </section>
-
-
-
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

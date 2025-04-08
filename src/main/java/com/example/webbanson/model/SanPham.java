@@ -56,4 +56,5 @@ public class SanPham {
 
     @OneToMany(mappedBy = "idSanPham", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SanPhamChiTiet> sanPhamChiTietList;
+
 }

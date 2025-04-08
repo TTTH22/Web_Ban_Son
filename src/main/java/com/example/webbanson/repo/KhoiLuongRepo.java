@@ -15,8 +15,9 @@ public interface KhoiLuongRepo extends JpaRepository<KhoiLuong, Integer> {
 
     boolean existsKhoiLuongByTen(Integer ten);
 
-    @Query("select spct.idKhoiLuong from SanPhamChiTiet spct where spct.idSanPham.id = :id")
-    List<KhoiLuong> getKhoiLuongByIdSanPhamChiTiet(@Param("id") Integer id);
+    @Query("select spct.idKhoiLuong from SanPhamChiTiet spct where spct.idSanPham.id = :id and spct.idMauSac.id = :idMauSac")
+    List<KhoiLuong> getKhoiLuongByIdSanPhamAndIDMauSac(@Param("id") Integer id,
+                                                        @Param("idMauSac") Integer idMauSac);
     
     @Query("select khoiLuong from KhoiLuong khoiLuong where khoiLuong.trangThai = true")
     List<KhoiLuong> getAllKhoiLuongConSuDung();
@@ -37,4 +38,8 @@ public interface KhoiLuongRepo extends JpaRepository<KhoiLuong, Integer> {
     Page<KhoiLuong> searchKhoiLuong(@Param("tenSearch") Integer tenSearch,
                                     @Param("trangThaiSearch") Integer trangThaiSearch,
                                     Pageable pageable);
+
+    @Query("select spct.idKhoiLuong from SanPhamChiTiet spct where spct.idSanPham.id = :idSanPham and spct.idMauSac.id = :idMauSac")
+    List<KhoiLuong> getKhoiLuongByMauSacAndSanPham(@Param("idMauSac") Integer idMauSac,
+                                                @Param("idSanPham") Integer idSanPham);
 }
