@@ -140,7 +140,16 @@
                     <td th:text="${x.ngaySinh}"></td>
                     <td th:text="${x.sdt}"></td>
                     <td th:text="${x.email}"></td>
-                    <td th:text="${x.idRank.ten}"></td>
+                    <td>
+                        <div th:if="${x.idRank == null}">
+                            Chưa có rank
+                        </div>
+                        <div th:if="${x.idRank != null}">
+                            <i th:if="${x.idRank.id == 1}" class="bi bi-trophy text-warning"> Rank Bronze</i>
+                            <i th:if="${x.idRank.id == 2}" class="bi bi-trophy text-secondary"> Rank Silver</i>
+                            <i th:if="${x.idRank.id == 3}" class="bi bi-trophy text-danger"> Rank Gold</i>
+                        </div>
+                    </td>
                     <td>
                         <span th:text="${x.trangThai ? 'Còn hoạt động' : 'Ngừng hoạt động'}"
                               th:style="${x.trangThai ? 'background-color: green; color: white; padding: 4px 8px; border-radius: 9px;'

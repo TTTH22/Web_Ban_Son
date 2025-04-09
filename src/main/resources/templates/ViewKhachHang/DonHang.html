@@ -250,7 +250,8 @@
             </div>
         </div>
 
-        <div id="modalHoanHang" style="display: none; position: fixed; z-index: 9999; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3); width: 400px;">
+        <div id="modalHoanHang"
+             style="display: none; position: fixed; z-index: 9999; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.3); width: 400px;">
             <h5 class="mb-3">Yêu cầu hoàn hàng</h5>
             <input type="hidden" id="hoanHang_hoaDonId">
 
@@ -276,7 +277,7 @@
         </div>
 
 
-        <!-- Chờ xác nhận hủy -->
+        <!-- Chờ xác nhận hoàn hàng -->
         <div class="tab-pane fade" id="waiting-cancel">
             <div class="card order-card" th:each="hd : ${listChoHoan}">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -298,23 +299,24 @@
                                 th:text="${#numbers.formatCurrency(hdct.donGia)}"></span>
                         </div>
                     </div>
-                    <div class="alert alert-secondary mt-3 mb-0">
-                        <div class="d-flex">
-                            <div class="me-2">
-                                <i class="bi bi-info-circle"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-1">Thông tin hủy đơn</h6>
-                                <p class="mb-1"><strong>Lý do:</strong> <i th:text="${hd.lyDoHuy}"></i></p>
-                            </div>
+                    <hr>
+                </div>
+                <div class="alert alert-secondary mt-3 mb-0">
+                    <div class="d-flex">
+                        <div class="me-2">
+                            <i class="bi bi-info-circle"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Thông tin hoàn đơn</h6>
+                            <p class="mb-1"><strong>Lý do: </strong> <i th:text="${hd.lyDoHoanHang}"></i></p>
+                            <p class="mb-1"><strong>Ghi chú: </strong> <i th:text="${hd.ghiChuHoanHang}"></i></p>
                         </div>
                     </div>
-                    <hr>
                 </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="order-date"><i class="bi bi-calendar3 me-1"></i><i
-                                th:text="${hd.ngayTao}"></i></span>
+                                th:text="${hd.ngayHoanHang}"></i></span>
                         <div>
                             <span class="me-3 fw-bold"
                                   th:text="'Tổng tiền: ' + ${#numbers.formatCurrency(hd.tongTien)}"></span>
@@ -330,7 +332,7 @@
             <div class="card order-card" th:each="hd : ${listDaHoan}">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span class="fw-bold" th:text="'Đơn hàng ' + ${hd.ma}"></span>
-                    <span class="badge bg-danger status-badge">Đã Hoàn hàng</span>
+                    <span class="badge bg-secondary status-badge">Đã hoàn hàng</span>
                 </div>
                 <div class="card-body" th:each="hdct : ${hd.listHoaDonChiTiet}">
                     <div class="row mb-3">
@@ -349,15 +351,26 @@
                     </div>
                     <hr>
                 </div>
+                <div class="alert alert-secondary mt-3 mb-0">
+                    <div class="d-flex">
+                        <div class="me-2">
+                            <i class="bi bi-info-circle"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Thông tin hoàn đơn</h6>
+                            <p class="mb-1"><strong>Lý do: </strong> <i th:text="${hd.lyDoHoanHang}"></i></p>
+                            <p class="mb-1"><strong>Ghi chú: </strong> <i th:text="${hd.ghiChuHoanHang}"></i></p>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="order-date"><i class="bi bi-calendar3 me-1"></i><i
-                                th:text="${hd.ngayTao}"></i></span>
+                                th:text="${hd.ngayHoanHang}"></i></span>
                         <div>
                             <span class="me-3 fw-bold"
                                   th:text="'Tổng tiền: ' + ${#numbers.formatCurrency(hd.tongTien)}"></span>
-                            <button class="btn btn-sm btn-outline-primary">Mua lại</button>
-                            <small class="text-muted ms-2">Người mua yêu cầu hoàn hàng</small>
+                            <button class="btn btn-sm btn-outline-secondary">Liên hệ CSKH</button>
                         </div>
                     </div>
                 </div>
@@ -369,7 +382,7 @@
             <div class="card order-card" th:each="hd : ${listDaHuy}">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span class="fw-bold" th:text="'Đơn hàng ' + ${hd.ma}"></span>
-                    <span class="badge bg-danger status-badge">Đã hủy</span>
+                    <span class="badge bg-secondary status-badge">Đã hủy</span>
                 </div>
                 <div class="card-body" th:each="hdct : ${hd.listHoaDonChiTiet}">
                     <div class="row mb-3">
@@ -388,15 +401,29 @@
                     </div>
                     <hr>
                 </div>
+                <div class="alert alert-secondary mt-3 mb-0">
+                    <div class="d-flex">
+                        <div class="me-2">
+                            <i class="bi bi-info-circle"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">Thông tin hoàn đơn</h6>
+                            <p class="mb-1"><strong>Lý do: </strong> <i th:text="${hd.lyDoHuy}"></i></p>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-footer">
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="order-date"><i class="bi bi-calendar3 me-1"></i><i
-                                th:text="${hd.ngayTao}"></i></span>
+                                th:text="${hd.ngayHuyHang}"></i></span>
                         <div>
                             <span class="me-3 fw-bold"
                                   th:text="'Tổng tiền: ' + ${#numbers.formatCurrency(hd.tongTien)}"></span>
-                            <button class="btn btn-sm btn-outline-primary">Mua lại</button>
-                            <small class="text-muted ms-2">Đã hủy bởi người mua</small>
+                            <button class="btn btn-sm btn-outline-primary" th:onclick="'muaLai(' + ${hd.id} + ')'">
+                                Mua
+                                lại
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">Liên hệ CSKH</button>
                         </div>
                     </div>
                 </div>

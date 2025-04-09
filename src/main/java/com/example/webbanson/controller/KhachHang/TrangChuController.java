@@ -92,6 +92,7 @@ public class TrangChuController {
         else {
             List<GioHangChiTietDTO> list = new ArrayList<GioHangChiTietDTO>();
             model.addAttribute("checkLogin", true);
+            model.addAttribute("khachHang", khachHang);
             GioHang gioHang = gioHangService.getGioHangByIdKhachHang(khachHang);
             List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietService.GioHangChiTietByIdKhachHang(gioHang.getId());
             for (GioHangChiTiet gioHangChiTiet : listGioHangChiTiet) {
@@ -99,8 +100,6 @@ public class TrangChuController {
                 List<MauSac> listMauSac = mauSacService.getMauSacByIdSanPhamChiTiet(sanPham.getId());
                 List<KhoiLuong> listKhoiLuong = khoiLuongService.getKhoiLuongByMauSacAndSanPham
                         (gioHangChiTiet.getIdSanPhamChiTiet().getIdMauSac().getId(), sanPham.getId());
-//                System.out.println(gioHangChiTiet.getIdSanPhamChiTiet().getIdMauSac().getId());
-//                System.out.println(sanPham.getId());
                 GioHangChiTietDTO gioHangChiTietDTO = new GioHangChiTietDTO();
                 gioHangChiTietDTO.setId(gioHangChiTiet.getId());
                 gioHangChiTietDTO.setListMauSac(listMauSac);
@@ -159,8 +158,6 @@ public class TrangChuController {
                 List<MauSac> listMauSac = mauSacService.getMauSacByIdSanPhamChiTiet(sanPham.getId());
                 List<KhoiLuong> listKhoiLuong = khoiLuongService.getKhoiLuongByMauSacAndSanPham
                         (gioHangChiTiet.getIdSanPhamChiTiet().getIdMauSac().getId(), sanPham.getId());
-//                System.out.println(gioHangChiTiet.getIdSanPhamChiTiet().getIdMauSac().getId());
-//                System.out.println(sanPham.getId());
                 GioHangChiTietDTO gioHangChiTietDTO = new GioHangChiTietDTO();
                 gioHangChiTietDTO.setId(gioHangChiTiet.getId());
                 gioHangChiTietDTO.setListMauSac(listMauSac);

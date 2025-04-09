@@ -93,6 +93,12 @@ public class HoaDon {
     @Column(name = "danhGia")
     private Boolean danhGia;
 
+    @Column(name = "ngayHuyHang")
+    private LocalDate ngayHuyHang;
+
+    @Column(name = "ngayHoanHang")
+    private LocalDate ngayHoanHang;
+
     @OneToMany(mappedBy = "idHoaDon")
     private List<HoaDonChiTiet> listHoaDonChiTiet;
 }

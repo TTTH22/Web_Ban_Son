@@ -2,6 +2,7 @@ package com.example.webbanson.controller.NhanVien;
 
 import com.example.webbanson.model.Nsx;
 import com.example.webbanson.model.Voucher;
+import com.example.webbanson.service.KhachHangService;
 import com.example.webbanson.service.VoucherService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,8 @@ import java.util.Random;
 @RequestMapping("/nhan-vien/voucher")
 public class VoucherConTroller {
     private final VoucherService voucherService;
+
+    private final KhachHangService khachHangService;
 
     @GetMapping("")
     public String Voucher(@RequestParam(defaultValue = "1") Integer pageNo,
@@ -150,5 +153,12 @@ public class VoucherConTroller {
         model.addAttribute("successAdd", false);
         model.addAttribute("successUpdate", true);
         return "ViewNhanVien/Voucher/Voucher";
+    }
+
+    @GetMapping("/ap-dung")
+    public String addKhachHangVoucher(Model model) {
+        model.addAttribute("listVoucher", voucherService.getAll());
+        model.addAttribute("listKhachHang", khachHangService.fillAll());
+        return "ViewNhanVien/Voucher/AddKhachHangVoucher";
     }
 }

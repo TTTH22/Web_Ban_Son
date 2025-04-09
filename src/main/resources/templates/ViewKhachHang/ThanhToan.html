@@ -243,7 +243,7 @@
                         <div th:if="${khachHang.idRank != null}">
                             <i th:if="${khachHang.idRank.id == 1}" class="bi bi-trophy text-warning"> Rank Bronze</i>
                             <i th:if="${khachHang.idRank.id == 2}" class="bi bi-trophy text-secondary"> Rank Silver</i>
-                            <i th:if="${khachHang.idRank.id == 3}" class="bi bi-trophy text-danger"> Rank Silver</i>
+                            <i th:if="${khachHang.idRank.id == 3}" class="bi bi-trophy text-danger"> Rank Gold</i>
                             <input type="hidden" id="mucGiam" th:value="${khachHang.idRank.mucGiam}" />
                             <input type="hidden" id="toiDa" th:value="${khachHang.idRank.mucGiamToiDa}" />
                             <span id="discountRank">- 0đ</span>

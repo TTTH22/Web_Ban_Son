@@ -63,7 +63,7 @@ public class KhachHang {
 
     @Min(value = 0, message = "Tổng chi tiêu không được âm")
     @Column(name = "tongChiTieu")
-    private Integer tongChiTieu;
+    private Double tongChiTieu;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idRank")

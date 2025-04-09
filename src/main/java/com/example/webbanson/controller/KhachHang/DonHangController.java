@@ -1,9 +1,9 @@
 package com.example.webbanson.controller.KhachHang;
 
-import com.example.webbanson.model.DanhGia;
-import com.example.webbanson.model.HoaDon;
+import com.example.webbanson.model.*;
 import com.example.webbanson.service.DanhGiaService;
 import com.example.webbanson.service.HoaDonService;
+import com.example.webbanson.service.RankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,11 +24,15 @@ public class DonHangController {
     @Autowired
     private DanhGiaService danhGiaService;
 
+    @Autowired
+    private RankService rankService;
+
     @PostMapping("/huy-don/{id}")
     public ResponseEntity<?> huyDon(@PathVariable Integer id, @RequestParam String lyDo) {
         HoaDon hoaDon = hoaDonService.getOneBanHangOnlineById(id);
         hoaDon.setTrangThai(6);
         hoaDon.setLyDoHuy(lyDo);
+        hoaDon.setNgayHuyHang(LocalDate.now());
         hoaDonService.save(hoaDon);
         return ResponseEntity.ok("Đã hủy");
     }
@@ -39,6 +43,24 @@ public class DonHangController {
         hoaDon.setTrangThai(3);
         hoaDon.setNgayNhan(LocalDate.now());
         hoaDon.setDanhGia(false);
+        List<HoaDonChiTiet> listHoaDonChiTiet = hoaDon.getListHoaDonChiTiet();
+        for (HoaDonChiTiet hoaDonChiTiet : listHoaDonChiTiet) {
+            SanPhamChiTiet sanPhamChiTiet = hoaDonChiTiet.getIdSanPhamChiTiet();
+            sanPhamChiTiet.setSoLuong(sanPhamChiTiet.getSoLuong() - hoaDonChiTiet.getSoLuong());
+            sanPhamChiTiet.setSoLuongBan(sanPhamChiTiet.getSoLuongBan() + hoaDonChiTiet.getSoLuong());
+        }
+        KhachHang khachHang = hoaDon.getIdKhachHang();
+        khachHang.setTongChiTieu(khachHang.getTongChiTieu() + hoaDon.getTongTien());
+        Rank rankBronze = rankService.getRankById(1);
+        Rank rankSiliver = rankService.getRankById(2);
+        Rank rankGold = rankService.getRankById(3);
+        if(khachHang.getTongChiTieu() >= 5000000) {
+            khachHang.setIdRank(rankBronze);
+        } else if(khachHang.getTongChiTieu() >= 10000000) {
+            khachHang.setIdRank(rankSiliver);
+        } else {
+            khachHang.setIdRank(rankGold);
+        }
         hoaDonService.save(hoaDon);
         return ResponseEntity.ok("Đã nhận");
     }
@@ -64,6 +86,7 @@ public class DonHangController {
         hoaDon.setTrangThai(4);
         hoaDon.setLyDoHoanHang(lyDo);
         hoaDon.setGhiChuHoanHang(moTa);
+        hoaDon.setNgayHoanHang(LocalDate.now());
         hoaDonService.save(hoaDon);
         return ResponseEntity.ok("Yêu cầu hoàn hàng đã được ghi nhận");
     }

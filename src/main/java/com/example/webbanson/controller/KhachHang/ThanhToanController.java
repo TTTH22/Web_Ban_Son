@@ -154,7 +154,7 @@ public class ThanhToanController {
             Double total = Double.parseDouble(request.get("total").toString());
             Double shipFee = Double.parseDouble(request.get("shipFee").toString());
             String randomNumber = "HD" + String.format("%08d", new Random().nextInt(100000000));
-            HoaDon hoaDon = new HoaDon(null, randomNumber, null, khachHang, diaChi, voucherProduct, voucherShip, LocalDate.now(), null, total, null, "Thanh toán khi nhận hàng", true, shipFee, 1, null, null, null, null, null);
+            HoaDon hoaDon = new HoaDon(null, randomNumber, null, khachHang, diaChi, voucherProduct, voucherShip, LocalDate.now(), null, total, null, "Thanh toán khi nhận hàng", true, shipFee, 1, null, null, null, null, null, null, null);
             hoaDonService.save(hoaDon);
 
             Map<String, Object> response = new HashMap<>();
