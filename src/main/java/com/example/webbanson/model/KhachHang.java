@@ -65,6 +65,9 @@ public class KhachHang {
     @Column(name = "tongChiTieu")
     private Double tongChiTieu;
 
+    @Column(name = "ngaytao")
+    private LocalDate ngayTao;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idRank")
     private Rank idRank;

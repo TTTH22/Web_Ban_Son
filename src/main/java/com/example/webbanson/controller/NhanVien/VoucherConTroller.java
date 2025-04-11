@@ -159,6 +159,10 @@ public class VoucherConTroller {
     public String addKhachHangVoucher(Model model) {
         model.addAttribute("listVoucher", voucherService.getAll());
         model.addAttribute("listKhachHang", khachHangService.fillAll());
+        model.addAttribute("listKhachHangNoRank", khachHangService.fillAllNoRank());
+        model.addAttribute("listKhachHangRankBronze", khachHangService.fillAllRankBronze());
+        model.addAttribute("listKhachHangRankSiliver", khachHangService.fillAllRankSiliver());
+        model.addAttribute("listKhachHangRankGold", khachHangService.fillAllRankGold());
         return "ViewNhanVien/Voucher/AddKhachHangVoucher";
     }
 }

@@ -209,6 +209,7 @@
         .add-option input[type="radio"] {
             margin-right: 10px;
         }
+
         .summary-panel {
             background-color: var(--light-bg);
             padding: 15px;
@@ -302,27 +303,30 @@
             color: var(--primary-color);
         }
 
-        .preview-content {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+        .selected-voucher {
+            display: inline-flex;
+            align-items: center;
+            background-color: #f3f4f6; /* xám nhạt */
+            color: #111827; /* xám đậm */
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 14px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        .preview-item {
-            background-color: var(--light-bg);
-            padding: 5px 10px;
-            border-radius: 4px;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
+        .voucher-label {
+            font-weight: 500;
         }
 
         .remove-btn {
-            color: #dc3545;
+            margin-left: 8px;
+            color: #e11d48; /* đỏ */
             cursor: pointer;
-            font-size: 16px;
+            font-weight: bold;
         }
+
+
     </style>
 </head>
 <body>
@@ -352,7 +356,7 @@
             </div>
             <div class="voucher-list">
                 <div th:each="voucher : ${listVoucher}">
-                    <div class="voucher-item" th:if="${voucher.loaiGiam}">
+                    <div class="voucher-item" th:attr="data-id=${voucher.id}" th:if="${voucher.loaiGiam}">
                         <input type="checkbox" class="checkbox mt-1">
                         <div class="voucher-info">
                             <div class="voucher-name font-semibold" th:text="${voucher.ten}"></div>
@@ -366,7 +370,7 @@
                              alt="Voucher"
                              style="width: 60px; height: 60px;" class="me-3 rounded">
                     </div>
-                    <div class="voucher-item" th:if="${voucher.loaiGiam == false}">
+                    <div class="voucher-item" th:attr="data-id=${voucher.id}" th:if="${voucher.loaiGiam == false}">
                         <input type="checkbox" class="checkbox">
                         <div class="voucher-info">
                             <div class="voucher-name font-semibold" th:text="${voucher.ten}"></div>
@@ -384,20 +388,8 @@
             </div>
 
             <div class="preview-mode">
-                <div class="preview-title">Voucher đã chọn (3)</div>
-                <div class="preview-content">
-                    <div class="preview-item">
-                        Giảm 50.000đ <span class="badge badge-gold">Vàng+</span> <span class="remove-btn">&times;</span>
-                    </div>
-                    <div class="preview-item">
-                        Freeship Extra <span class="badge badge-bronze">Đồng+</span> <span
-                            class="remove-btn">&times;</span>
-                    </div>
-                    <div class="preview-item">
-                        Giảm 15% đơn hàng <span class="badge badge-bronze">Đồng+</span> <span
-                            class="remove-btn">&times;</span>
-                    </div>
-                </div>
+                <div class="preview-title">Voucher đã chọn (0)</div>
+                <div id="selected-voucher-list" class="flex flex-wrap gap-2 mt-2"></div>
             </div>
         </div>
 
@@ -415,17 +407,18 @@
                 <div class="filters">
                     <div class="filter-item">
                         <div class="filter-label">Hạng thành viên:</div>
-                        <select>
+                        <select id="hangKhachHang">
                             <option value="">Tất cả</option>
-                            <option value="gold">Vàng</option>
-                            <option value="silver">Bạc</option>
-                            <option value="bronze">Đồng</option>
+                            <option value="null">Không có rank</option>
+                            <option value="3">Vàng</option>
+                            <option value="2">Bạc</option>
+                            <option value="1">Đồng</option>
                         </select>
                     </div>
 
                     <div class="filter-item">
                         <div class="filter-label">Tổng chi tiêu:</div>
-                        <select>
+                        <select id="chiTieuKhachHang">
                             <option value="">Tất cả</option>
                             <option value="high">Trên 10.000.000đ</option>
                             <option value="medium">5.000.000đ - 10.000.000đ</option>
@@ -435,36 +428,40 @@
 
                     <div class="filter-item">
                         <div class="filter-label">Thời gian đăng ký:</div>
-                        <select>
+                        <select id="thoigianKhachHang">
                             <option value="">Tất cả</option>
                             <option value="new">Mới (30 ngày qua)</option>
-                            <option value="month">Tháng này</option>
-                            <option value="quarter">Quý này</option>
+                            <option value="month">Từ 1 - 1 năm</option>
+                            <option value="quarter">Trên 1 năm</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="customer-count">
                     <span>Số khách hàng phù hợp: </span>
-                    <span class="badge badge-count">1,254</span>
+                    <span class="badge badge-count" th:text="${listKhachHang.size()}"></span>
                 </div>
 
                 <div class="summary-panel">
                     <div class="summary-item">
                         <div>Khách hàng hạng Vàng:</div>
-                        <div>245</div>
+                        <div th:text="${listKhachHangRankGold.size()}"></div>
                     </div>
                     <div class="summary-item">
                         <div>Khách hàng hạng Bạc:</div>
-                        <div>389</div>
+                        <div th:text="${listKhachHangRankSiliver.size()}"></div>
                     </div>
                     <div class="summary-item">
                         <div>Khách hàng hạng Đồng:</div>
-                        <div>620</div>
+                        <div th:text="${listKhachHangRankBronze.size()}"></div>
+                    </div>
+                    <div class="summary-item">
+                        <div>Khách hàng không có rank:</div>
+                        <div th:text="${listKhachHangNoRank.size()}"></div>
                     </div>
                     <div class="summary-item">
                         <div>Tổng khách hàng:</div>
-                        <div>1,254</div>
+                        <div th:text="${listKhachHang.size()}"></div>
                     </div>
                 </div>
             </div>
@@ -548,30 +545,99 @@
 </div>
 
 <script>
-    // Chức năng chuyển đổi giữa hai tùy chọn thêm voucher
-    const addOptions = document.querySelectorAll('.add-option');
 
-    addOptions.forEach(option => {
-        option.addEventListener('click', function () {
-            // Xóa lớp active từ tất cả các tùy chọn
-            addOptions.forEach(opt => opt.classList.remove('active'));
+    //Hiển thị voucher chọn
+    function updateVoucherItem(cb) {
+        const selectedList = document.getElementById('selected-voucher-list');
+        const voucherItem = cb.closest('.voucher-item');
+        const name = voucherItem.querySelector('.voucher-name')?.innerText || 'Voucher';
+        const idVoucher = voucherItem.getAttribute('data-id');
 
-            // Thêm lớp active cho tùy chọn được chọn
-            this.classList.add('active');
+        if (cb.checked) {
+            // Nếu chưa có thì mới thêm
+            if (!document.getElementById(`voucher-${idVoucher}`)) {
+                const div = document.createElement('div');
+                div.className = 'selected-voucher';
+                div.id = `${idVoucher}`;
+                div.innerHTML = `
+                    <span class="voucher-label">${name}</span>
+                    <span class="remove-btn" onclick="removeVoucher('${idVoucher}')">✕</span>
+                `;
+                selectedList.appendChild(div);
+            }
+        } else {
+            // Nếu bỏ check thì xóa phần hiển thị
+            document.getElementById(`voucher-${idVoucher}`)?.remove();
+        }
+        updateVoucherCount();
+    }
 
-            // Chọn radio button trong tùy chọn này
-            const radio = this.querySelector('input[type="radio"]');
-            radio.checked = true;
+    function updateVoucherCount() {
+        const count = document.querySelectorAll('.selected-voucher').length;
+        document.querySelector('.preview-title').textContent = `Voucher đã chọn (${count})`;
+        console.log(count);
+    }
 
-            // Hiển thị hoặc ẩn các voucher dựa trên lựa chọn
-            updateVoucherDisplay(radio.id === 'add-by-rank');
+    function removeVoucher(idVoucher) {
+        document.getElementById(`voucher-${idVoucher}`)?.remove();
+        // Bỏ check checkbox tương ứng
+        document.querySelector(`.voucher-item[data-id="${idVoucher}"] .checkbox`).checked = false;
+        updateVoucherCount();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('.voucher-item .checkbox');
+
+        checkboxes.forEach((cb) => {
+            // Cập nhật hiển thị nếu có sẵn checkbox đã check
+            updateVoucherItem(cb);
+
+            // Gắn sự kiện change để cập nhật động khi tick/untick
+            cb.addEventListener('change', () => {
+                updateVoucherItem(cb);
+            });
         });
     });
 
-    function updateVoucherDisplay(byRank) {
-        console.log(`Hiển thị voucher ${byRank ? 'theo rank' : 'cho tất cả khách hàng'}`);
-        // Trong ứng dụng thực tế, code ở đây sẽ cập nhật UI và thông tin tóm tắt
-    }
+    //Hiển thị khách hàng chọn
+    document.addEventListener('DOMContentLoaded', function () {
+        const rankSelect = document.getElementById('hangKhachHang');
+        const spendingSelect = document.getElementById('chiTieuKhachHang');
+        const timeSelect = document.getElementById('thoigianKhachHang');
+
+        const handleFilterChange = () => {
+            const rank = rankSelect.value;
+            const spending = spendingSelect.value;
+            const time = timeSelect.value;
+
+            const requestData = {
+                rank: rank,
+                spending: spending,
+                time: time
+            };
+
+            fetch('/nhan-vien/voucher/khach-hang/filter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Dữ liệu khách hàng lọc:', data);
+                    // TODO: cập nhật lại danh sách khách hàng nếu cần
+                })
+                .catch(error => {
+                    console.error('Lỗi khi gọi API:', error);
+                });
+        };
+
+        rankSelect.addEventListener('change', handleFilterChange);
+        spendingSelect.addEventListener('change', handleFilterChange);
+        timeSelect.addEventListener('change', handleFilterChange);
+    });
+
 
     // Chức năng chuyển đổi giữa các tab
     const tabs = document.querySelectorAll('.tab');
@@ -639,19 +705,6 @@
             updateVoucherCount();
         });
     });
-
-    function updateVoucherCount() {
-        const count = document.querySelectorAll('.preview-item').length;
-        document.querySelector('.preview-title').textContent = `Voucher đã chọn (${count})`;
-
-        // Cập nhật thông tin tóm tắt
-        updateSummaryInfo();
-    }
-
-    function updateSummaryInfo() {
-        // Trong ứng dụng thực tế, code ở đây sẽ cập nhật thông tin tóm tắt
-        console.log('Cập nhật thông tin tóm tắt');
-    }
 
     // Theo dõi checkbox khách hàng
     const customerCheckboxes = document.querySelectorAll('.customer-list .checkbox');
