@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thêm Voucher Cho Khách Hàng</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <style>
         :root {
             --primary-color: #952828;
@@ -326,225 +330,352 @@
             font-weight: bold;
         }
 
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #222E3C;
+            color: white;
+            position: fixed;
+            padding: 20px;
+        }
 
+        .sidebar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            background: #1B2531;
+            border-radius: 5px;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #0D6EFD;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+
+        .container {
+            margin-left: 320px;
+            padding: 20px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <header>
-        <h1>Thêm Voucher Cho Khách Hàng</h1>
-    </header>
+<div class="d-flex">
+    <!-- Sidebar -->
+    <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
 
-    <div class="info-box">
-        Thêm voucher cho khách hàng hiện có trong hệ thống. Bạn có thể thêm voucher cho tất cả khách hàng hoặc thêm theo
-        mức rank cụ thể.
-    </div>
+    <div class="container">
+        <header>
+            <h1>Thêm Voucher Cho Khách Hàng</h1>
+        </header>
 
-    <div class="main-content">
-        <div class="card">
-            <div class="card-header">
-                <span>Chọn voucher cần thêm</span>
-            </div>
-            <div class="search-box">
-                <input type="search" placeholder="Tìm kiếm voucher...">
-                <select>
-                    <option value="">Tất cả thể loại</option>
-                    <option value="discount">Giảm giá</option>
-                    <option value="shipping">Freeship</option>
-                    <option value="special">Ưu đãi đặc biệt</option>
-                </select>
-            </div>
-            <div class="voucher-list">
-                <div th:each="voucher : ${listVoucher}">
-                    <div class="voucher-item" th:attr="data-id=${voucher.id}" th:if="${voucher.loaiGiam}">
-                        <input type="checkbox" class="checkbox mt-1">
-                        <div class="voucher-info">
-                            <div class="voucher-name font-semibold" th:text="${voucher.ten}"></div>
-                            <div class="voucher-value">50.000đ</div>
-                            <div class="voucher-desc text-sm text-gray-600"
-                                 th:text="'Áp dụng cho đơn hàng từ ' + ${#numbers.formatCurrency(voucher.dieuKien)}"></div>
-                        </div>
-                        <img th:if="${voucher.hinhThucGiam}" src="/img/ThanhToan/VoucherSanPham.png" alt="Voucher"
-                             style="width: 60px; height: 60px;" class="me-3 rounded">
-                        <img th:if="${voucher.hinhThucGiam == false}" src="/img/ThanhToan/VoucherVanChuyen.png"
-                             alt="Voucher"
-                             style="width: 60px; height: 60px;" class="me-3 rounded">
-                    </div>
-                    <div class="voucher-item" th:attr="data-id=${voucher.id}" th:if="${voucher.loaiGiam == false}">
-                        <input type="checkbox" class="checkbox">
-                        <div class="voucher-info">
-                            <div class="voucher-name font-semibold" th:text="${voucher.ten}"></div>
-                            <div class="voucher-value" th:text="'Giảm ' + ${voucher.giaTriGiam} + '% đơn hàng'"></div>
-                            <div class="voucher-desc" th:text="'Tối đa ' + ${#numbers.formatCurrency(voucher.giaTriGiamToiDa)} +
-                         ', đơn tối thiểu ' + ${#numbers.formatCurrency(voucher.dieuKien)}"></div>
-                        </div>
-                        <img th:if="${voucher.hinhThucGiam}" src="/img/ThanhToan/VoucherSanPham.png" alt="Voucher"
-                             style="width: 60px; height: 60px;" class="me-3 rounded">
-                        <img th:if="${voucher.hinhThucGiam == false}" src="/img/ThanhToan/VoucherVanChuyen.png"
-                             alt="Voucher"
-                             style="width: 60px; height: 60px;" class="me-3 rounded">
-                    </div>
-                </div>
-            </div>
-
-            <div class="preview-mode">
-                <div class="preview-title">Voucher đã chọn (0)</div>
-                <div id="selected-voucher-list" class="flex flex-wrap gap-2 mt-2"></div>
-            </div>
+        <div class="info-box">
+            Thêm voucher cho khách hàng hiện có trong hệ thống. Bạn có thể thêm voucher cho tất cả khách hàng hoặc thêm
+            theo
+            mức rank cụ thể.
         </div>
 
-        <div class="card">
-            <div class="card-header">
-                <span>Khách hàng nhận voucher</span>
-            </div>
-
-            <div class="tabs">
-                <div class="tab active" data-tab="filter">Lọc khách hàng</div>
-                <div class="tab" data-tab="select">Chọn thủ công</div>
-            </div>
-
-            <div class="tab-content active" id="filter-tab">
-                <div class="filters">
-                    <div class="filter-item">
-                        <div class="filter-label">Hạng thành viên:</div>
-                        <select id="hangKhachHang">
-                            <option value="">Tất cả</option>
-                            <option value="null">Không có rank</option>
-                            <option value="3">Vàng</option>
-                            <option value="2">Bạc</option>
-                            <option value="1">Đồng</option>
-                        </select>
-                    </div>
-
-                    <div class="filter-item">
-                        <div class="filter-label">Tổng chi tiêu:</div>
-                        <select id="chiTieuKhachHang">
-                            <option value="">Tất cả</option>
-                            <option value="high">Trên 10.000.000đ</option>
-                            <option value="medium">5.000.000đ - 10.000.000đ</option>
-                            <option value="low">Dưới 5.000.000đ</option>
-                        </select>
-                    </div>
-
-                    <div class="filter-item">
-                        <div class="filter-label">Thời gian đăng ký:</div>
-                        <select id="thoigianKhachHang">
-                            <option value="">Tất cả</option>
-                            <option value="new">Mới (30 ngày qua)</option>
-                            <option value="month">Từ 1 - 1 năm</option>
-                            <option value="quarter">Trên 1 năm</option>
-                        </select>
-                    </div>
+        <div class="main-content">
+            <div class="card">
+                <div class="card-header">
+                    <span>Chọn voucher cần thêm</span>
                 </div>
-
-                <div class="customer-count">
-                    <span>Số khách hàng phù hợp: </span>
-                    <span class="badge badge-count" th:text="${listKhachHang.size()}"></span>
-                </div>
-
-                <div class="summary-panel">
-                    <div class="summary-item">
-                        <div>Khách hàng hạng Vàng:</div>
-                        <div th:text="${listKhachHangRankGold.size()}"></div>
-                    </div>
-                    <div class="summary-item">
-                        <div>Khách hàng hạng Bạc:</div>
-                        <div th:text="${listKhachHangRankSiliver.size()}"></div>
-                    </div>
-                    <div class="summary-item">
-                        <div>Khách hàng hạng Đồng:</div>
-                        <div th:text="${listKhachHangRankBronze.size()}"></div>
-                    </div>
-                    <div class="summary-item">
-                        <div>Khách hàng không có rank:</div>
-                        <div th:text="${listKhachHangNoRank.size()}"></div>
-                    </div>
-                    <div class="summary-item">
-                        <div>Tổng khách hàng:</div>
-                        <div th:text="${listKhachHang.size()}"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="select-tab">
                 <div class="search-box">
-                    <input type="text" placeholder="Tìm kiếm khách hàng...">
+                    <input type="search" placeholder="Tìm kiếm voucher...">
+                    <select>
+                        <option value="">Tất cả thể loại</option>
+                        <option value="discount">Giảm giá</option>
+                        <option value="shipping">Freeship</option>
+                        <option value="special">Ưu đãi đặc biệt</option>
+                    </select>
                 </div>
-
-                <div class="customer-list">
-                    <div class="customer-item">
-                        <input type="checkbox" class="checkbox">
-                        <div class="customer-info">
-                            <div class="customer-name">Nguyễn Văn A</div>
-                            <div class="customer-id">Mã KH: KH00123</div>
+                <div class="voucher-list">
+                    <div th:each="voucher : ${listVoucher}">
+                        <div class="voucher-item" th:attr="data-id=${voucher.id}" th:if="${voucher.loaiGiam}">
+                            <input type="checkbox" class="checkbox mt-1">
+                            <div class="voucher-info">
+                                <div class="voucher-name font-semibold" th:text="${voucher.ten}"></div>
+                                <div class="voucher-value">50.000đ</div>
+                                <div class="voucher-desc text-sm text-gray-600"
+                                     th:text="'Áp dụng cho đơn hàng từ ' + ${#numbers.formatCurrency(voucher.dieuKien)}"></div>
+                            </div>
+                            <img th:if="${voucher.hinhThucGiam}" src="/img/ThanhToan/VoucherSanPham.png" alt="Voucher"
+                                 style="width: 60px; height: 60px;" class="me-3 rounded">
+                            <img th:if="${voucher.hinhThucGiam == false}" src="/img/ThanhToan/VoucherVanChuyen.png"
+                                 alt="Voucher"
+                                 style="width: 60px; height: 60px;" class="me-3 rounded">
                         </div>
-                        <div class="badge badge-gold">Vàng</div>
-                    </div>
-                    <div class="customer-item">
-                        <input type="checkbox" class="checkbox">
-                        <div class="customer-info">
-                            <div class="customer-name">Trần Thị B</div>
-                            <div class="customer-id">Mã KH: KH00124</div>
+                        <div class="voucher-item" th:attr="data-id=${voucher.id}" th:if="${voucher.loaiGiam == false}">
+                            <input type="checkbox" class="checkbox">
+                            <div class="voucher-info">
+                                <div class="voucher-name font-semibold" th:text="${voucher.ten}"></div>
+                                <div class="voucher-value"
+                                     th:text="'Giảm ' + ${voucher.giaTriGiam} + '% đơn hàng'"></div>
+                                <div class="voucher-desc" th:text="'Tối đa ' + ${#numbers.formatCurrency(voucher.giaTriGiamToiDa)} +
+                         ', đơn tối thiểu ' + ${#numbers.formatCurrency(voucher.dieuKien)}"></div>
+                            </div>
+                            <img th:if="${voucher.hinhThucGiam}" src="/img/ThanhToan/VoucherSanPham.png" alt="Voucher"
+                                 style="width: 60px; height: 60px;" class="me-3 rounded">
+                            <img th:if="${voucher.hinhThucGiam == false}" src="/img/ThanhToan/VoucherVanChuyen.png"
+                                 alt="Voucher"
+                                 style="width: 60px; height: 60px;" class="me-3 rounded">
                         </div>
-                        <div class="badge badge-silver">Bạc</div>
-                    </div>
-                    <div class="customer-item">
-                        <input type="checkbox" class="checkbox">
-                        <div class="customer-info">
-                            <div class="customer-name">Lê Văn C</div>
-                            <div class="customer-id">Mã KH: KH00125</div>
-                        </div>
-                        <div class="badge badge-bronze">Đồng</div>
-                    </div>
-                    <div class="customer-item">
-                        <input type="checkbox" class="checkbox">
-                        <div class="customer-info">
-                            <div class="customer-name">Phạm Thị D</div>
-                            <div class="customer-id">Mã KH: KH00126</div>
-                        </div>
-                        <div class="badge badge-gold">Vàng</div>
-                    </div>
-                    <div class="customer-item">
-                        <input type="checkbox" class="checkbox">
-                        <div class="customer-info">
-                            <div class="customer-name">Hoàng Văn E</div>
-                            <div class="customer-id">Mã KH: KH00127</div>
-                        </div>
-                        <div class="badge badge-silver">Bạc</div>
                     </div>
                 </div>
 
-                <div class="customer-count">
-                    <span>Đã chọn: </span>
-                    <span class="badge badge-count">0</span>
-                    <span> / 5 khách hàng</span>
+                <div class="preview-mode">
+                    <div class="preview-title">Voucher đã chọn (0)</div>
+                    <div id="selected-voucher-list" class="flex flex-wrap gap-2 mt-2"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <span>Khách hàng nhận voucher</span>
+                </div>
+
+                <div class="tabs">
+                    <div class="tab active" data-tab="filter">Lọc khách hàng</div>
+                    <div class="tab" data-tab="select">Chọn thủ công</div>
+                </div>
+
+                <div class="tab-content active" id="filter-tab">
+                    <div class="filters">
+                        <div class="filter-item">
+                            <div class="filter-label">Hạng thành viên:</div>
+                            <select id="hangKhachHang">
+                                <option value="0">Tất cả</option>
+                                <option value="null">Không có rank</option>
+                                <option value="3">Vàng</option>
+                                <option value="2">Bạc</option>
+                                <option value="1">Đồng</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <div class="filter-label">Tổng chi tiêu:</div>
+                            <select id="chiTieuKhachHang">
+                                <option value="no">Tất cả</option>
+                                <option value="high">Trên 10.000.000đ</option>
+                                <option value="medium">5.000.000đ - 10.000.000đ</option>
+                                <option value="low">Dưới 5.000.000đ</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-item">
+                            <div class="filter-label">Thời gian đăng ký:</div>
+                            <select id="thoigianKhachHang">
+                                <option value="no">Tất cả</option>
+                                <option value="new">Mới (30 ngày qua)</option>
+                                <option value="month">Từ 6 tháng - 1 năm</option>
+                                <option value="quarter">Trên 1 năm</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="customer-count">
+                        <span>Số khách hàng phù hợp: </span>
+                        <span id="countKhacHangPhuHop" class="badge badge-count"
+                              th:text="${listKhachHang.size()}"></span>
+                    </div>
+
+                    <div class="summary-panel">
+                        <div class="summary-item">
+                            <div>Khách hàng hạng Vàng:</div>
+                            <div th:text="${listKhachHangRankGold.size()}"></div>
+                        </div>
+                        <div class="summary-item">
+                            <div>Khách hàng hạng Bạc:</div>
+                            <div th:text="${listKhachHangRankSiliver.size()}"></div>
+                        </div>
+                        <div class="summary-item">
+                            <div>Khách hàng hạng Đồng:</div>
+                            <div th:text="${listKhachHangRankBronze.size()}"></div>
+                        </div>
+                        <div class="summary-item">
+                            <div>Khách hàng không có rank:</div>
+                            <div th:text="${listKhachHangNoRank.size()}"></div>
+                        </div>
+                        <div class="summary-item">
+                            <div>Tổng khách hàng:</div>
+                            <div th:text="${listKhachHang.size()}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="select-tab">
+                    <div class="search-box">
+                        <input type="text" placeholder="Tìm kiếm khách hàng...">
+                    </div>
+
+                    <div class="customer-list">
+                        <div class="customer-item">
+                            <input type="checkbox" class="checkbox">
+                            <div class="customer-info">
+                                <div class="customer-name">Nguyễn Văn A</div>
+                                <div class="customer-id">Mã KH: KH00123</div>
+                            </div>
+                            <div class="badge badge-gold">Vàng</div>
+                        </div>
+                        <div class="customer-item">
+                            <input type="checkbox" class="checkbox">
+                            <div class="customer-info">
+                                <div class="customer-name">Trần Thị B</div>
+                                <div class="customer-id">Mã KH: KH00124</div>
+                            </div>
+                            <div class="badge badge-silver">Bạc</div>
+                        </div>
+                        <div class="customer-item">
+                            <input type="checkbox" class="checkbox">
+                            <div class="customer-info">
+                                <div class="customer-name">Lê Văn C</div>
+                                <div class="customer-id">Mã KH: KH00125</div>
+                            </div>
+                            <div class="badge badge-bronze">Đồng</div>
+                        </div>
+                        <div class="customer-item">
+                            <input type="checkbox" class="checkbox">
+                            <div class="customer-info">
+                                <div class="customer-name">Phạm Thị D</div>
+                                <div class="customer-id">Mã KH: KH00126</div>
+                            </div>
+                            <div class="badge badge-gold">Vàng</div>
+                        </div>
+                        <div class="customer-item">
+                            <input type="checkbox" class="checkbox">
+                            <div class="customer-info">
+                                <div class="customer-name">Hoàng Văn E</div>
+                                <div class="customer-id">Mã KH: KH00127</div>
+                            </div>
+                            <div class="badge badge-silver">Bạc</div>
+                        </div>
+                    </div>
+
+                    <div class="customer-count">
+                        <span>Đã chọn: </span>
+                        <span class="badge badge-count">0</span>
+                        <span> / 5 khách hàng</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="summary-panel">
-        <div class="summary-item">
-            <div>Tổng số voucher sẽ thêm:</div>
-            <div>3</div>
+        <div class="action-buttons">
+            <button class="secondary">Hủy</button>
+            <button class="primary">Xác nhận thêm voucher</button>
         </div>
-        <div class="summary-item">
-            <div>Số khách hàng nhận voucher:</div>
-            <div>1,254</div>
-        </div>
-        <div class="summary-item">
-            <div>Tổng voucher sẽ được tạo:</div>
-            <div>3,762</div>
-        </div>
-    </div>
-
-    <div class="action-buttons">
-        <button class="secondary">Hủy</button>
-        <button class="primary">Xác nhận thêm voucher</button>
     </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
+    // Xử lý nút Xác nhận
+    document.querySelector('.primary').addEventListener('click', function () {
+        // Lấy danh sách voucher đã chọn
+        const selectedVouchers = Array.from(document.querySelectorAll('.voucher-list .checkbox:checked')).map(cb => {
+            return cb.closest('.voucher-item').getAttribute('data-id');
+        });
+
+        // Xác định tab hiện tại
+        const isFilterTab = document.getElementById('filter-tab').classList.contains('active');
+
+        let selectedCustomers = [];
+
+        if (isFilterTab) {
+            // Nếu đang ở tab lọc, lấy danh sách từ filter
+            const rank = document.getElementById('hangKhachHang').value;
+            const spending = document.getElementById('chiTieuKhachHang').value;
+            const time = document.getElementById('thoigianKhachHang').value;
+
+            fetch('/nhan-vien/voucher/khach-hang/filter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({rank, spending, time})
+            })
+                .then(res => res.json())
+                .then(data => {
+                    selectedCustomers = data.map(kh => kh.id); // lấy id khách hàng
+                    sendVoucherData(selectedVouchers, selectedCustomers);
+                });
+        } else {
+            // Nếu đang ở tab chọn thủ công
+            selectedCustomers = Array.from(document.querySelectorAll('#select-tab .customer-list .checkbox:checked')).map(cb => {
+                return cb.closest('.customer-item').querySelector('.customer-id').textContent.replace('Mã KH: ', '');
+            });
+
+            sendVoucherData(selectedVouchers, selectedCustomers);
+        }
+    });
+
+    function sendVoucherData(vouchers, customers) {
+        fetch('/nhan-vien/voucher/gan-cho-khach-hang', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                voucherIds: vouchers,
+                customerIds: customers
+            })
+        })
+            .then(res => res.json())
+            .then(result => {
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công!',
+                        html: `
+                        <p><strong>Tổng số lần áp dụng: </strong> ${result.countVoucherApDung}</p>
+                        <p><strong>Số lượt áp dụng không thành công (trùng):</strong> ${result.countVoucherKoApDung}</p>
+                        <p><strong>Số lượt áp dụng thành công:</strong> ${result.countVoucherAll}</p>
+                    `
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Thất bại',
+                        text: 'Có lỗi xảy ra khi thêm voucher'
+                    });
+                }
+            })
+            .catch(err => {
+                console.error('Lỗi khi gửi dữ liệu:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Có lỗi xảy ra khi gửi dữ liệu'
+                });
+            });
+    }
+
+    // Xử lý nút Hủy
+    document.querySelector('.secondary').addEventListener('click', function () {
+        // Bỏ check voucher
+        document.querySelectorAll('.voucher-list .checkbox').forEach(cb => {
+            cb.checked = false;
+        });
+
+        // Xóa hiển thị voucher đã chọn
+        document.getElementById('selected-voucher-list').innerHTML = '';
+        updateVoucherCount();
+
+        updateSelectedCustomerCount();
+    });
 
     //Hiển thị voucher chọn
     function updateVoucherItem(cb) {
@@ -579,7 +710,7 @@
     }
 
     function removeVoucher(idVoucher) {
-        document.getElementById(`voucher-${idVoucher}`)?.remove();
+        document.getElementById(`${idVoucher}`)?.remove();
         // Bỏ check checkbox tương ứng
         document.querySelector(`.voucher-item[data-id="${idVoucher}"] .checkbox`).checked = false;
         updateVoucherCount();
@@ -626,7 +757,8 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log('Dữ liệu khách hàng lọc:', data);
-                    // TODO: cập nhật lại danh sách khách hàng nếu cần
+                    const countKhachHangPhuHop = document.getElementById("countKhacHangPhuHop");
+                    countKhachHangPhuHop.textContent = data.length;
                 })
                 .catch(error => {
                     console.error('Lỗi khi gọi API:', error);
@@ -636,6 +768,8 @@
         rankSelect.addEventListener('change', handleFilterChange);
         spendingSelect.addEventListener('change', handleFilterChange);
         timeSelect.addEventListener('change', handleFilterChange);
+
+        handleFilterChange();
     });
 
 
@@ -718,6 +852,7 @@
         const count = Array.from(document.querySelectorAll('.customer-list .checkbox')).filter(cb => cb.checked).length;
         document.querySelector('#select-tab .badge-count').textContent = count;
     }
+
 </script>
 </body>
 </html>

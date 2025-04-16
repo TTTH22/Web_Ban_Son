@@ -3,14 +3,14 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.header{
-    position: relative;
-}
+/*.header{*/
+/*    position: relative;*/
+/*}*/
 
 
 /* Navbar cố định trên cùng */
 .navbar {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -29,13 +29,16 @@ body {
     background: white;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     height: 100px;
-    .nav-link {
-        margin-left: 50px;
-        font-size: 20px;
-        font-weight: bolder;
-        color: black; /* Đổi màu chữ để dễ nhìn */
-    }
 }
+
+/* Viết riêng quy tắc cho nav-link khi navbar có class scrolled */
+.navbar.scrolled .nav-link {
+    margin-left: 50px;
+    font-size: 20px;
+    font-weight: bolder;
+    color: black; /* Đổi màu chữ để dễ nhìn */
+}
+
 
 /* Carousel full màn hình */
 #bannerCarousel {

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Entity
@@ -30,6 +32,9 @@ public class DanhGia {
 
     @Column(name = "sao")
     private Integer sao;
+
+    @Column(name = "ngayTao")
+    private LocalDate ngayTao;
 
     @Column(name = "trangThai")
     private Boolean trangThai;

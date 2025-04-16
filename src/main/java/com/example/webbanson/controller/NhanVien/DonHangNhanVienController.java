@@ -3,6 +3,7 @@ package com.example.webbanson.controller.NhanVien;
 import com.example.webbanson.model.*;
 import com.example.webbanson.service.HoaDonService;
 import com.example.webbanson.service.RankService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class DonHangNhanVienController {
     private RankService rankService;
 
     @PutMapping("/xac-nhan/{id}")
-    public ResponseEntity<?> xacNhanDonHang(@PathVariable Integer id) {
+    public ResponseEntity<?> xacNhanDonHang(@PathVariable Integer id, HttpSession session) {
         HoaDon hoaDon = hoaDonService.getOneBanHangOnlineById(id);
         hoaDon.setTrangThai(2);
         hoaDonService.save(hoaDon);

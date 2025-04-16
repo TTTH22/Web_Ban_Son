@@ -17,12 +17,26 @@
     <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/QuangCao.css}">
     <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/Blogs.css}">
     <link rel="stylesheet" th:href="@{/css/TrangChuKhachHang/LienHe.css}">
+    <style>
+        /* Navbar cố định trên cùng */
+        .navbar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1050;
+            background: transparent;
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: none;
+            transform: translateY(0); /* Hiện ban đầu */
+        }
+    </style>
 </head>
 <body>
 
 <!-- Nhúng Header -->
-<th:block th:replace="~{fragments/KhachHang/HeaderKhachHang :: header(checkLogin=${checkLogin},
- listGioHang=${listGioHang}, sizeGioHang=${sizeGioHang}, khachHang=${khachHang})}"></th:block>
+<th:block th:if="${checkLogin}" th:replace="~{fragments/KhachHang/HeaderKhachHang :: header(checkLogin=${checkLogin},
+listGioHang=${listGioHang}, sizeGioHang=${sizeGioHang}, khachHang=${khachHang})}"></th:block>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/js/HeaderKhachHang/HeaderKhachHang.js"></script>
 <script th:inline="javascript">

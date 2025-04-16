@@ -2,7 +2,9 @@ package com.example.webbanson.controller.NhanVien;
 
 
 import com.example.webbanson.model.KhoiLuong;
+import com.example.webbanson.model.NhanVien;
 import com.example.webbanson.service.KhoiLuongService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +24,15 @@ public class KhoiLuongController {
     private final KhoiLuongService khoiLuongService;
     @GetMapping("")
     public String KhoiLuong(@RequestParam(defaultValue = "1") Integer pageNo,
-                            Model model) {
+                            Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         Page<KhoiLuong> list = khoiLuongService.getAllKhoiLuongByIdDesc(PageRequest.of(pageNo - 1, 7));
         model.addAttribute("listKhoiLuong", list.getContent());
         model.addAttribute("pageNo", pageNo);
@@ -37,7 +47,15 @@ public class KhoiLuongController {
     public String searchKhoiLuong(@RequestParam(defaultValue = "1") Integer pageNo,
                                   @RequestParam(required = false) Integer tenSearch,
                                   @RequestParam(required = false) Integer trangThaiSearch,
-                                  Model model) {
+                                  Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("trangThaiSearch", trangThaiSearch);
         Page<KhoiLuong> list = khoiLuongService.searchKhoiLuong(tenSearch, trangThaiSearch, PageRequest.of(pageNo - 1, 7));
@@ -52,7 +70,8 @@ public class KhoiLuongController {
     public String searchKhoiLuongGet(@RequestParam(defaultValue = "1") Integer pageNo,
                                   @RequestParam(required = false) Integer tenSearch,
                                   @RequestParam(required = false) Integer trangThaiSearch,
-                                  Model model) {
+                                  Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("trangThaiSearch", trangThaiSearch);
         Page<KhoiLuong> list = khoiLuongService.searchKhoiLuong(tenSearch, trangThaiSearch, PageRequest.of(pageNo - 1, 7));
@@ -64,13 +83,29 @@ public class KhoiLuongController {
     }
 
     @GetMapping("/view-add")
-    public String ViewAddKhoiLuong(Model model) {
+    public String ViewAddKhoiLuong(Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("khoiLuong", new KhoiLuong());
         return "ViewNhanVien/KhoiLuong/AddKhoiLuong";
     }
 
     @PostMapping("/add")
-    public String AddKhoiLuong(@Valid KhoiLuong khoiLuong, Errors  errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String AddKhoiLuong(@Valid KhoiLuong khoiLuong, Errors  errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         if(errors.hasErrors()) {
             model.addAttribute("khoiLuong", khoiLuong);
             return "ViewNhanVien/KhoiLuong/AddKhoiLuong";
@@ -95,13 +130,22 @@ public class KhoiLuongController {
 
     @GetMapping("/detail/{id}")
     public String detailSanPham(@PathVariable Integer id,
-                                Model model) {
+                                Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
         model.addAttribute("khoiLuong", khoiLuongService.getOneSanPhamById(id));
         return "ViewNhanVien/KhoiLuong/DetailKhoiLuong";
     }
 
     @PostMapping("/update")
-    public String UpdateKhoiLuong(@Valid KhoiLuong khoiLuong, Errors  errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String UpdateKhoiLuong(@Valid KhoiLuong khoiLuong, Errors  errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         if(errors.hasErrors()) {
             model.addAttribute("khoiLuong", khoiLuong);
             return "ViewNhanVien/KhoiLuong/DetailKhoiLuong";

@@ -1,9 +1,11 @@
 package com.example.webbanson.controller.NhanVien;
 
+import com.example.webbanson.model.NhanVien;
 import com.example.webbanson.model.Nsx;
 import com.example.webbanson.model.Voucher;
 import com.example.webbanson.service.KhachHangService;
 import com.example.webbanson.service.VoucherService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,15 @@ public class VoucherConTroller {
 
     @GetMapping("")
     public String Voucher(@RequestParam(defaultValue = "1") Integer pageNo,
-                          Model model) {
+                          Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         Page<Voucher> list = voucherService.findAllIdDesc(PageRequest.of(pageNo - 1, 7));
         model.addAttribute("listVoucher", list.getContent());
         model.addAttribute("pageNo", pageNo);
@@ -44,7 +54,15 @@ public class VoucherConTroller {
                                 @RequestParam(required = false) Integer hinhThucSearch,
                                 @RequestParam(required = false) Integer loaiGiamSearch,
                                 @RequestParam(required = false) Integer trangThaiSearch,
-                                Model model) {
+                                Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("hinhThucSearch", hinhThucSearch);
         model.addAttribute("loaiGiamSearch", loaiGiamSearch);
@@ -63,7 +81,15 @@ public class VoucherConTroller {
                                    @RequestParam(required = false) Integer hinhThucSearch,
                                    @RequestParam(required = false) Integer loaiGiamSearch,
                                    @RequestParam(required = false) Integer trangThaiSearch,
-                                   Model model) {
+                                   Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("hinhThucSearch", hinhThucSearch);
         model.addAttribute("loaiGiamSearch", loaiGiamSearch);
@@ -77,13 +103,29 @@ public class VoucherConTroller {
     }
 
     @GetMapping("/view-add")
-    public String ViewAddVoucher(Model model) {
+    public String ViewAddVoucher(Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("voucher", new Voucher());
         return "ViewNhanVien/Voucher/AddVoucher";
     }
 
     @PostMapping("/add")
-    public String AddVoucher(@Valid Voucher voucher, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String AddVoucher(@Valid Voucher voucher, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         if (errors.hasErrors()) {
             model.addAttribute("voucher", voucher);
             return "ViewNhanVien/Voucher/AddVoucher";
@@ -119,13 +161,29 @@ public class VoucherConTroller {
 
     @GetMapping("/detail/{id}")
     public String detailVoucher(@PathVariable Integer id,
-                                    Model model) {
+                                    Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("voucher", voucherService.getOneVoucherById(id));
         return "ViewNhanVien/Voucher/DetailVoucher";
     }
 
     @PostMapping("/update")
-    public String UpdateVoucher(@Valid Voucher voucher, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String UpdateVoucher(@Valid Voucher voucher, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         if (errors.hasErrors()) {
             model.addAttribute("voucher", voucher);
             return "ViewNhanVien/Voucher/DetailVoucher";
@@ -156,7 +214,15 @@ public class VoucherConTroller {
     }
 
     @GetMapping("/ap-dung")
-    public String addKhachHangVoucher(Model model) {
+    public String addKhachHangVoucher(Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("listVoucher", voucherService.getAll());
         model.addAttribute("listKhachHang", khachHangService.fillAll());
         model.addAttribute("listKhachHangNoRank", khachHangService.fillAllNoRank());

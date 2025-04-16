@@ -30,8 +30,6 @@ public class SanPham {
     @Column(name = "ma", nullable = false, unique = true) // Đảm bảo mã sản phẩm là duy nhất
     private String ma;
 
-    @Size(max = 255, message = "Mô tả không được vượt quá 255 ký tự")
-    @NotBlank(message = "Mô tả không được để trống")
     @Nationalized
     @Column(name = "moTa")
     private String moTa;

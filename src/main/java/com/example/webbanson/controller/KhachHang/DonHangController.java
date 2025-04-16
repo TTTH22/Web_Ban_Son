@@ -71,7 +71,7 @@ public class DonHangController {
         Integer soSao = Integer.parseInt(data.get("soSao").toString());
         String noiDung = (String) data.get("noiDung");
         HoaDon hoaDon = hoaDonService.getOneBanHangOnlineById(idDonHang);
-        DanhGia danhGia = new DanhGia(null, hoaDon, noiDung, soSao, false);
+        DanhGia danhGia = new DanhGia(null, hoaDon, noiDung, soSao, LocalDate.now(), false);
         danhGiaService.save(danhGia);
         return ResponseEntity.ok("Đã gửi đánh giá");
     }

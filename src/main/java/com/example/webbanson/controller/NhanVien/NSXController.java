@@ -1,8 +1,10 @@
 package com.example.webbanson.controller.NhanVien;
 
 import com.example.webbanson.model.DongSanPham;
+import com.example.webbanson.model.NhanVien;
 import com.example.webbanson.model.Nsx;
 import com.example.webbanson.service.NSXService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +24,15 @@ public class NSXController {
     private final NSXService nsxService;
     @GetMapping("")
     public String MauSac(@RequestParam(defaultValue = "1") Integer pageNo,
-                         Model model) {
+                         Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         Page<Nsx> list = nsxService.getAllNSXByIdDesc(PageRequest.of(pageNo - 1, 7));
         model.addAttribute("listNSX", list.getContent());
         model.addAttribute("pageNo", pageNo);
@@ -37,7 +47,15 @@ public class NSXController {
     public String searchMauSac(@RequestParam(defaultValue = "1") Integer pageNo,
                                @RequestParam(required = false) String tenSearch,
                                @RequestParam(required = false) Integer trangThaiSearch,
-                               Model model) {
+                               Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("trangThaiSearch", trangThaiSearch);
         Page<Nsx> list = nsxService.searchNSX(tenSearch ,trangThaiSearch, PageRequest.of(pageNo - 1, 7));
@@ -52,7 +70,15 @@ public class NSXController {
     public String searchMauSacGet(@RequestParam(defaultValue = "1") Integer pageNo,
                                    @RequestParam(required = false) String tenSearch,
                                    @RequestParam(required = false) Integer trangThaiSearch,
-                                   Model model) {
+                                   Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("trangThaiSearch", trangThaiSearch);
         Page<Nsx> list = nsxService.searchNSX(tenSearch ,trangThaiSearch, PageRequest.of(pageNo - 1, 7));
@@ -64,13 +90,15 @@ public class NSXController {
     }
 
     @GetMapping("/view-add")
-    public String ViewAddNSX(Model model) {
+    public String ViewAddNSX(Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
         model.addAttribute("nsx", new Nsx());
         return "ViewNhanVien/NSX/AddNSX";
     }
 
     @PostMapping("/add")
-    public String AddNSX(@Valid Nsx nsx, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String AddNSX(@Valid Nsx nsx, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
         if(errors.hasErrors()) {
             model.addAttribute("nsx", nsx);
             return "ViewNhanVien/NSX/AddNSX";
@@ -99,13 +127,22 @@ public class NSXController {
 
     @GetMapping("/detail/{id}")
     public String detailDongSanPham(@PathVariable Integer id,
-                                    Model model) {
+                                    Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("nsx", nsxService.getOneNSxById(id));
         return "ViewNhanVien/NSX/DetailNSX";
     }
 
     @PostMapping("/update")
-    public String UpdateDongSanPham(@Valid Nsx nsx, Errors  errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String UpdateDongSanPham(@Valid Nsx nsx, Errors  errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
         if(errors.hasErrors()) {
             model.addAttribute("nsx", nsx);
             return "ViewNhanVien/NSX/DetailNSX";

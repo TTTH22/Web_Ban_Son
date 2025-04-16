@@ -43,8 +43,7 @@ public class TrangChuController {
 
     @GetMapping("/trang-chu")
     public String trangChu(Model model) {
-//        KhachHang khachHang = (KhachHang) session.getAttribute("khachHang");
-        KhachHang khachHang = khachHangService.getOneKhachHangById(2);
+        KhachHang khachHang = (KhachHang) session.getAttribute("khachHang");
         if(khachHang == null){
             model.addAttribute("checkLogin", false);
         }
@@ -59,8 +58,6 @@ public class TrangChuController {
                 List<MauSac> listMauSac = mauSacService.getMauSacByIdSanPhamChiTiet(sanPham.getId());
                 List<KhoiLuong> listKhoiLuong = khoiLuongService.getKhoiLuongByMauSacAndSanPham
                         (gioHangChiTiet.getIdSanPhamChiTiet().getIdMauSac().getId(), sanPham.getId());
-//                System.out.println(gioHangChiTiet.getIdSanPhamChiTiet().getIdMauSac().getId());
-//                System.out.println(sanPham.getId());
                 GioHangChiTietDTO gioHangChiTietDTO = new GioHangChiTietDTO();
                 gioHangChiTietDTO.setId(gioHangChiTiet.getId());
                 gioHangChiTietDTO.setListMauSac(listMauSac);
@@ -85,7 +82,7 @@ public class TrangChuController {
 
     @GetMapping("/san-pham")
     public String sanPham(@RequestParam(defaultValue = "1") Integer pageNo, HttpServletRequest request, Model model) {
-        KhachHang khachHang = khachHangService.getOneKhachHangById(2);
+        KhachHang khachHang = (KhachHang) session.getAttribute("khachHang");
         if(khachHang == null){
             model.addAttribute("checkLogin", false);
         }
@@ -143,7 +140,7 @@ public class TrangChuController {
                          @RequestParam(required = false) Integer idDongSanPham,
                          Model model) {
         //        KhachHang khachHang = (KhachHang) session.getAttribute("khachHang");
-        KhachHang khachHang = khachHangService.getOneKhachHangById(2);
+        KhachHang khachHang = (KhachHang) session.getAttribute("khachHang");
         if(khachHang == null){
             model.addAttribute("checkLogin", false);
         }
@@ -247,12 +244,12 @@ public class TrangChuController {
     public String chiTietSanPham(@RequestParam(required = false) Integer idSanPham,
                                  @RequestParam(required = false) Integer idMauSac,
                                  @RequestParam(required = false) Integer idKhoiLuong,
-                                 @RequestParam(required = false) Integer soLuong,
+                                 @RequestParam(required = false, defaultValue = "1") Integer soLuong,
                                  Model model) {
 
 
         //        KhachHang khachHang = (KhachHang) session.getAttribute("khachHang");
-        KhachHang khachHang = khachHangService.getOneKhachHangById(2);
+        KhachHang khachHang = (KhachHang) session.getAttribute("khachHang");
         if(khachHang == null){
             model.addAttribute("checkLogin", false);
         }
@@ -267,8 +264,6 @@ public class TrangChuController {
                 List<MauSac> listMauSac = mauSacService.getMauSacByIdSanPhamChiTiet(sanPham.getId());
                 List<KhoiLuong> listKhoiLuong = khoiLuongService.getKhoiLuongByMauSacAndSanPham
                         (gioHangChiTiet.getIdSanPhamChiTiet().getIdMauSac().getId(), sanPham.getId());
-//                System.out.println(gioHangChiTiet.getIdSanPhamChiTiet().getIdMauSac().getId());
-//                System.out.println(sanPham.getId());
                 GioHangChiTietDTO gioHangChiTietDTO = new GioHangChiTietDTO();
                 gioHangChiTietDTO.setId(gioHangChiTiet.getId());
                 gioHangChiTietDTO.setListMauSac(listMauSac);
@@ -287,13 +282,30 @@ public class TrangChuController {
         Double soSao = danhGiaService.getSoSaoBySanPham(idSanPham);
 
         if(soSao != null){
-            Integer soNguoiDanhGia = danhGiaService.getSoNguoiDanhGia(idSanPham);
+            Integer soNguoiDanhGia = danhGiaService.findByFilter(idSanPham, null).size();
             model.addAttribute("checkSoSao", soSao);  // Số sao đã đánh giá
             int soSaoNguyen = soSao.intValue();  // Phần nguyên của số sao
             boolean coSaoLe = (soSao - soSaoNguyen) >= 0.5; // Kiểm tra có sao lẻ không
             model.addAttribute("soSaoNguyen", soSaoNguyen);
             model.addAttribute("coSaoLe", coSaoLe);
             model.addAttribute("soNguoiDanhGia", soNguoiDanhGia);
+
+            List<DanhGia> danhGias = danhGiaService.findByFilter(idSanPham, null);
+            // Giả sử chúng ta tính toán số lượng đánh giá theo từng mức sao
+
+            Long count5Star = danhGias.stream().filter(dg -> dg.getSao() == 5).count() ;
+            Long count4Star = danhGias.stream().filter(dg -> dg.getSao() == 4).count();
+            Long count3Star = danhGias.stream().filter(dg -> dg.getSao() == 3).count();
+            Long count2Star = danhGias.stream().filter(dg -> dg.getSao() == 2).count();
+            Long count1Star = danhGias.stream().filter(dg -> dg.getSao() == 1).count();
+
+            model.addAttribute("count5Star", count5Star == null ? 0 : count5Star);
+            model.addAttribute("count4Star", count4Star == null ? 0 : count4Star);
+            model.addAttribute("count3Star", count3Star == null ? 0 : count3Star);
+            model.addAttribute("count2Star", count2Star == null ? 0 : count2Star);
+            model.addAttribute("count1Star", count1Star == null ? 0 : count1Star);
+            model.addAttribute("listDanhGia", danhGias);
+
         }
         else model.addAttribute("checkSoSao", soSao);  // Số sao đã đánh giá
 
@@ -327,13 +339,13 @@ public class TrangChuController {
                 model.addAttribute("khoiLuong", khoiLuong);
             }
         }
-        if(soLuong == null) model.addAttribute("soLuong", 1);
 
         // Thêm dữ liệu vào model
         model.addAttribute("sanPham", sanPham);
         model.addAttribute("sanPhamChiTiet", sanPhamChiTiet);
         model.addAttribute("listAnhSanPham", anhSanPhamService.getAllByIdSanPham(idSanPham));
         model.addAttribute("listMauSac", listMauSac);
+        model.addAttribute("soLuong", soLuong.toString());
         model.addAttribute("trangThai", sanPhamChiTiet.getTrangThai());
 
 
@@ -361,6 +373,21 @@ public class TrangChuController {
         model.addAttribute("listSanPhamChiTiet", listSanPhamChiTiet);
         model.addAttribute("khachHang", khachHang);
         return "ViewKhachHang/ThanhToan";
+    }
+
+    @GetMapping("/gio-hang/thanh-toan")
+    public String thanhToan(@RequestParam("idKhachHang") Integer idKhachHang,
+                            Model model) {
+        KhachHang khachHang = khachHangService.getOneKhachHangById(idKhachHang);
+        GioHang gioHang = gioHangService.getGioHangByIdKhachHang(khachHang);
+        List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietService.GioHangChiTietByIdKhachHang(gioHang.getId());
+        model.addAttribute("listGioHangChiTiet", listGioHangChiTiet);
+        model.addAttribute("diaChiMacDinh", diaChiService.getDiaChiNhanHangById(idKhachHang));
+        model.addAttribute("listDiaChi", diaChiService.getAllDiaChiNhanHangById(idKhachHang));
+        model.addAttribute("voucherSanPham", voucherService.listVocherSanPham(khachHang.getId()));
+        model.addAttribute("voucherVanChuyen", voucherService.listVocherVanChuyen(khachHang.getId()));
+        model.addAttribute("khachHang", khachHang);
+        return "ViewKhachHang/ThanhToanGioHang";
     }
 
     @GetMapping("don-hang/{idKhachHang}")

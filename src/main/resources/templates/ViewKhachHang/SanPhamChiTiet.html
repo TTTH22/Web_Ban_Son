@@ -30,7 +30,7 @@
         }
 
 
-        .dropdown{
+        .dropdown {
             position: relative;
         }
 
@@ -116,6 +116,17 @@
             border-radius: 6px;
             padding: 4px;
         }
+
+        /* Ẩn mũi tên lên xuống của input number trên mọi trình duyệt */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield; /* Firefox */
+        }
     </style>
 </head>
 <header>
@@ -147,14 +158,17 @@
                                 th:attrappend=" data-max=${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}"
                                 th:id="'cart-item-' + ${gioHang.id}"
                                 class="dropdown-item">
-                                <input type="hidden" id="sanPham" th:value="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.id}">
+                                <input type="hidden" id="sanPham"
+                                       th:value="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.id}">
                                 <input type="hidden" id="idGioHang" th:value="${gioHang.gioHangChiTiet.idGioHang.id}">
                                 <div class="cart-item-info d-flex">
                                     <img th:src="@{${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.anhSanPham}}"
                                          width="100" height="100" class="rounded me-2">
                                     <div class="flex-grow-1">
-                                        <input type="hidden" id="idChiTietGioHang" th:value="${gioHang.gioHangChiTiet.id}">
-                                        <h4 class="fw-bold" th:text="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.ten}"></h4>
+                                        <input type="hidden" id="idChiTietGioHang"
+                                               th:value="${gioHang.gioHangChiTiet.id}">
+                                        <h4 class="fw-bold"
+                                            th:text="${gioHang.gioHangChiTiet.idSanPhamChiTiet.idSanPham.ten}"></h4>
 
                                         <!-- Dropdown chọn màu sắc -->
                                         <div class="form-group mt-1">
@@ -178,21 +192,26 @@
 
                                         <!-- Giá và nút chỉnh số lượng -->
                                         <div class="d-flex align-items-center justify-content-between mt-2">
-                                            <small class="text-danger fw-bold" id="donGia" th:text="${gioHang.gioHangChiTiet.donGia} + 'đ'"></small>
+                                            <small class="text-danger fw-bold" id="donGia"
+                                                   th:text="${gioHang.gioHangChiTiet.donGia} + 'đ'"></small>
 
                                             <div class="d-flex align-items-center">
                                                 <button class="btn btn-sm btn-outline-secondary"
-                                                        th:onclick="'updateQuantity(' + ${gioHang.id} + ', -1)'">-</button>
+                                                        th:onclick="'updateQuantity(' + ${gioHang.id} + ', -1)'">-
+                                                </button>
                                                 <input type="hidden" id="soLuongSanPham"
                                                        th:value="${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}"
                                                        th:attr="data-max=${gioHang.gioHangChiTiet.idSanPhamChiTiet.soLuong}">
-                                                <span class="mx-2 quantity" th:text="${gioHang.gioHangChiTiet.soLuong}"></span>
+                                                <span class="mx-2 quantity"
+                                                      th:text="${gioHang.gioHangChiTiet.soLuong}"></span>
                                                 <button class="btn btn-sm btn-outline-secondary"
-                                                        th:onclick="'updateQuantity(' + ${gioHang.id} + ', 1)'">+</button>
+                                                        th:onclick="'updateQuantity(' + ${gioHang.id} + ', 1)'">+
+                                                </button>
                                             </div>
                                             <div class="text-end mt-2">
                                                 <button class="btn btn-sm btn-danger"
-                                                        th:onclick="'removeFromCart(' + ${gioHang.id} + ')'">Xóa</button>
+                                                        th:onclick="'removeFromCart(' + ${gioHang.id} + ')'">Xóa
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -205,7 +224,7 @@
                                     Tổng tiền:
                                     <span id="tongTien"></span>
                                 </div>
-                                <a href="/checkout" class="btn btn-primary btn-sm w-100">Thanh toán</a>
+                                <a th:href="@{|/gio-hang/thanh-toan?idKhachHang=${khachHang.id}|}" class="btn btn-primary btn-sm w-100">Thanh toán</a>
                             </li>
                         </ul>
                     </li>
@@ -235,7 +254,8 @@
                 </ul>
             </div>
         </div>
-    </nav></header>
+    </nav>
+</header>
 <body>
 <div class="container py-5">
     <div class="row">
@@ -346,7 +366,7 @@
                 <h5>MÔ TẢ SẢN PHẨM</h5>
                 <p>
                     <i class="fas fa-check feature-check me-2"></i>
-                    <strong th:text="${sanPham.ten}"></strong> <i th:text="${sanPham.moTa}"></i>
+                    <strong th:text="${sanPham.ten}"></strong>
                 </p>
                 <p>
                     <i class="fas fa-check feature-check me-2"></i>
@@ -365,7 +385,7 @@
                     <button class="btn btn-outline-secondary" type="button">
                         <i class="fas fa-minus"></i>
                     </button>
-                    <input type="text" class="form-control text-center" name="soLuong" th:value="${soLuong}">
+                    <input type="number" class="form-control text-center" name="soLuong" th:value="${soLuong}">
                     <button class="btn btn-outline-secondary" type="button">
                         <i class="fas fa-plus"></i>
                     </button>
@@ -375,7 +395,7 @@
                         Mua ngay
                     </a>
                     <input type="hidden" id="checkLoginValue" th:value="${checkLogin}">
-                    <input type="hidden" id="khachHangId" th:value="${khachHang.id}">
+                    <input th:if="${checkLogin}" type="hidden" id="khachHangId" th:value="${khachHang.id}">
                     <input type="hidden" id="sanPhamId" th:value="${sanPham.id}">
                     <a class="btn btn-outline-secondary me-2" id="addToCartButton">
                         <i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng
@@ -389,11 +409,291 @@
             </p>
         </div>
     </div>
-</div>
-<!-- Bootstrap JS and Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/js/SanPhamChiTiet/SanPhamChiTiet.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Tabs -->
+    <div class="row">
+        <div class="col-12">
+            <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab"
+                            data-bs-target="#description" type="button" role="tab" aria-controls="description"
+                            aria-selected="true">
+                        <i class="bi bi-info-circle me-2"></i>Mô tả sản phẩm
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
+                            type="button" role="tab" aria-controls="reviews" aria-selected="false">
+                        <i class="bi bi-star me-2"></i>Đánh giá
+                        <span class="badge bg-primary rounded-pill ms-2" th:text="${soNguoiDanhGia}"></span>
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="productTabsContent">
+                <!-- Tab 1: Mô tả sản phẩm -->
+                <div class="tab-pane fade show active" id="description" role="tabpanel"
+                     aria-labelledby="description-tab">
+                    <div class="moTa" th:utext="${sanPham.moTa}"></div>
+                </div>
+
+                <!-- Tab 2: Đánh giá sản phẩm -->
+                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                    <div class="row mb-4">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">Đánh giá tổng quan</h5>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <!-- Rating -->
+                                        <div th:if="${checkSoSao != null}" class="mb-3">
+                                              <span class="rating">
+                                                  <!-- Hiển thị sao đầy -->
+                                                  <th:block th:each="i : ${#numbers.sequence(1, soSaoNguyen)}">
+                                                      <i class="fas fa-star"></i>
+                                                  </th:block>
+
+                                                  <th:block th:if="${coSaoLe}">
+                                                      <i class="fas fa-star-half-alt"></i>
+                                                  </th:block>
+
+                                              </span>
+                                            <span class="ms-2 text-muted"
+                                                  th:text="@{'(' + ${soNguoiDanhGia} + ' customer review)'}"></span>
+                                        </div>
+
+                                        <div th:if="${checkSoSao == null}" class="mb-3">
+                                            <p>Chưa có đánh giá</p>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${checkSoSao != null}" class="mb-3">
+                                        <div class="mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="width: 60px;">5 sao</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                         th:style="'width: ' + ${count5Star} * 100 / (${count5Star} + ${count4Star} + ${count3Star} + ${count2Star} + ${count1Star}) + '%'"
+                                                         th:aria-valuenow="${count5Star}" th:aria-valuemin="0"
+                                                         th:aria-valuemax="${count5Star + count4Star + count3Star + count2Star + count1Star}"></div>
+                                                </div>
+                                                <span class="ms-2" th:text="${count5Star}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="width: 60px;">4 sao</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-success" role="progressbar"
+                                                         th:style="'width: ' + ${count4Star} * 100 / (${count5Star} + ${count4Star} + ${count3Star} + ${count2Star} + ${count1Star}) + '%'"
+                                                         th:aria-valuenow="${count4Star}" th:aria-valuemin="0"
+                                                         th:aria-valuemax="${count5Star + count4Star + count3Star + count2Star + count1Star}"></div>
+                                                </div>
+                                                <span class="ms-2" th:text="${count4Star}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="width: 60px;">3 sao</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-warning" role="progressbar"
+                                                         th:style="'width: ' + ${count3Star} * 100 / (${count5Star} + ${count4Star} + ${count3Star} + ${count2Star} + ${count1Star}) + '%'"
+                                                         th:aria-valuenow="${count3Star}" th:aria-valuemin="0"
+                                                         th:aria-valuemax="${count5Star + count4Star + count3Star + count2Star + count1Star}"></div>
+                                                </div>
+                                                <span class="ms-2" th:text="${count3Star}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="width: 60px;">2 sao</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-danger" role="progressbar"
+                                                         th:style="'width: ' + ${count2Star} * 100 / (${count5Star} + ${count4Star} + ${count3Star} + ${count2Star} + ${count1Star}) + '%'"
+                                                         th:aria-valuenow="${count2Star}" th:aria-valuemin="0"
+                                                         th:aria-valuemax="${count5Star + count4Star + count3Star + count2Star + count1Star}"></div>
+                                                </div>
+                                                <span class="ms-2" th:text="${count2Star}"></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-2">
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2" style="width: 60px;">1 sao</span>
+                                                <div class="progress flex-grow-1" style="height: 8px;">
+                                                    <div class="progress-bar bg-danger" role="progressbar"
+                                                         th:style="'width: ' + ${count1Star} * 100 / (${count5Star} + ${count4Star} + ${count3Star} + ${count2Star} + ${count1Star}) + '%'"
+                                                         th:aria-valuenow="${count1Star}" th:aria-valuemin="0"
+                                                         th:aria-valuemax="${count5Star + count4Star + count3Star + count2Star + count1Star}"></div>
+                                                </div>
+                                                <span class="ms-2" th:text="${count1Star}"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${checkSoSao != null}" class="col-md-8" style="max-height: 900px; overflow-y: auto;">
+                            <!-- Đánh giá 1 -->
+                            <div class="card mb-3" th:each="dg : ${listDanhGia}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h6 class="fw-bold mb-0" th:text="${dg.idHoaDon.idKhachHang.ten}"></h6>
+                                        <span class="review-date">10/04/2025</span>
+                                    </div>
+                                    <div class="star-rating">
+                                        <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                            <i th:classappend="${i <= dg.sao} ? 'bi-star-fill' : 'bi-star'"
+                                               class="bi"></i>
+                                        </th:block>
+                                        <p class="mb-0" th:text="${dg.binhLuan}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/SanPhamChiTiet/SanPhamChiTiet.js"></script>
+    <script th:inline="javascript">
+
+        var checkLogin = /*[[${checkLogin}]]*/ false;
+
+        document.getElementById("muaNgayButton").onclick = function (event) {
+            if (!checkLogin) {
+                event.preventDefault();  // Ngừng hành động mặc định của nút
+                Swal.fire({
+                    title: 'Bạn chưa đăng nhập!',
+                    text: 'Hãy đăng nhập để tiếp tục hoặc quay lại.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Đăng nhập',
+                    cancelButtonText: 'Quay lại',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let idSanPham = document.getElementById("sanPhamId").value;
+                        let idMauSac = document.querySelector(".color-option.active")?.getAttribute("data-name") || 'default';
+                        let idKhoiLuong = document.getElementById("khoiLuongId")?.value || 'default';
+                        let soLuong = document.querySelector(".quantity-selector input").value || '1';
+                        // Chuyển hướng đến trang đăng nhập và lưu trạng thái sản phẩm đang chọn
+                        let redirectUrl = `/login?redirect=/chi-tiet-san-pham?idSanPham=${idSanPham}&idMauSac=${idMauSac}&idKhoiLuong=${idKhoiLuong}&soLuong=${soLuong}`;
+                        window.location.href = redirectUrl;
+                    } else {
+                        // Chỉ tắt thông báo khi chọn Quay lại
+                        Swal.close(); // Đóng SweetAlert mà không làm gì thêm
+                    }
+                });
+            } else {
+                let idSanPham = document.getElementById("sanPhamId").value;
+                let idKhachHang = document.getElementById("khachHangId").value;
+                let idMauSac = document.querySelector(".color-option.active")?.getAttribute("data-name") || 'default';
+                let idKhoiLuong = document.getElementById("khoiLuongId")?.value || 'default';
+                let soLuong = document.querySelector(".quantity-selector input").value || '1';
+                let redirectUrl = `/san-pham-chi-tiet/thanh-toan?idSanPham=${idSanPham}&idMauSac=${idMauSac}&idKhoiLuong=${idKhoiLuong}&soLuong=${soLuong}&idKhachHang=${idKhachHang}`;
+                window.location.href = redirectUrl;
+            }
+        };
+
+        document.getElementById("addToCartButton").onclick = function (event) {
+            if (!checkLogin) {
+                event.preventDefault();  // Ngừng hành động mặc định của nút
+                Swal.fire({
+                    title: 'Bạn chưa đăng nhập!',
+                    text: 'Hãy đăng nhập để tiếp tục hoặc quay lại.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Đăng nhập',
+                    cancelButtonText: 'Quay lại',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let idSanPham = document.getElementById("sanPhamId").value;
+                        let idMauSac = document.querySelector(".color-option.active")?.getAttribute("data-name") || 'default';
+                        let idKhoiLuong = document.getElementById("khoiLuongId")?.value || 'default';
+                        let soLuong = document.querySelector(".quantity-selector input").value || '1';
+                        // Chuyển hướng đến trang đăng nhập và lưu trạng thái sản phẩm đang chọn
+                        let redirectUrl = `/login?redirect=/chi-tiet-san-pham?idSanPham=${idSanPham}&idMauSac=${idMauSac}&idKhoiLuong=${idKhoiLuong}&soLuong=${soLuong}`;
+                        window.location.href = redirectUrl;
+                    } else {
+                        // Chỉ tắt thông báo khi chọn Quay lại
+                        Swal.close(); // Đóng SweetAlert mà không làm gì thêm
+                    }
+                });
+            } else {
+                let idSanPham = document.getElementById("sanPhamId").value;
+                let idKhachHang = document.getElementById("khachHangId").value;
+                let idMauSac = document.querySelector(".color-option.active")?.getAttribute("data-name") || 'default';
+                let idKhoiLuong = document.getElementById("khoiLuongId")?.value || 'default';
+                let soLuong = document.querySelector(".quantity-selector input").value || '1';
+
+                fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        idSanPham: idSanPham,
+                        idMauSac: idMauSac,
+                        idKhoiLuong: idKhoiLuong,
+                        idKhachHang: idKhachHang,
+                        soLuong: soLuong
+                    })
+                }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Thêm vào giỏ hàng thành công!',
+                                text: 'Sản phẩm đã được thêm vào giỏ hàng của bạn.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                // Cập nhật số lượng sản phẩm trong giỏ hàng
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Lỗi!',
+                                text: "Thêm vào giỏ hàng thất bại.",
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+            }
+        };
+    </script>
+    <script th:inline="javascript">
+
+        var checkLogin = /*[[${checkLogin}]]*/ false;
+
+        document.getElementById("ShoppingCart").onclick = function (event) {
+            if (!checkLogin) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Bạn chưa đăng nhập!',
+                    text: 'Hãy đăng nhập để tiếp tục hoặc quay lại.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Đăng nhập',
+                    cancelButtonText: 'Quay lại',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "/login";
+                    } else {
+                        Swal.close();
+                    }
+                });
+            }
+        };
+    </script>
 
 </body>
 <footer>

@@ -228,6 +228,30 @@
 
 <!-- HeaderKhachHang cần chạy trước nếu nó chứa các hàm được gọi ở file sau -->
 <script src="/js/HeaderKhachHang/HeaderKhachHang.js"></script>
+<script th:inline="javascript">
+
+  var checkLogin = /*[[${checkLogin}]]*/ false;
+
+  document.getElementById("ShoppingCart").onclick = function (event) {
+    if (!checkLogin) {
+      event.preventDefault();
+      Swal.fire({
+        title: 'Bạn chưa đăng nhập!',
+        text: 'Hãy đăng nhập để tiếp tục hoặc quay lại.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Đăng nhập',
+        cancelButtonText: 'Quay lại',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "/login";
+        } else {
+          Swal.close();
+        }
+      });
+    }
+  };
+</script>
 
 <!-- SanPham cuối cùng -->
 <script src="/js/SanPham.js"></script>

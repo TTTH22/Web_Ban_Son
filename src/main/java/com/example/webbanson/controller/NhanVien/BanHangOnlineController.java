@@ -1,9 +1,11 @@
 package com.example.webbanson.controller.NhanVien;
 
 import com.example.webbanson.model.HoaDon;
+import com.example.webbanson.model.NhanVien;
 import com.example.webbanson.model.Nsx;
 import com.example.webbanson.service.DiaChiService;
 import com.example.webbanson.service.HoaDonService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +26,15 @@ public class BanHangOnlineController {
     private final DiaChiService diaChiService;
 
     @GetMapping("")
-    public String BanHangOnline(Model model) {
+    public String BanHangOnline(Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         List<HoaDon> listChoXacNhan = hoaDonService.getAllHoaDonChoXacNhan();
         List<HoaDon> listDangGiao = hoaDonService.listAllHoaDonDangGiao();
         List<HoaDon> listDaGiao = hoaDonService.listAllHoaDonDaGiao();
@@ -42,10 +52,16 @@ public class BanHangOnlineController {
 
      @GetMapping("/detail/{id}")
     public String detailBanHangOnline(@PathVariable Integer id,
-                                    Model model) {
+                                    Model model, HttpSession session) {
+         NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+         model.addAttribute("nhanVien", nhanVien);
+         if(nhanVien.getChucVu().equals("Quản lý")) {
+             model.addAttribute("checkLogin", true);
+         }
+         else {
+             model.addAttribute("checkLogin", false);
+         }
         model.addAttribute("banHang", hoaDonService.getOneBanHangOnlineById(id));
-        Integer idKhchHang = hoaDonService.getOneBanHangOnlineById(id).getIdKhachHang().getId();
-        model.addAttribute("diaChi", diaChiService.getDiaChiNhanHangById(idKhchHang));
         return "ViewNhanVien/BanHangOnline/DetailBanHangOnline";
     }
 }

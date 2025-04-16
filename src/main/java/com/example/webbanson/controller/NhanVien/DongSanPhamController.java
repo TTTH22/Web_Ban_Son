@@ -3,7 +3,9 @@ package com.example.webbanson.controller.NhanVien;
 import com.example.webbanson.model.DongSanPham;
 import com.example.webbanson.model.KhoiLuong;
 import com.example.webbanson.model.MauSac;
+import com.example.webbanson.model.NhanVien;
 import com.example.webbanson.service.DongSanPhamService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +25,16 @@ public class DongSanPhamController {
     private final DongSanPhamService dongSanPhamService;
     @GetMapping("")
     public String MauSac(@RequestParam(defaultValue = "1") Integer pageNo,
-                         Model model) {
+                         Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        if (nhanVien != null) {
+            model.addAttribute("nhanVien", nhanVien);
+            if (nhanVien.getChucVu().equals("Quản lý")) {
+                model.addAttribute("checkLogin", true);
+            } else {
+                model.addAttribute("checkLogin", false);
+            }
+        }
         Page<DongSanPham> list = dongSanPhamService.getAllDongSanPhamByIdDesc(PageRequest.of(pageNo - 1, 7));
         model.addAttribute("listDongSanPham", list.getContent());
         model.addAttribute("pageNo", pageNo);
@@ -39,7 +50,16 @@ public class DongSanPhamController {
                                @RequestParam(required = false) String tenSearch,
                                @RequestParam(required = false) String maSearch,
                                @RequestParam(required = false) Integer trangThaiSearch,
-                               Model model) {
+                               Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        if (nhanVien != null) {
+            model.addAttribute("nhanVien", nhanVien);
+            if (nhanVien.getChucVu().equals("Quản lý")) {
+                model.addAttribute("checkLogin", true);
+            } else {
+                model.addAttribute("checkLogin", false);
+            }
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("trangThaiSearch", trangThaiSearch);
         Page<DongSanPham> list = dongSanPhamService.searchDongSanPham(tenSearch ,trangThaiSearch, PageRequest.of(pageNo - 1, 7));
@@ -55,7 +75,16 @@ public class DongSanPhamController {
                                   @RequestParam(required = false) String tenSearch,
                                   @RequestParam(required = false) String maSearch,
                                   @RequestParam(required = false) Integer trangThaiSearch,
-                                  Model model) {
+                                  Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        if (nhanVien != null) {
+            model.addAttribute("nhanVien", nhanVien);
+            if (nhanVien.getChucVu().equals("Quản lý")) {
+                model.addAttribute("checkLogin", true);
+            } else {
+                model.addAttribute("checkLogin", false);
+            }
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("trangThaiSearch", trangThaiSearch);
         Page<DongSanPham> list = dongSanPhamService.searchDongSanPham(tenSearch,trangThaiSearch, PageRequest.of(pageNo - 1, 7));
@@ -67,13 +96,31 @@ public class DongSanPhamController {
     }
 
     @GetMapping("/view-add")
-    public String ViewAddDongSanPham(Model model) {
+    public String ViewAddDongSanPham(Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        if (nhanVien != null) {
+            model.addAttribute("nhanVien", nhanVien);
+            if (nhanVien.getChucVu().equals("Quản lý")) {
+                model.addAttribute("checkLogin", true);
+            } else {
+                model.addAttribute("checkLogin", false);
+            }
+        }
         model.addAttribute("dongSanPham", new DongSanPham());
         return "ViewNhanVien/DongSanPham/AddDongSanPham";
     }
 
     @PostMapping("/add")
-    public String AddDongSanPham(@Valid DongSanPham dongSanPham, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String AddDongSanPham(@Valid DongSanPham dongSanPham, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        if (nhanVien != null) {
+            model.addAttribute("nhanVien", nhanVien);
+            if (nhanVien.getChucVu().equals("Quản lý")) {
+                model.addAttribute("checkLogin", true);
+            } else {
+                model.addAttribute("checkLogin", false);
+            }
+        }
         if(errors.hasErrors()) {
             model.addAttribute("dongSanPham", dongSanPham);
             return "ViewNhanVien/DongSanPham/AddDongSanPham";
@@ -102,13 +149,31 @@ public class DongSanPhamController {
 
     @GetMapping("/detail/{id}")
     public String detailDongSanPham(@PathVariable Integer id,
-                                Model model) {
+                                Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        if (nhanVien != null) {
+            model.addAttribute("nhanVien", nhanVien);
+            if (nhanVien.getChucVu().equals("Quản lý")) {
+                model.addAttribute("checkLogin", true);
+            } else {
+                model.addAttribute("checkLogin", false);
+            }
+        }
         model.addAttribute("dongSanPham", dongSanPhamService.getOneDongSanPhamById(id));
         return "ViewNhanVien/DongSanPham/DetailDongSanPham";
     }
 
     @PostMapping("/update")
-    public String UpdateDongSanPham(@Valid DongSanPham dongSanPham, Errors  errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String UpdateDongSanPham(@Valid DongSanPham dongSanPham, Errors  errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        if (nhanVien != null) {
+            model.addAttribute("nhanVien", nhanVien);
+            if (nhanVien.getChucVu().equals("Quản lý")) {
+                model.addAttribute("checkLogin", true);
+            } else {
+                model.addAttribute("checkLogin", false);
+            }
+        }
         if(errors.hasErrors()) {
             model.addAttribute("dongSanPham", dongSanPham);
             return "ViewNhanVien/DongSanPham/DetailDongSanPham";

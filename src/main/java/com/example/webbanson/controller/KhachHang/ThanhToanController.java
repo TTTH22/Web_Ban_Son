@@ -169,6 +169,14 @@ public class ThanhToanController {
                 HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet(null, hoaDon, sanPhamChiTiet, soLuong, (double) sanPhamChiTiet.getDonGiaGiam(), sanPhamChiTiet.getIdSanPham().getTen());
                 hoaDonChiTietService.save(hoaDonChiTiet);
             }
+            if(voucherProduct != null){
+                voucherProduct.setTrangThai(false);
+                voucherService.save(voucherProduct);
+            }
+            if(voucherShip != null){
+                voucherShip.setTrangThai(false);
+                voucherService.save(voucherShip);
+            }
 
             return ResponseEntity.ok(Map.of("success", true));
         } catch (Exception e) {

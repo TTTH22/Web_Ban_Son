@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập hệ thống quản lý</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 15px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            border-top-left-radius: 10px !important;
+            border-top-right-radius: 10px !important;
+            padding: 1.5rem 1.5rem 1rem;
+        }
+        .login-logo {
+            max-height: 70px;
+            margin-bottom: 10px;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+            font-weight: 600;
+            padding: 0.6rem 1rem;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        .form-control, .input-group-text {
+            border: 1px solid #ddd;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+            border-color: #3498db;
+        }
+        .input-group-text {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+        .form-floating > label {
+            color: #6c757d;
+        }
+        .forgot-password {
+            font-size: 0.9rem;
+        }
+        .footer-links {
+            font-size: 0.85rem;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            color: #6c757d;
+            font-size: 0.85rem;
+        }
+        .divider::before, .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background-color: #dee2e6;
+        }
+        .divider::before {
+            margin-right: 0.5rem;
+        }
+        .divider::after {
+            margin-left: 0.5rem;
+        }
+        .alert {
+            border-radius: 5px;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .remember-me {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <div class="text-center mb-4">
+        <img src="/img/logo/Logo.png" alt="Logo công ty" class="login-logo">
+    </div>
+
+    <div class="card">
+        <div class="card-header text-center">
+            <h4 class="mb-0">Đăng nhập hệ thống</h4>
+            <p class="text-muted mt-2 mb-0">Dành cho nhân viên</p>
+        </div>
+
+        <div class="card-body">
+            <!-- Thông báo lỗi (ẩn mặc định) -->
+            <div class="alert alert-danger d-none" id="error-alert" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span id="error-message">Tên đăng nhập hoặc mật khẩu không chính xác!</span>
+            </div>
+
+            <form id="login-form">
+                <!-- Tên đăng nhập -->
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="username" placeholder="Tên đăng nhập" required>
+                    <label for="username"><i class="fas fa-user me-2"></i>Tên đăng nhập</label>
+                </div>
+
+                <!-- Mật khẩu -->
+                <div class="form-floating mb-3 position-relative">
+                    <input type="password" class="form-control" id="password" placeholder="Mật khẩu" required>
+                    <label for="password"><i class="fas fa-lock me-2"></i>Mật khẩu</label>
+                    <p class="position-absolution top-0 end-0 mt-2 me-2">
+                            <span class="position-absolute top-0 end-0 mt-2 me-2" style="cursor: pointer;" id="toggle-password">
+                                <i class="fas fa-eye-slash"></i>
+                            </span>
+                    </p>
+                </div>
+
+                <!-- Ghi nhớ đăng nhập -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="form-check remember-me">
+                        <input class="form-check-input" type="checkbox" id="remember-me">
+                        <label class="form-check-label" for="remember-me">
+                            Ghi nhớ đăng nhập
+                        </label>
+                    </div>
+                    <a href="#" class="text-primary forgot-password">Quên mật khẩu?</a>
+                </div>
+
+                <!-- Nút đăng nhập -->
+                <div class="d-grid gap-2 mb-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt me-2"></i>Đăng nhập
+                    </button>
+                </div>
+            </form>
+
+            <div class="divider">Hoặc</div>
+
+            <!-- Đăng nhập bằng phương thức khác -->
+            <div class="d-grid gap-2">
+                <button type="button" class="btn btn-outline-secondary">
+                    <i class="fas fa-fingerprint me-2"></i>Đăng nhập bằng vân tay
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4 footer-links text-muted">
+        <p>&copy; 2025 Công ty ABC. Tất cả quyền được bảo lưu.</p>
+        <p class="mb-0">
+            <a href="#" class="text-muted me-3">Trợ giúp</a>
+            <a href="#" class="text-muted me-3">Chính sách bảo mật</a>
+            <a href="#" class="text-muted">Điều khoản sử dụng</a>
+        </p>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    var employees = /*[[${employees}]]*/ [];
+    /*]]>*/
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Xử lý việc hiển thị/ẩn mật khẩu
+        const togglePassword = document.querySelector('#toggle-password');
+        const password = document.querySelector('#password');
+
+        togglePassword.addEventListener('click', function() {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+
+            // Thay đổi biểu tượng
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+
+        // Xử lý form đăng nhập
+        const loginForm = document.getElementById('login-form');
+        const errorAlert = document.getElementById('error-alert');
+        const errorMessage = document.getElementById('error-message');
+
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const employee = employees.find(emp => emp.email === username && emp.matKhau === password);
+
+            if (employee) {
+                // Đăng nhập thành công - chuyển hướng
+                errorAlert.classList.add('d-none');
+                // Thông báo thành công trước khi chuyển hướng
+                const successAlert = document.createElement('div');
+                successAlert.className = 'alert alert-success';
+                successAlert.innerHTML = '<i class="fas fa-check-circle me-2"></i>Đăng nhập thành công! Đang chuyển hướng...';
+                errorAlert.parentNode.insertBefore(successAlert, errorAlert);
+
+                setTimeout(function () {
+                    window.location.href = '/home?idNhanVien=' + employee.id; // Trang bảng điều khiển
+                }, 1500);
+            } else {
+                // Đăng nhập thất bại - hiện thông báo lỗi
+                errorMessage.textContent = 'Tên đăng nhập hoặc mật khẩu không chính xác!';
+                errorAlert.classList.remove('d-none');
+
+                // Làm rỗng trường mật khẩu
+                document.getElementById('password').value = '';
+                document.getElementById('password').focus();
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -64,30 +65,26 @@ public class KhachHangService {
     }
 
     public List<KhachHang> filterKhachHang(Integer rank, String spending, String time) {
-        Date now = new Date();
-        Calendar cal = Calendar.getInstance();
+        LocalDate now = LocalDate.now();
 
-        Date newDate = null;
-        Date monthStart = null;
-        Date monthEnd = null;
-        Date quarterDate = null;
+        LocalDate newDate = null;
+        LocalDate monthStart = null;
+        LocalDate monthEnd = null;
+        LocalDate quarterDate = null;
 
         if ("new".equals(time)) {
-            cal.setTime(now);
-            cal.add(Calendar.DAY_OF_MONTH, -30);
-            newDate = cal.getTime();
+            newDate = now.minusDays(30);
         } else if ("month".equals(time)) {
-            cal.setTime(now);
-            cal.add(Calendar.DAY_OF_MONTH, -365);
-            monthStart = cal.getTime();
-            cal.add(Calendar.DAY_OF_MONTH, 335); // tiến lên 335 ngày
-            monthEnd = cal.getTime();
+            monthStart = now.minusDays(365);
+            monthEnd = now.minusDays(30); // hoặc now để lấy đến hôm nay
         } else if ("quarter".equals(time)) {
-            cal.setTime(now);
-            cal.add(Calendar.DAY_OF_MONTH, -365);
-            quarterDate = cal.getTime();
+            quarterDate = now.minusDays(365);
         }
 
         return repo.filterKhachHang(rank, spending, time, newDate, monthStart, monthEnd, quarterDate);
+    }
+
+    public void save(KhachHang khachHang) {
+        repo.save(khachHang);
     }
 }

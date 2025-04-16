@@ -166,7 +166,7 @@ public class CartController {
         KhachHang khachHang = khachHangService.getOneKhachHangById(idKhachHang);
         GioHang gioHang = gioHangService.getGioHangByIdKhachHang(khachHang);
         if(sanPhamChiTiet != null && khachHang != null && gioHang != null){
-            gioHangChiTietService.save(new GioHangChiTiet(null, sanPhamChiTiet, soLuong, (double) sanPhamChiTiet.getDonGia(), gioHang));
+            gioHangChiTietService.save(new GioHangChiTiet(null, sanPhamChiTiet, soLuong, (double) sanPhamChiTiet.getDonGiaGiam(), gioHang));
             return ResponseEntity.ok(Map.of("success", true));
         }
         else return ResponseEntity.badRequest().body(Map.of("success", false));

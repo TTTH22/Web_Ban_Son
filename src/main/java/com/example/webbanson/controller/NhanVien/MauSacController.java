@@ -2,7 +2,9 @@ package com.example.webbanson.controller.NhanVien;
 
 import com.example.webbanson.model.KhoiLuong;
 import com.example.webbanson.model.MauSac;
+import com.example.webbanson.model.NhanVien;
 import com.example.webbanson.service.MauSacService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,7 +24,15 @@ public class MauSacController {
     private final MauSacService mauSacService;
     @GetMapping("")
     public String MauSac(@RequestParam(defaultValue = "1") Integer pageNo,
-                            Model model) {
+                         Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         Page<MauSac> list = mauSacService.getAllMauSacByIdDesc(PageRequest.of(pageNo - 1, 7));
         model.addAttribute("listMauSac", list.getContent());
         model.addAttribute("pageNo", pageNo);
@@ -38,7 +48,15 @@ public class MauSacController {
                                   @RequestParam(required = false) String tenSearch,
                                   @RequestParam(required = false) String maSearch,
                                   @RequestParam(required = false) Integer trangThaiSearch,
-                                  Model model) {
+                                  Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("maSearch", maSearch);
         model.addAttribute("trangThaiSearch", trangThaiSearch);
@@ -55,7 +73,15 @@ public class MauSacController {
                                   @RequestParam(required = false) String tenSearch,
                                   @RequestParam(required = false) String maSearch,
                                   @RequestParam(required = false) Integer trangThaiSearch,
-                                  Model model) {
+                                  Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("tenSearch", tenSearch);
         model.addAttribute("maSearch", maSearch);
         model.addAttribute("trangThaiSearch", trangThaiSearch);
@@ -68,13 +94,29 @@ public class MauSacController {
     }
 
     @GetMapping("/view-add")
-    public String ViewAddMauSac(Model model) {
+    public String ViewAddMauSac(Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("mauSac", new KhoiLuong());
         return "ViewNhanVien/MauSac/AddMauSac";
     }
 
     @PostMapping("/add")
-    public String AddMauSac(@Valid MauSac mauSac, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String AddMauSac(@Valid MauSac mauSac, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         if(errors.hasErrors()) {
             model.addAttribute("mauSac", mauSac);
             return "ViewNhanVien/MauSac/AddMauSac";
@@ -109,13 +151,29 @@ public class MauSacController {
 
     @GetMapping("/detail/{id}")
     public String detailDongSanPham(@PathVariable Integer id,
-                                    Model model) {
+                                    Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("mauSac", mauSacService.getOneMauSacById(id));
         return "ViewNhanVien/MauSac/DetailMauSac";
     }
 
     @PostMapping("/update")
-    public String UpdateMauSac(@Valid MauSac mauSac, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String UpdateMauSac(@Valid MauSac mauSac, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         if(errors.hasErrors()) {
             model.addAttribute("mauSac", mauSac);
             return "ViewNhanVien/MauSac/DetailMauSac";

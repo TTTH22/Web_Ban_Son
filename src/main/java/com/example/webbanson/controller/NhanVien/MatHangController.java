@@ -1,12 +1,14 @@
 package com.example.webbanson.controller.NhanVien;
 
 import com.example.webbanson.model.DongSanPham;
+import com.example.webbanson.model.NhanVien;
 import com.example.webbanson.model.Nsx;
 import com.example.webbanson.model.SanPhamChiTiet;
 import com.example.webbanson.service.KhoiLuongService;
 import com.example.webbanson.service.MauSacService;
 import com.example.webbanson.service.SanPhamChiTietService;
 import com.example.webbanson.service.SanPhamService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,7 +31,15 @@ public class MatHangController {
     private final KhoiLuongService khoiLuongService;
     @GetMapping("")
     public String MauSac(@RequestParam(defaultValue = "1") Integer pageNo,
-                         Model model) {
+                         Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         Page<SanPhamChiTiet> list = sanPhamChiTietService.getAllSanPhamChiTietByIdDesc(PageRequest.of(pageNo - 1, 7));
         model.addAttribute("listMatHang", list.getContent());
         model.addAttribute("pageNo", pageNo);
@@ -48,7 +58,15 @@ public class MatHangController {
                                @RequestParam(required = false) Integer idSanPham,
                                @RequestParam(required = false) Integer idMauSac,
                                @RequestParam(required = false) Integer idKhoiLuong,
-                               Model model) {
+                               Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("idSanPham", idSanPham);
         model.addAttribute("idMauSac", idMauSac);
         model.addAttribute("idKhoiLuong", idKhoiLuong);
@@ -68,7 +86,15 @@ public class MatHangController {
                                @RequestParam(required = false) Integer idSanPham,
                                @RequestParam(required = false) Integer idMauSac,
                                @RequestParam(required = false) Integer idKhoiLuong,
-                               Model model) {
+                               Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("idSanPham", idSanPham);
         model.addAttribute("idMauSac", idMauSac);
         model.addAttribute("idKhoiLuong", idKhoiLuong);
@@ -84,7 +110,15 @@ public class MatHangController {
     }
 
     @GetMapping("/view-add")
-    public String ViewAddMatHang(Model model) {
+    public String ViewAddMatHang(Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("spct", new SanPhamChiTiet());
         model.addAttribute("listSanPham", sanPhamService.getAllConSuDung());
         model.addAttribute("listMauSac", mauSacService.getAllConSuDung());
@@ -93,7 +127,15 @@ public class MatHangController {
     }
 
     @PostMapping("/add")
-    public String AddMatHang(@Valid @ModelAttribute("spct") SanPhamChiTiet spct, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String AddMatHang(@Valid @ModelAttribute("spct") SanPhamChiTiet spct, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         if(errors.hasErrors()) {
             model.addAttribute("spct", spct);
             model.addAttribute("listSanPham", sanPhamService.getAllConSuDung());
@@ -137,7 +179,15 @@ public class MatHangController {
     }
 
     @GetMapping("/detail/{id}")
-    public String DetailMatHang(@PathVariable Integer id,Model model) {
+    public String DetailMatHang(@PathVariable Integer id,Model model, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         model.addAttribute("spct", sanPhamChiTietService.getOneSanPhamChiTietById(id));
         model.addAttribute("listSanPham", sanPhamService.getAllConSuDung());
         model.addAttribute("listMauSac", mauSacService.getAllConSuDung());
@@ -146,7 +196,15 @@ public class MatHangController {
     }
 
     @PostMapping("/update")
-    public String UpdateMatHang(@Valid @ModelAttribute("spct") SanPhamChiTiet spct, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo) {
+    public String UpdateMatHang(@Valid @ModelAttribute("spct") SanPhamChiTiet spct, Errors errors, Model model, @RequestParam(defaultValue = "1") Integer pageNo, HttpSession session) {
+        NhanVien nhanVien = (NhanVien) session.getAttribute("nhanVien");
+        model.addAttribute("nhanVien", nhanVien);
+        if(nhanVien.getChucVu().equals("Quản lý")) {
+            model.addAttribute("checkLogin", true);
+        }
+        else {
+            model.addAttribute("checkLogin", false);
+        }
         if(errors.hasErrors()) {
             model.addAttribute("spct", spct);
             model.addAttribute("listSanPham", sanPhamService.getAllConSuDung());

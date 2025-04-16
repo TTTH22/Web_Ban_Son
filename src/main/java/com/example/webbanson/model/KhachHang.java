@@ -18,8 +18,6 @@ public class KhachHang {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotBlank(message = "Mã khách hàng không được để trống")
-    @Size(max = 10, message = "Mã khách hàng tối đa 10 ký tự")
     @Column(name = "ma", length = 10, unique = true)
     private String ma;
 
@@ -33,9 +31,9 @@ public class KhachHang {
     @Column(name = "ngaySinh")
     private LocalDate ngaySinh;
 
-//    @NotBlank(message = "Số điện thoại không được để trống")
-//    @Size(max = 15, message = "Số điện thoại tối đa 15 ký tự")
-//    @Pattern(regexp = "^(0[1-9][0-9]{8,9})$", message = "Số điện thoại không hợp lệ")
+    @NotBlank(message = "Số điện thoại không được để trống")
+    @Size(max = 15, message = "Số điện thoại tối đa 15 ký tự")
+    @Pattern(regexp = "^(0[1-9][0-9]{8,9})$", message = "Số điện thoại không hợp lệ")
     @Nationalized
     @Column(name = "sdt", length = 15, unique = true)
     private String sdt;
@@ -47,12 +45,11 @@ public class KhachHang {
     @Column(name = "email", length = 100, unique = true)
     private String email;
 
-    @NotBlank(message = "Mật khẩu không được để trống")
-    @Size(min = 6, max = 100, message = "Mật khẩu phải từ 6 đến 100 ký tự")
     @Nationalized
     @Column(name = "matKhau", length = 100)
     private String matKhau;
 
+    @NotNull(message = "Giới tính không được để trống")
     @Column(name = "gioiTinh")
     private Boolean gioiTinh;
 

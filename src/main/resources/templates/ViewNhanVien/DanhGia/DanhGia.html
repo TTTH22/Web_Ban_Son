@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Đánh Giá</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css"
+          rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #222E3C;
+            color: white;
+            position: fixed;
+            padding: 20px;
+        }
+
+        .sidebar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            background: #1B2531;
+            border-radius: 5px;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #0D6EFD;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        .star-rating {
+            color: #ffc107;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .nav-tabs .nav-link {
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link.active {
+            border-bottom: 3px solid #0d6efd;
+        }
+
+        .review-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+
+        .review-card:hover {
+            border-left: 4px solid #0d6efd;
+            background-color: rgba(13, 110, 253, 0.03);
+        }
+
+        .product-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .date-badge {
+            font-size: 0.8rem;
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
+
+        .filter-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="d-flex">
+    <!-- Sidebar -->
+    <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
+    <div class="container content py-4">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white p-3">
+                <h5 class="mb-0 fw-bold text-primary">Quản Lý Đánh Giá</h5>
+            </div>
+
+            <div class="card-body p-4">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs mb-4" id="reviewTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="confirm-tab" data-bs-toggle="tab" data-bs-target="#confirm"
+                                type="button" role="tab" aria-controls="confirm" aria-selected="true">
+                            <i class="bi bi-check-circle me-2"></i>Xác Nhận Đánh Giá
+                            <span class="badge bg-danger rounded-pill ms-2" th:text="${countDanhGiaChuaXacNhan}"></span>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
+                                type="button" role="tab" aria-controls="reviews" aria-selected="false">
+                            <i class="bi bi-star me-2"></i>Đánh Giá Của Khách Hàng
+                            <span class="badge bg-danger rounded-pill ms-2" th:text="${countDanhGiaDaXacNhan}"></span>
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab content -->
+                <div class="tab-content" id="reviewTabsContent">
+                    <!-- Tab 1: Xác Nhận Đánh Giá -->
+                    <div class="tab-pane fade" id="confirm" role="tabpanel" aria-labelledby="confirm-tab">
+                        <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                            <table class="table table-hover">
+                                <thead class="table-light">
+                                <tr>
+                                    <th scope="col">STT</th>
+                                    <th scope="col">Tên Khách Hàng</th>
+                                    <th scope="col">Mã Hóa Đơn</th>
+                                    <th scope="col">Số Sao</th>
+                                    <th scope="col">Đánh Giá</th>
+                                    <th scope="col">Ngày tạo</th>
+                                    <th scope="col" class="text-center">Thao Tác</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="dg, index : ${listDanhGiaChuaXacNhan}">
+                                    <td th:text="${index.index}"></td>
+                                    <td th:text="${dg.idHoaDon.idKhachHang.ten}"></td>
+                                    <td th:text="${dg.idHoaDon.ma}"></td>
+                                    <td>
+                                        <div class="star-rating">
+                                            <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                                <i th:classappend="${i <= dg.sao} ? 'bi-star-fill' : 'bi-star'"
+                                                   class="bi"></i>
+                                            </th:block>
+                                        </div>
+                                    </td>
+
+                                    <td th:text="${dg.binhLuan}"></td>
+                                    <td>
+                                        <i class="bi bi-calendar3 me-1"></i><i
+                                            th:text="${dg.ngayTao}"></i>
+                                    </td>
+                                    <td class="text-center">
+                                        <a th:href="@{|/nhan-vien/danh-gia/xac-nhan/${dg.id}|}"
+                                           class="btn btn-sm btn-success me-1">
+                                            <i class="bi bi-check-lg"></i> Xác nhận
+                                        </a>
+                                        <a th:href="@{|/nhan-vien/danh-gia/xoa/${dg.id}|}" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-x-lg"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Đánh Giá Của Khách Hàng -->
+                    <div class="tab-pane fade show active" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                        <div class="container py-4">
+                            <div class="card shadow-sm border-0">
+                                <div class="card-body p-4">
+                                    <!-- Filter Section -->
+                                    <div class="filter-section p-3 mb-4">
+                                        <div class="row g-3">
+                                            <form method="get" th:action="@{/nhan-vien/danh-gia/search}" id="filterForm"
+                                                  class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="productFilter" class="form-label fw-semibold">Lọc theo
+                                                        sản
+                                                        phẩm</label>
+                                                    <select class="form-select" id="productFilter" name="productId">
+                                                        <option value="" th:selected="${productId == null}">Tất cả sản
+                                                            phẩm
+                                                        </option>
+                                                        <option th:each="sp : ${listSanPhamDaDanhGiaAll}"
+                                                                th:text="${sp.ten}"
+                                                                th:value="${sp.id}"
+                                                                th:selected="${productId == sp.id}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="ratingFilter" class="form-label fw-semibold">Lọc theo
+                                                        đánh
+                                                        giá</label>
+                                                    <select class="form-select" id="ratingFilter" name="rating">
+                                                        <option value="" th:selected="${rating == null}">Tất cả đánh giá
+                                                        </option>
+                                                        <option th:each="i : ${#numbers.sequence(5,1)}"
+                                                                th:value="${i}"
+                                                                th:text="${i + ' sao'}"
+                                                                th:selected="${rating == i}"></option>
+                                                    </select>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- Reviews List -->
+                                    <div class="reviews-container" style="max-height: 600px; overflow-y: auto;">
+                                        <!-- Review Item 1 -->
+                                        <div class="card mb-3 review-card" th:each="dg : ${listDanhGiaDaXacNhan}">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="d-flex align-items-center mb-2">
+                                                            <div class="flex-shrink-0">
+                                                                <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                                                     style="width: 40px; height: 40px;">
+                                                                    <i class="bi bi-person-fill"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                                <h6 class="mb-0 fw-bold"
+                                                                    th:text="${dg.idHoaDon.idKhachHang.ten}"></h6>
+                                                                <div class="star-rating">
+                                                                    <th:block th:each="i : ${#numbers.sequence(1, 5)}">
+                                                                        <i th:classappend="${i <= dg.sao} ? 'bi-star-fill' : 'bi-star'"
+                                                                           class="bi"></i>
+                                                                    </th:block>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <p class="mt-2 mb-1" th:text="${dg.binhLuan}"></p>
+                                                        <span class="badge date-badge py-1 px-2">
+                                                        <i class="bi bi-calendar3 me-1"></i><i
+                                                                th:text="${dg.ngayTao}"></i>
+                                                    </span>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="d-flex align-items-center h-100">
+                                                            <div class="flex-shrink-0">
+                                                                <img th:src="${dg.idHoaDon.listHoaDonChiTiet.get(0).idSanPhamChiTiet.idSanPham.anhSanPham}"
+                                                                     alt="iPhone 15 Pro Max"
+                                                                     class="product-image">
+                                                            </div>
+                                                            <div class="flex-grow-1 ms-3">
+                                                            <span>Màu sắc: <span
+                                                                    th:text="${dg.idHoaDon.listHoaDonChiTiet[0].idSanPhamChiTiet.idMauSac.ten}"></span>,</span>
+                                                                <span th:text="${dg.idHoaDon.listHoaDonChiTiet[0].idSanPhamChiTiet.idKhoiLuong.ten + 'g'}"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:if="${suscessAdd}">
+    Swal.fire({
+        title: "Thành công!",
+        text: "Đã xác nhận đánh giá!",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+    });
+</script>
+<script th:if="${suscessDelete}">
+    Swal.fire({
+        title: "Xóa thành công!",
+        text: "Đã xóa đánh giá!",
+        icon: "success",
+        confirmButtonColor: "#3085d6",
+        confirmButtonText: "OK"
+    });
+</script>
+<script>
+    // Tự động submit khi chọn
+    document.getElementById("productFilter").addEventListener("change", () => {
+        document.getElementById("filterForm").submit();
+    });
+    document.getElementById("ratingFilter").addEventListener("change", () => {
+        document.getElementById("filterForm").submit();
+    });
+</script>
+</body>
+</html>

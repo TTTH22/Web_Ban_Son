@@ -173,7 +173,6 @@
                 <tr>
                     <th>Mã sản phẩm</th>
                     <th>Tên sản phẩm</th>
-                    <th>Mô tả</th>
                     <th>Ảhh đại diện</th>
                     <th>Nhà sản xuất</th>
                     <th>Dòng sản phẩm</th>
@@ -183,7 +182,6 @@
                 <tr th:each="x : ${listSanPham}">
                     <td th:text="${x.ma}"></td>
                     <td th:text="${x.ten}"></td>
-                    <td th:text="${x.moTa}"></td>
                     <td><img th:src="${x.anhSanPham}" alt="Ảnh sản phẩm" width="100"></td>
                     <td th:text="${x.idNSX.ten}"></td>
                     <td th:text="${x.idDongSanPham.ten}"></td>

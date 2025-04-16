@@ -49,15 +49,21 @@
             <a href="/mat-hang" class="nav-link">
                 <i class="bi bi-image"></i> Ảnh mặt hàng
             </a>
+            <a href="/nhan-vien/mota-san-pham" class="nav-link">
+                <i class="bi bi-file-text"></i> Mô tả sản phẩm
+            </a>
         </div>
-        <a href="/hoa-don" class="nav-link">
+        <a href="/nhan-vien/hoa-don" class="nav-link">
             <i class="bi bi-receipt"></i> Hóa đơn
         </a>
-        <a href="/nhan-vien" class="nav-link">
+        <a href="/nhan-vien" id="nhanVienBtn" class="nav-link">
             <i class="bi bi-person"></i> Nhân viên
         </a>
         <a href="/nhan-vien/khach-hang" class="nav-link">
             <i class="bi bi-people"></i> Khách hàng
+        </a>
+        <a href="/nhan-vien/danh-gia" class="nav-link">
+            <i class="bi bi-star"></i> Đánh giá
         </a>
         <a class="nav-link" data-bs-toggle="collapse" href="#VoucherMenu" role="button">
             <i class="bi bi-gift"></i> Voucher
@@ -71,5 +77,74 @@
                 <i class="bi bi-tags"></i> Áp dụng voucher
             </a>
         </div>
+        <a href="/nhan-vien/doanh-thu" id="doanhThuBtn" class="nav-link">
+            <i class="bi bi-bar-chart-line"></i> Doanh thu
+        </a>
+
+        <!-- Nút đăng xuất -->
+        <!-- Thông tin nhân viên -->
+        <div class="user-info d-flex align-items-center p-3 border-top">
+            <div class="me-2">
+                <i class="bi bi-person-circle fs-3 text-primary"></i>
+            </div>
+            <div>
+                <div id="tenNhanVien" class="fw-bold"></div>
+                <small id="chucVuNhanVien" class="text-muted">Chức vụ</small>
+            </div>
+        </div>
+
+        <!-- Nút đăng xuất -->
+        <a href="/nhan-vien/login" class="nav-link text-danger border-top mt-2 pt-2">
+            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+        </a>
+
     </nav>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:inline="javascript">
+
+        var checkLogin = /*[[${checkLogin}]]*/ false;
+
+        document.getElementById("doanhThuBtn").onclick = function (event) {
+            if (!checkLogin) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Bạn không đủ quyền hạn!',
+                    text: 'Bạn không thể xem được những thông tin mật của công ty.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'Quay lại',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.close();
+                    }
+                });
+            }
+        };
+
+        document.getElementById("nhanVienBtn").onclick = function (event) {
+            if (!checkLogin) {
+                event.preventDefault();
+                Swal.fire({
+                    title: 'Bạn không đủ quyền hạn!',
+                    text: 'Bạn không thể xem được những thông tin mật của công ty.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    cancelButtonText: 'Quay lại',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.close();
+                    }
+                });
+            }
+        };
+    </script>
+    <script th:inline="javascript">
+        let ten = /*[[${nhanVien.ten}]]*/ '';
+        let chucVu = /*[[${nhanVien.chucVu}]]*/ '';
+    </script>
+
+    <script>
+        document.getElementById("tenNhanVien").textContent = ten;
+        document.getElementById("chucVuNhanVien").textContent = chucVu;
+    </script>
 </div>

@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -41,13 +42,14 @@ public interface KhachHangRepo extends JpaRepository<KhachHang, Integer> {
     public List<KhachHang> fillAllRankGold();
 
     @Query("select kh from KhachHang kh where " +
-            "((:rank = 0) or" +
-            "(:rank is null or kh.idRank.id = :rank)) and " +
-            "((:spending is null) or " +
+            "((:rank = 0) or " +
+            "(:rank != -1 and kh.idRank.id = :rank) or " +
+            "(:rank = -1 and kh.idRank is null)) and " +
+            "((:spending = 'no') or " +
             "(:spending = 'high' and kh.tongChiTieu >= 10000000) or " +
-            "(:spending = 'medium' and (kh.tongChiTieu < 10000000 and kh.tongChiTieu < 5000000)) or " +
+            "(:spending = 'medium' and (kh.tongChiTieu < 10000000 and kh.tongChiTieu > 5000000)) or " +
             "(:spending = 'medium' and kh.tongChiTieu < 5000000)) and " +
-            "((:time IS NULL) OR" +
+            "((:time = 'no') OR" +
             "(:time = 'new' AND kh.ngayTao >= :newDate) OR " +
             "(:time = 'month' AND kh.ngayTao BETWEEN :monthStart AND :monthEnd) OR " +
             "(:time = 'quarter' AND kh.ngayTao < :quarterDate))")
@@ -55,9 +57,9 @@ public interface KhachHangRepo extends JpaRepository<KhachHang, Integer> {
             @Param("rank") Integer rank,
             @Param("spending") String spending,
             @Param("time") String time,
-            @Param("newDate") Date newDate,
-            @Param("monthStart") Date monthStart,
-            @Param("monthEnd") Date monthEnd,
-            @Param("quarterDate") Date quarterDate
+            @Param("newDate") LocalDate newDate,
+            @Param("monthStart") LocalDate monthStart,
+            @Param("monthEnd") LocalDate monthEnd,
+            @Param("quarterDate") LocalDate quarterDate
     );
 }

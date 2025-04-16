@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Nhân viên</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #222E3C;
+            color: white;
+            position: fixed;
+            padding: 20px;
+        }
+
+        .sidebar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+            background: #1B2531;
+            border-radius: 5px;
+        }
+
+        .sidebar .nav-link {
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .sidebar .nav-link:hover, .sidebar .nav-link.active {
+            background: #0D6EFD;
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 10px;
+        }
+
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+
+        .dashboard-header {
+            padding: 2rem;
+            background-color: #fff;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .dashboard-content {
+            padding: 2rem;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .icon-box {
+            font-size: 2rem;
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <!-- Sidebar -->
+    <th:block th:replace="~{fragments/NhanVien/HeaderNhanVien :: headerNhanVien}"></th:block>
+
+
+    <div class="container content dashboard-content">
+        <div class="dashboard-header text-center">
+            <h2>Chào mừng đến với Dashboard Nhân Viên</h2>
+            <p class="text-muted">Đây là bảng điều khiển tổng quan của bạn.</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card p-4 text-center">
+                    <div class="icon-box mb-2"><i class="fas fa-box"></i></div>
+                    <div class="card-title">Sản phẩm</div>
+                    <p class="text-muted">Xem và quản lý sản phẩm.</p>
+                    <a href="/nhan-vien/san-pham" class="btn btn-outline-primary btn-sm">Đi tới</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 text-center">
+                    <div class="icon-box mb-2"><i class="fas fa-receipt"></i></div>
+                    <div class="card-title">Hóa đơn</div>
+                    <p class="text-muted">Quản lý hóa đơn bán hàng.</p>
+                    <a href="/nhan-vien/hoa-don" class="btn btn-outline-primary btn-sm">Đi tới</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 text-center">
+                    <div class="icon-box mb-2"><i class="fas fa-users"></i></div>
+                    <div class="card-title">Khách hàng</div>
+                    <p class="text-muted">Xem danh sách khách hàng.</p>
+                    <a href="/nhan-vien/khach-hang" class="btn btn-outline-primary btn-sm">Đi tới</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

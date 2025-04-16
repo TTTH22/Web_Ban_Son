@@ -17,6 +17,18 @@ public class DiaChiService {
         return repo.findAll();
     }
 
+    public DiaChi getOne(Integer id) {
+        return repo.findById(id).orElse(null);
+    }
+
+    public void delete(Integer id) {
+        repo.deleteById(id);
+    }
+
+    public void save(DiaChi diaChi) {
+        repo.save(diaChi);
+    }
+
     public DiaChi getDiaChiNhanHangById(Integer id) {
         return repo.getDiaChiNhanHangById(id);
     }
